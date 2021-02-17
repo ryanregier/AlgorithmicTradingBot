@@ -1,6 +1,9 @@
 import ast
 import io
 import json
+import time
+from datetime import datetime
+
 import bson
 import requests
 from pymongo import MongoClient
@@ -26,9 +29,15 @@ def getPositions():
     print(api.list_positions())
 
 
-def Convert(lst):
-    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
-    return res_dct
+def update_lastTrade(sym):
+    collection = db['histrades']
+    last = api.get_last_trade(sym)
+    doc = {"symbol": sym, "price": last.price, "size": last.size, "timestamp": last.timestamp, "order position": last.size*last.price}
+    collection.insert_one(doc)
+
+
+
+# update_lastTrade('AAPL')
 
 
 def get_account():
@@ -41,15 +50,32 @@ def update_acctinfo_todb():
     print("Added to DB")
 
 
-def update_acctinfo_trades():
-    collection = db['histrades']
-    # print(api.list_orders())
-    df = api.list_orders().df
-    collection.insert_many(df)
-    print("Added to DB")
+def Convert(lst):
+    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
+    return res_dct
 
 
-update_acctinfo_trades()
+def update_acctinfo_positions():
+    collection = db['positions']
+    trades = api.list_positions()
+    print(trades[0])
+    ts = time.time()
+    date = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S.%f')
+    for position in trades:
+        if int(position.qty) > 0:
+            typeTrade = "buy"
+        else:
+            typeTrade = "sell"
+        doc = {"symbol": position.symbol, "asset-class": position.asset_class, "qty": int(position.qty),
+               "avg_entry_price": round(float(position.avg_entry_price), 2),
+               "initial position": round(float(float(position.qty) * float(position.avg_entry_price)), 2),
+               "exchange": position.exchange, "type": typeTrade, "date": date}
+        collection.insert_one(doc)
+
+    print("Added trades")
+
+
+# update_acctinfo_positions()
 
 
 def create_order(sym, qty, side, type, time_in_force):
@@ -126,8 +152,7 @@ def test_alpaca():
     bar = api.get_barset(symbol, 'day', limit=60).df
     print(bar)
 
-
-test_alpaca()
+# test_alpaca()
 
 # response = create_order("TSLA", 10, "buy", "market", "gtc")
 # print(response)
