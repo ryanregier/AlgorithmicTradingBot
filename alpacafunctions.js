@@ -40,6 +40,21 @@ function manualTrade(sym, qty, side, type, time_in_force){
     })
 }
 
+//manualTrade("PLTR", 15, "buy", "market", "gtc")
+
+function getHoldings(){
+    // Get a list of all of our positions.
+    alpaca.getPositions()
+        .then((portfolio) => {
+            // Print the quantity of shares for each position.
+            portfolio.forEach(function (position) {
+                console.log(`${position.qty} shares of ${position.symbol}`)
+            })
+        })
+}
+
+//getHoldings()
+
 function manualTradeLim(sym, qty, side, type, time_in_force, limit_price){
     alpaca.createOrder({
         symbol: sym,
