@@ -1,18 +1,18 @@
-import Task from "./Task"
+import Trade from "./Trade"
 
-const Tasks = (props) => {
+const Trades = (props) => {
 
     return(
         //This is how you might add to tasks
         //setTasks([...tasks, {}])
         <div>
             {/* .map creates a list? and then we give it a function? and the function has jsx code?*/}
-            {props.tasks.map((task) => (
-                <Task key={task.id} task = {task} onDelete = {props.onDelete} />
+            {props.tasks.map((trade) => (
+                <Trade key={trade.id} trade = {trade} onDelete = {props.onDelete} />
             ))}
         </div>
     )
 
 }
 
-export default Tasks
+export default Trades

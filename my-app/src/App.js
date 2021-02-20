@@ -2,9 +2,10 @@
 //import './App.css';
 import Header from './components/Header.js'
 import React from 'react'
-import Tasks from "./components/Tasks"
-import AddTask  from "./components/AddTask"
+import Trades from "./components/Trades"
+import AddTrade  from "./components/AddTrade"
 import {useState} from 'react'
+import AplpacaFunctions from "./alpacafunctions"
 
 
 // Class component
@@ -20,59 +21,65 @@ function App() {
     //The list called tasks is no longer unchangable per say
     //We cant dirrectly change it but we can use setTasks to recreate the list
 
-    const [tasks, setTasks] = useState([
+    const [trades, setTrades] = useState([
         {
             id: 1,
-            text: "Game Stop",
-            date: "December 19,2020",
-            bought: true,
-            amount: 70
+            sym: "*Pic of Gamestop*",
+            qty: "A lot",
+            side: "left",
+            type: "Fire type",
+            time_in_force: "4 years",
+            limit_price: "just a bit"
         },
         {
             id: 2,
-            text: "Tesla",
-            date: "January 23, 2021",
-            bought: false,
-            amount: 30,
+            sym: "*Pic of Walmart*",
+            qty: "Not a lot",
+            side: "right",
+            type: "water type",
+            time_in_force: "only two months",
+            limit_price: "No limit"
         },
         {
             id: 3,
-            text: "W.A.M.",
-            date: "February 12, 2021",
-            bought: true,
-            amount: 1000,
+            sym: ":-)",
+            qty: "Almost none",
+            side: "West Side",
+            type: "Poison type",
+            time_in_force: "Whole life",
+            limit_price: "$100,000"
         },
-        {
-            id: 4,
-            text: "Game Stop",
-            date: "February 1, 2021",
-            bought: false,
-            amount: 69,
-        },
+
     ])
 
     //piece of state
-    const [showAddTask, setShowAskTask] = useState(false)
+    const [showAddTrade, setShowAskTrades] = useState(false)
 
     //addtask
-    const addTask = (task) => {
+    const addTrade = (task) => {
         const id = Math.floor(Math.random()*1000) +1
+        //Creat a new Trade Object
         const newTask = {id, ...task}
-        setTasks([...tasks,newTask])
+        //update the task list
+        setTrades([...trades,newTask])
+        //Call the Alpaca Api function to initialise the trade
+
+
+
     }
 
-    //Delete Task
-    const deleteTask= (id) => {
+    //Delete Trade
+    const deleteTrade= (id) => {
         console.log('delete', id)
-        setTasks(tasks.filter((task) => task.id !== id))
+        setTrades(trades.filter((task) => task.id !== id))
     }
   return (
     <div className="container">
-        <Header title = "Trades Queued" onAdd = {() => setShowAskTask(!showAddTask)} showAdd = {showAddTask}/>
+        <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
-        {showAddTask && <AddTask onAdd = {addTask} />}
-        {tasks.length > 0 ? <Tasks tasks = {tasks}
-                                   onDelete = {deleteTask}
+        {showAddTrade && <AddTrade onAdd = {addTrade} />}
+        {trades.length > 0 ? <Trades tasks = {trades}
+                                     onDelete = {deleteTrade}
         /> : "No Trades"}
     </div>
   )

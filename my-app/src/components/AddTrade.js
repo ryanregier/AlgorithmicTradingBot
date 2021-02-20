@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
 
-const AddTask = (props) => {
+const AddTrade = (props) => {
     const [sym, setSym] = useState("")
     const [qty, setQty] = useState("")
     const [side, setSide] = useState("")
@@ -54,19 +54,19 @@ const AddTask = (props) => {
             <div className='form-control'>
             <label>Type</label>
             <input type='text' placeHolder='Add Type'
-                   value={side}
+                   value={type}
                    onChange={(e) => setType(e.target.value)}/>
              </div>
             <div className='form-control'>
                 <label>Time In Force</label>
                 <input type='text' placeHolder='Add Time in Force'
-                       value={side}
+                       value={time_in_force}
                        onChange={(e) => setTime(e.target.value)}/>
             </div>
             <div className='form-control'>
                 <label>Price Limit</label>
                 <input type='text' placeHolder='Add Limit'
-                       value={side}
+                       value={limit_price}
                        onChange={(e) => setLimit(e.target.value)}/>
             </div>
             <input type="submit" value="Save Trade" className="btn btn-block"/>
@@ -75,4 +75,4 @@ const AddTask = (props) => {
 
 }
 
-export default AddTask
+export default AddTrade
