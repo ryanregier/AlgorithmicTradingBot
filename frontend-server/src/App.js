@@ -2,13 +2,16 @@ import logo from './logo.svg';
 import './App.css';
 import React, {useState} from 'react';
 import LoginForm from './components/LoginForm';
+//import MainPage from './components/MainPage';
 
 
 /*Steven Barker*/
 
 
+var loggedIn = false;
+
 function App() {
-  const adminUder = {
+  const adminUser = {
     email: "admin@admin.com",
     password: "password"
   }
@@ -17,13 +20,13 @@ function App() {
   
   const Login = details => {
     console.log(details);
-
-    if(details.email == adminUder.email && details.password==adminUder.password){
+    if(details.email == adminUser.email&& details.password == adminUser.password){
       console.log("logged in");
       setUser({
-        name: details.name,
-        email: details.email
+        email: details.email,
+        name: details.name
       });
+      loggedIn = true;
     }else{
       console.log("failure");
       setError("Details do not match");
@@ -32,12 +35,12 @@ function App() {
   
   const Logout = () => {
     console.log("Logout");
-    setUser({name: "", email:""})
+    loggedIn = false
   }
   
   return (
     <div className="App">
-      {(user.email != "") ? (
+      {(loggedIn) ? (
         <div className="welcome">
           <h2>Welcome, <span>{user.name}</span></h2>
           <button onClick= {Logout}>Logout</button>
@@ -48,4 +51,5 @@ function App() {
     </div>
   ) 
 }
+
 export default App;
