@@ -30,7 +30,7 @@ const Header = (props) => {
 
 
 Header.defaultProps = {
-    title: 'Task Tracker'
+    title: 'Trade Tracker'
 }
 
 //used to check the types
