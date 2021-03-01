@@ -1,3 +1,5 @@
+from typing import Dict, List, Any
+
 import finviz
 from finviz.screener import Screener
 
@@ -7,20 +9,41 @@ from finviz.screener import Screener
 # relative volume over 2 and a SMA20 of 10 When adding the filters you need to manually add them on the FinViz
 # website and you take the url and pick out the different indicators as shown above
 
-filters = ['exch_nasd', 'cap_small', 'avgvol_o300', 'float_u100', 'relvol_o2', 'sma20_pa10']
+filters = ['exch_nasd', 'cap_small', 'avgvol_o300', 'float_u100', 'relvol_o2', 'sma20_pa10', ]
 
-stock_list = Screener(filters=filters, order='ticker')
+stock_list = Screener(filters=filters, table='Performance', order='price')
 
-for stock in stock_list[0:5]:  # Loop through 10th - 20th stocks
-    print(stock['Ticker'], stock['Price'])  # Print symbol and price
+new_list = []
+
+
+def printStockList():
+    for stock in stock_list[0:5]:  # Loop through 1 - 5 stocks
+        print(stock['Ticker'], stock['Price'])  # Print symbol and price
 
 
 def sort():
-    for STOCK in stock_list[0:5]:
-        print("hey")
-        price_target = finviz.get_analyst_price_targets(STOCK['Ticker'])
-        print(price_target)
+    for STOCK in stock_list[0:500]:
 
-# sort()
+        if float(STOCK['Price']) > 10:
+            new_list.append(STOCK)
+            # print(new_list)
 
-print(stock_list)
+
+def checkNews():  # one of the specifcations is that the stock needs to have a good amount of news, this function
+    # counts the number of headlines the stock has
+    for STOCK in new_list[0:5]:
+        news = finviz.get_news(STOCK['Ticker'])
+        print(news)
+
+
+def printNewList():
+    print('Here is the New List with Stocks with a price over $10:')
+    print(new_list)
+
+
+printNewList()
+sort()
+printNewList()
+
+checkNews()
+# print(stock_list)
