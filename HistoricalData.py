@@ -4,6 +4,16 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpdates
+from pymongo import MongoClient
+import trade as alpacaScript
+
+DATABASE_NAME = "tradingbot"
+DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
+
+DATABASE_USERNAME = "ryanregier"
+DATABASE_PASSWORD = "admin123"
+client = MongoClient(
+    "mongodb+srv://ryanregier:admin123@cluster0.b3s46.mongodb.net/<dbname>?retryWrites=true&w=majority")
 
 # plt.style.use('dark_background')
 global stock
@@ -43,6 +53,8 @@ def commands(cmd):
         print(stock.info)
     elif cmd == 'type':
         print(stock.info['quoteType'])
+    elif cmd == 'a':
+        buildAnalysis()
 
 
 def alternateCS(df):
@@ -100,7 +112,7 @@ def queryHistData(period=None, interval=None, start=None, end=None):
         plt.savefig('foo.png')
         plt.show()
         ax1 = df.plot(kind='line', x='Date', y='Volume', grid=True,
-                     title='Volume of ' + stock.info['shortName'] + ' vs Time (range: ' + start + ',' + end + ')')
+                      title='Volume of ' + stock.info['shortName'] + ' vs Time (range: ' + start + ',' + end + ')')
         ax1.set_ylabel("Price (USD)")
         plt.autoscale()
         plt.savefig('foo1.png')
@@ -126,12 +138,50 @@ def buildAnalysis():
     if stockIsEmpty():
         return
     info = stock.info
+    db = client['tradingbot']
+    collection = db['stockinfo']
+    collection.replace_one({'symbol': info['symbol']}, info, True)
     print(info)
+    f = open("analysis.txt", "w")
+    f.write("Stock Analysis for: " + info['shortName'] + "\n")
+    f.write("Symbol: " + info['symbol'] + "\n")
+    f.write("Type: " + info['quoteType'] + "\n")
+    f.write("Market: " + info['market'] + "\n")
+    f.write("Info: " + info['longBusinessSummary'] + "\n")
+    try:
+        f.write("Sector: " + info['sector'] + "\n")
+    except KeyError:
+        pass
+    try:
+        f.write("Country: " + info['country'] + "\n")
+    except KeyError:
+        pass
+    f.write("Closing Price: " + str(info['previousClose']) + "\n")
+    f.write("Financials:\n")
+    f.write("\tDividend Rate: " + str(info['dividendRate']) + "\n")
+    f.write("\tBeta: " + str(info['beta']) + "\n")
+    f.write("\tPrice to Book: " + str(info['priceToBook']) + "\n")
+    f.write("\tMarket Cap: " + str(info['marketCap']) + "\n")
+    try:
+        f.write("\tTrailing PE: " + str(info['trailingPE']) + "\n")
+    except KeyError:
+        pass
+    f.write("\tForward PE: " + str(info['forwardPE']) + "\n")
+    f.write("\t52 wk. high: " + str(info['fiftyTwoWeekHigh']) + "\n")
+    f.write("\tPayout Ratio: " + str(info['payoutRatio']) + "\n")
+    f.write("\tTrailingAnnualDividendYield: " + str(info['trailingAnnualDividendYield']) + "\n")
+    f.write("\tAverageDailyVolume10Day: " + str(info['averageDailyVolume10Day']) + "\n")
+    f.write("\tAverage Volume:" + str(info['averageVolume']) + "\n")
+    f.close()
 
 
-getTicker("AAPL")
-commands("type")
-queryHistData(start="2021-1-1", end="2021-3-5")
+ls = alpacaScript.getPositions()
+for i in ls:
+    getTicker(i.symbol)
+    commands("a")
+# getTicker("AAPL")
+# commands("a")
+# queryHistData(start="2021-1-1", end="2021-3-5")
 '''
 queryHistData(period="ytd")
 queryHistData(period="max")
