@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpdates
 from pymongo import MongoClient
-import trade as alpacaScript
+import alpacaPyConnection as alpacaScript
 
 DATABASE_NAME = "tradingbot"
 DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
@@ -179,6 +179,8 @@ ls = alpacaScript.getPositions()
 for i in ls:
     getTicker(i.symbol)
     commands("a")
+
+alpacaScript.update_acct_balance_change()
 # getTicker("AAPL")
 # commands("a")
 # queryHistData(start="2021-1-1", end="2021-3-5")

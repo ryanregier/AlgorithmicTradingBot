@@ -52,6 +52,18 @@ def update_acctinfo_todb():
     print("Added to DB")
 
 
+def update_acct_balance_change():
+    collection = db['histbalancechange']
+    balance_change = float(account.equity) - float(account.last_equity)
+    ts = time.time()
+    doc = {
+        "date": ts,
+        "balance_change": balance_change
+    }
+    collection.insert_one(doc)
+    print(f'Today\'s portfolio balance change: ${balance_change}')
+
+
 def update_acctinfo_positions():
     collection = db['positions']
     trades = api.list_positions()
@@ -157,11 +169,9 @@ def getTopVolume():
     df = pd.DataFrame(ls)
     df.to_csv('topVol.csv')
     for i in ls:
-        print("Ticker: " +  i[0])
+        print("Ticker: " + i[0])
         print("Volume: " + str(i[2]))
         print()
-
-
 
 # test_alpaca()
 
