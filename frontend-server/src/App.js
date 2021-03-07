@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, {useState} from 'react';
 import LoginForm from './components/LoginForm';
+import { setConstantValue } from 'typescript';
 const Http = new XMLHttpRequest();
 
 /*Steven Barker*/
@@ -10,62 +11,40 @@ var loggedIn = false;
 
 function App() {
 
-  const check = async function (details){
-    console.log('2');
-    Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
-    Http.send();
-    var toReturn = "I returned this";
-    console.log('3');
-    Http.onreadystatechange = function (e) {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log('4');
-        console.log('5');
-        toReturn = Http.responseText;
-      }
-      
-    }
-    console.log()
-    return(toReturn);
-    
-  }
   const adminUser = {
     email: "admin@admin.com",
     password: "password"
   }
-  const [user, setUser] = useState({name: "", email:""});
+  var [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
   
   const Login = (details) => {
     Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
     Http.send();
-    var toReturn = "I returned this";
     Http.onreadystatechange = function (e) {
       if (this.readyState == 4 && this.status == 200) {
         console.log(Http.responseText);
         if(Http.responseText != ""){
-            //console.log(`name: ${usersname}`);
             console.log("logged in");
-            setUser({
-              email: details.email,
-              name: Http.responseText
-            });
-            setUser({
-              email: details.email,
-              name: Http.responseText
-            });
             loggedIn = true;
+            var update  = {name: Http.responseText, email: details.email};
+            setUser(update);
+            //loggedIn = true;
           }else{
             console.log("failure");
             setError("Details do not match");
           }
         }
       }
-}
+      console.log("This better not run too soon");
+      setUser(({name: "", email: ""}));
+  }
 
   
   const Logout = () => {
     console.log("Logout");
     loggedIn = false
+    setUser(({name: "", email: ""}));
   }
   
 
