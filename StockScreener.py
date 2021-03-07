@@ -37,7 +37,7 @@ def createList():
 
 def checkNews():  # one of the specifcations is that the stock needs to have a good amount of news, this function
     # counts the number of headlines the stock has
-    for STOCK in new_list[0:5]:
+    for STOCK in new_list[0:50]:
 
         news = finviz.get_news(STOCK['Ticker'])
 
@@ -60,10 +60,14 @@ def printNewList():
     print('Here is the New List with Stocks with a price over $10 and more than 5 sources of news:')
     print(finalList)
 
+def returnList():
+    return finalList
 
 createList()
 checkNews()
 printNewList()
+
+returnList()
 
 # printStockList()
 # printNewList()

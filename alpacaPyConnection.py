@@ -31,6 +31,14 @@ def getPositions():
     return api.list_positions()
 
 
+def marketIsOpen():
+    clock = api.get_clock()
+    print('The market is {}'.format('open.' if clock.is_open else 'closed.'))
+    if clock.is_open:
+        return True
+    return False
+
+
 def update_lastTrade(sym):
     collection = db['histrades']
     last = api.get_last_trade(sym)
