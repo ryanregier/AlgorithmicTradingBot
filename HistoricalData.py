@@ -6,6 +6,12 @@ from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpdates
 from pymongo import MongoClient
 import alpacaPyConnection as alpacaScript
+from pandas_datareader import data as web
+import plotly.offline as py
+import os
+
+if not os.path.exists("images"):
+    os.mkdir("images")
 
 DATABASE_NAME = "tradingbot"
 DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
@@ -113,7 +119,7 @@ def queryHistData(period=None, interval=None, start=None, end=None):
         plt.show()
         ax1 = df.plot(kind='line', x='Date', y='Volume', grid=True,
                       title='Volume of ' + stock.info['shortName'] + ' vs Time (range: ' + start + ',' + end + ')')
-        ax1.set_ylabel("Price (USD)")
+        ax1.set_ylabel("Shares")
         plt.autoscale()
         plt.savefig('foo1.png')
         plt.show()
@@ -132,6 +138,71 @@ def queryHistData(period=None, interval=None, start=None, end=None):
         fig.show()
         alternateCS(df)
         # print(stock.history(start=start, end=end))
+
+
+def buildCS(sym):
+    stock = sym
+    df = web.DataReader(stock, data_source='yahoo', start='01-01-2021')
+    # Calculate and define moving average of 30 periods
+    avg_30 = df.Close.rolling(window=30, min_periods=1).mean()
+    avg_20 = df.Close.rolling(window=20, min_periods=1).mean()
+    avg_10 = df.Close.rolling(window=10, min_periods=1).mean()
+    trace1 = {
+        'x': df.index,
+        'open': df.Open,
+        'close': df.Close,
+        'high': df.High,
+        'low': df.Low,
+        'type': 'candlestick',
+        'name': sym,
+        'showlegend': True
+    }
+    trace2 = {
+        'x': df.index,
+        'y': avg_30,
+        'type': 'scatter',
+        'mode': 'lines',
+        'line': {
+            'width': 1,
+            'color': 'blue'
+        },
+        'name': 'Moving Average of 30 periods'
+    }
+    trace3 = {
+        'x': df.index,
+        'y': avg_20,
+        'type': 'scatter',
+        'mode': 'lines',
+        'line': {
+            'width': 1,
+            'color': 'green'
+        },
+        'name': 'Moving Average of 20 periods'
+    }
+    trace4 = {
+        'x': df.index,
+        'y': avg_10,
+        'type': 'scatter',
+        'mode': 'lines',
+        'line': {
+            'width': 1,
+            'color': 'red'
+        },
+        'name': 'Moving Average of 10 periods'
+    }
+    data = [trace1, trace2, trace3, trace4]
+    # Config graph layout
+    layout = go.Layout({
+        'title': {
+            'text': sym + ' Analysis',
+            'font': {
+                'size': 15
+            }
+        }
+    })
+    fig = go.Figure(data=data, layout=layout)
+    fig.write_image("images/fig1.png")
+    py.plot(fig)
 
 
 def buildAnalysis():
@@ -175,15 +246,18 @@ def buildAnalysis():
     f.close()
 
 
+'''
 ls = alpacaScript.getPositions()
 for i in ls:
     getTicker(i.symbol)
     commands("a")
+'''
 
-alpacaScript.update_acct_balance_change()
-# getTicker("AAPL")
+buildCS('TSLA')
+# alpacaScript.update_acct_balance_change()
+# getTicker("DIS")
 # commands("a")
-# queryHistData(start="2021-1-1", end="2021-3-5")
+# queryHistData(start="2020-1-1", end="2021-1-1")
 '''
 queryHistData(period="ytd")
 queryHistData(period="max")
