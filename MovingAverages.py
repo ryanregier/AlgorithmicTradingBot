@@ -2,6 +2,7 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 import alpacaPyConnection as ape
 
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -26,6 +27,11 @@ def simpleMovingAverage(sym, start, end, period):
     stock['sma'] = stock['Adj Close'].rolling(period, min_periods=1).mean()
     xVals = stock.index.tolist()
     stock['Date'] = xVals
+    return stock
+
+
+def getStock(sym, start, end):
+    stock = yf.download(sym, start, end)
     return stock
 
 
@@ -66,15 +72,24 @@ def checkStocks():
 
 
 def getTripleMovingAvgStrat():
-    df1 = exponentialMovingAverage('TSLA', '2021-1-4', '2021-1-15', 10)
-    df2 = exponentialMovingAverage('TSLA', '2021-1-4', '2021-1-25', 20)
-    df3 = exponentialMovingAverage('TSLA', '2021-1-4', '2021-2-5', 30)
+    df1 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-1-15', 10)
+    df2 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-1-25', 20)
+    df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-5', 30)
+    # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
     df = pd.DataFrame()
     df['Date'] = df1['Date']
     df['Price'] = df3['Adj Close']
     df['ema30'] = df3['ema']
     df['ema20'] = df2['ema']
     df['ema10'] = df1['ema']
+    return df
+
+
+def generateBuySignals(df):
+    df['BuySignal'] = 0.0
+    df['BuySignal'] = np.where(df['ema10'] > df['ema30'], 1.0, 0.0)
+    df['Position'] = df['BuySignal'].diff()
+    print(df)
     return df
 
 
@@ -100,9 +115,30 @@ def graph(df):
     df.to_csv('bs.csv')
     ax = df.plot(kind='line', x='Date', y=['ema10', 'ema20', 'ema30', 'Price'], grid=True,
                  title='Triple Moving Avg Strat')
+    plt.figure(figsize=(20, 10))
+    # plot close price, short-term and long-term moving averages
+    df['Price'].plot(color='k', lw=1, label='Close Price')
+    df['ema10'].plot(color='b', lw=1, label='10-day EMA')
+    df['ema20'].plot(color='g', lw=1, label='20-day EMA')
+    df['ema30'].plot(color='r', lw=1, label='30-day EMA')
+    # plot ‘buy’ and 'sell' signals
+    plt.plot(df[df['Position'] == 1].index,
+             df['ema20'][df['Position'] == 1],
+             "^", markersize=15, color='g', label='buy')
+    plt.plot(df[df['Position'] == -1].index,
+             df['ema20'][df['Position'] == -1],
+             "v", markersize=15, color='r', label='sell')
+    plt.ylabel('Price in USD', fontsize=15)
+    plt.xlabel('Date', fontsize=15)
+    plt.title('EMA Crossover', fontsize=20)
+    plt.legend()
+    plt.grid()
+    plt.show()
+    '''
     ax.set_ylabel("Price")
     # plt.autoscale()
     plt.show()
+    '''
 
 
 '''
@@ -113,6 +149,10 @@ generateGraph()
 '''
 # graphTripleMovingAvgStrat();
 print("Starting script")
+'''
 checkStocks()
 checkBuyEma(getTripleMovingAvgStrat())
 graph(getTripleMovingAvgStrat())
+'''
+# generateBuySignals(getTripleMovingAvgStrat())
+graph(generateBuySignals(getTripleMovingAvgStrat()))
