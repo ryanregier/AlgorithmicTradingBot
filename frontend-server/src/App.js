@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, {useState} from 'react';
 import LoginForm from './components/LoginForm';
-import { setConstantValue } from 'typescript';
+import MainPage from './components/MainPage';
 const Http = new XMLHttpRequest();
 
 /*Steven Barker*/
@@ -10,51 +10,41 @@ const Http = new XMLHttpRequest();
 var loggedIn = false;
 
 function App() {
-
-  const adminUser = {
-    email: "admin@admin.com",
-    password: "password"
-  }
-  var [user, setUser] = useState({name: "", email:""});
+  console.log("Running on line 13");
+  const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
   
   const Login = (details) => {
-    Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
+    console.log("Inside Login functions");
+    Http.open("GET", `http://10.0.0.3:3500/login/${details.email}/${details.password}`);
     Http.send();
+    console.log("sending http request");
     Http.onreadystatechange = function (e) {
+      console.log("readychangestate")
       if (this.readyState == 4 && this.status == 200) {
-        console.log(Http.responseText);
         if(Http.responseText != ""){
             console.log("logged in");
             loggedIn = true;
             var update  = {name: Http.responseText, email: details.email};
-            setUser(update);
-            //loggedIn = true;
+            setUser(update); 
           }else{
             console.log("failure");
             setError("Details do not match");
           }
         }
       }
-      console.log("This better not run too soon");
-      setUser(({name: "", email: ""}));
   }
 
-  
   const Logout = () => {
     console.log("Logout");
     loggedIn = false
     setUser(({name: "", email: ""}));
   }
-  
 
   return (
     <div className="App">
       {(loggedIn) ? (
-        <div className="welcome">
-          <h2>Welcome, <span>{user.name}</span></h2>
-          <button onClick= {Logout}>Logout</button>
-        </div>  
+        <MainPage/>
       ): ( 
         <LoginForm Login={Login} error={error}/>
       )}
