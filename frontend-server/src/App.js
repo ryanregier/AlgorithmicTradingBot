@@ -42,7 +42,7 @@ function App() {
   return (
     <div className="App">
       {(loggedIn) ? (
-        <MainPage/>
+        <MainPage Logout = {Logout}/>
       ): ( 
         <LoginForm Login={Login} error={error}/>
       )}

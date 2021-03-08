@@ -6,7 +6,7 @@ import Trades from "./Trades"
 import AddTrade  from "./AddTrade"
 import {useState} from 'react'
 import AplpacaFunctions from "./alpacafunctions"
-import App from '../App.js'
+import App from '../App'
 import Button from './Buttons'
 import Images from './Images'
 import DownloadLink from "react-download-link";
@@ -14,6 +14,7 @@ import DownloadLink from "react-download-link";
 import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
+import { FaLongArrowAltUp } from 'react-icons/fa'
 
 // Class component
 // class App extends React.Component{
@@ -22,8 +23,9 @@ import url from '../Images/analysis.txt'
 //     }
 // }
 // //
+
 //Function compponent
-function MainPage() {
+function MainPage({Logout}) {
     //This makes our list a part of the component and it is called the State.
     //The list called tasks is no longer unchangable per say
     //We cant dirrectly change it but we can use setTasks to recreate the list
@@ -94,7 +96,7 @@ function MainPage() {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        <Button color = {"red"} text = {"Logout"} onClick = {App.Logout}/>
+        <Button color = {"red"} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>
@@ -113,8 +115,6 @@ function MainPage() {
     </divM>
   )
 }
-<<<<<<< HEAD
-=======
 
 const getDataFromURL = (url) => new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -127,14 +127,5 @@ const getDataFromURL = (url) => new Promise((resolve, reject) => {
     }, 2000);
  
 
-const LogoutButton = (props) =>{
-    return (
-        <button onClick = {App.Logout} style = {{backgroundColor : props.color}}
-                className = "logoutbtn">
-        {props.text}
-    </button>
-    )
-}
 
->>>>>>> 9b0501e72b86e3ba2579c92b28bcfb789a79dbc0
 export default MainPage;
