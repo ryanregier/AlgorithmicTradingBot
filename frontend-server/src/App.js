@@ -10,7 +10,6 @@ const Http = new XMLHttpRequest();
 var loggedIn = false;
 
 function App() {
-  console.log("Running on line 13");
   const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
   
@@ -39,6 +38,7 @@ function App() {
     console.log("Logout");
     loggedIn = false
     setUser(({name: "", email: ""}));
+
   }
 
   return (
