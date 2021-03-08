@@ -90,6 +90,7 @@ def generateBuySignals(df):
     df['BuySignal'] = np.where(df['ema10'] > df['ema30'], 1.0, 0.0)
     df['Position'] = df['BuySignal'].diff()
     print(df)
+    df.to_csv("signals.csv")
     return df
 
 
@@ -121,24 +122,15 @@ def graph(df):
     df['ema10'].plot(color='b', lw=1, label='10-day EMA')
     df['ema20'].plot(color='g', lw=1, label='20-day EMA')
     df['ema30'].plot(color='r', lw=1, label='30-day EMA')
-    # plot ‘buy’ and 'sell' signals
-    plt.plot(df[df['Position'] == 1].index,
-             df['ema20'][df['Position'] == 1],
-             "^", markersize=15, color='g', label='buy')
-    plt.plot(df[df['Position'] == -1].index,
-             df['ema20'][df['Position'] == -1],
-             "v", markersize=15, color='r', label='sell')
+    plt.plot(df['Price'], marker='*')
     plt.ylabel('Price in USD', fontsize=15)
     plt.xlabel('Date', fontsize=15)
     plt.title('EMA Crossover', fontsize=20)
     plt.legend()
     plt.grid()
-    plt.show()
-    '''
     ax.set_ylabel("Price")
-    # plt.autoscale()
+    plt.autoscale()
     plt.show()
-    '''
 
 
 '''

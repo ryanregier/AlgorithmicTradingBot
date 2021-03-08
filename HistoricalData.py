@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpdates
+from matplotlib import style
 from pymongo import MongoClient
 import alpacaPyConnection as alpacaScript
 from pandas_datareader import data as web
@@ -12,6 +13,8 @@ import os
 
 if not os.path.exists("images"):
     os.mkdir("images")
+
+style.use('ggplot')
 
 DATABASE_NAME = "tradingbot"
 DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
@@ -253,11 +256,11 @@ for i in ls:
     commands("a")
 '''
 
-buildCS('TSLA')
+# buildCS('TSLA')
 # alpacaScript.update_acct_balance_change()
-# getTicker("DIS")
-# commands("a")
-# queryHistData(start="2020-1-1", end="2021-1-1")
+getTicker("AAPL")
+commands("a")
+queryHistData(start="2020-1-1", end="2021-1-1")
 '''
 queryHistData(period="ytd")
 queryHistData(period="max")

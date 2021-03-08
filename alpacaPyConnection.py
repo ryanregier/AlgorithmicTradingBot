@@ -95,16 +95,27 @@ def update_acctinfo_positions():
 # update_acctinfo_positions()
 
 
-def create_order(sym, qty, side, type, time_in_force):
+def create_order(sym, qty, side, action, time_in_force):
     data = {
         "symbol": sym,
         "qty": qty,
         "side": side,
-        "type": type,
+        "type": action,
         "time_in_force": time_in_force
     }
     r = requests.post(ORDERS_URL, json=data, headers=HEADERS)
     return json.loads(r.content)
+
+
+def execute_trade(sym, qty, side, action, time_in_force):
+    api.submit_order(
+        symbol=sym,
+        qty=qty,
+        side=side,
+        type=action,
+        time_in_force=time_in_force
+    )
+    print("The bot " + side + " " + sym)
 
 
 def test_alpaca():

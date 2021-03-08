@@ -1,6 +1,7 @@
 import threading
 import VolumeScraper as VS
 import MovingAverages as MA
+import alpacaPyConnection as alpaca
 
 
 def getStocks():
@@ -8,9 +9,9 @@ def getStocks():
     return VS.getTopTickers()
 
 
-def startAlgo(sym):
+def startAlgo(sym, qty, side, action, time_in_force='gtc'):
     print("Beginning Algo")
-    print(sym)
+    alpaca.create_order(sym, qty, side, action, time_in_force)
 
 
 def enterStocks(ls):
