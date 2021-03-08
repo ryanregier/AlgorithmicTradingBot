@@ -15,7 +15,7 @@ function App() {
   
   const Login = (details) => {
     console.log("Inside Login functions");
-    Http.open("GET", `http://10.0.0.3:3500/login/${details.email}/${details.password}`);
+    Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
     Http.send();
     console.log("sending http request");
     Http.onreadystatechange = function (e) {
