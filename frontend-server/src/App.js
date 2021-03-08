@@ -19,7 +19,6 @@ function App() {
     Http.send();
     console.log("sending http request");
     Http.onreadystatechange = function (e) {
-      console.log("readychangestate")
       if (this.readyState == 4 && this.status == 200) {
         if(Http.responseText != ""){
             console.log("logged in");
@@ -38,7 +37,6 @@ function App() {
     console.log("Logout");
     loggedIn = false
     setUser(({name: "", email: ""}));
-
   }
 
   return (

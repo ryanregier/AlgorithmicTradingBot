@@ -6,7 +6,7 @@ import Trades from "./Trades"
 import AddTrade  from "./AddTrade"
 import {useState} from 'react'
 import AplpacaFunctions from "./alpacafunctions"
-import App from '../App'
+import App from '../App.js'
 import Button from './Buttons'
 
 
@@ -83,18 +83,8 @@ function MainPage() {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        <Button color = {"green"} text = {"Logout"} onClick = {App.Logout}/>
+        <Button color = {"red"} text = {"Logout"} onClick = {App.Logout}/>
     </div>
   )
 }
-
-const LogoutButton = (props) =>{
-    return (
-        <button onClick = {App.Logout} style = {{backgroundColor : props.color}}
-                className = "logoutbtn">
-        {props.text}
-    </button>
-    )
-}
-
 export default MainPage;
