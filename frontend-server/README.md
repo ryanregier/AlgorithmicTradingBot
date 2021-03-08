@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+IF NPM START DOESNT WORK AND YOUR MISSING A REACT-SCRIPT START OR SOME SUCH RUN THESE COMMANDS IT WILL TAKE A WHILE
+npm cache clean --force
+rm -rf node_modules
+npm install
+
+
 ### `npm start`
 
 Runs the app in the development mode.\
