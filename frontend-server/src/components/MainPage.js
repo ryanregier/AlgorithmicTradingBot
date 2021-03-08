@@ -8,7 +8,12 @@ import {useState} from 'react'
 import AplpacaFunctions from "./alpacafunctions"
 import App from '../App.js'
 import Button from './Buttons'
+import Images from './Images'
+import DownloadLink from "react-download-link";
 
+import im1 from '../Images/info1.jpg'
+import im2 from '../Images/info2.jpg'
+import url from '../Images/analysis.txt'
 
 // Class component
 // class App extends React.Component{
@@ -54,6 +59,11 @@ function MainPage() {
 
     ])
 
+
+
+
+
+
     //piece of state
     const [showAddTrade, setShowAskTrades] = useState(false)
 
@@ -76,6 +86,7 @@ function MainPage() {
         setTrades(trades.filter((task) => task.id !== id))
     }
   return (
+    <divM>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
@@ -85,6 +96,45 @@ function MainPage() {
         /> : "No Trades"}
         <Button color = {"red"} text = {"Logout"} onClick = {App.Logout}/>
     </div>
+    <div2>
+         <Images image = {im1}/>
+    </div2>
+    <div3>
+         <Images image = {im2}/>
+    </div3>
+    <div4>
+
+        <DownloadLink
+          label= 'Download_Analysis'
+          filename= 'analysis.txt'
+          exportFile= {() => Promise.resolve(getDataFromURL(url))}
+        />
+    </div4>
+    </divM>
   )
 }
+<<<<<<< HEAD
+=======
+
+const getDataFromURL = (url) => new Promise((resolve, reject) => {
+        setTimeout(() => {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    resolve(data)
+                });
+        });
+    }, 2000);
+ 
+
+const LogoutButton = (props) =>{
+    return (
+        <button onClick = {App.Logout} style = {{backgroundColor : props.color}}
+                className = "logoutbtn">
+        {props.text}
+    </button>
+    )
+}
+
+>>>>>>> 9b0501e72b86e3ba2579c92b28bcfb789a79dbc0
 export default MainPage;
