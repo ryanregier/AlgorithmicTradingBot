@@ -81,5 +81,6 @@ function getPrice(sym){
 
 }
 
+export default manualTrade
 //manualTrade('MSFT',8,'buy','market','day')
 //console.log("Committed trade!")

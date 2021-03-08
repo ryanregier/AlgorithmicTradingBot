@@ -5,8 +5,7 @@ import React from 'react'
 import Trades from "./Trades"
 import AddTrade  from "./AddTrade"
 import {useState} from 'react'
-import AplpacaFunctions from "./alpacafunctions"
-import App from '../App'
+import manualTrade from './alpacafunctions.js'
 import Button from './Buttons'
 import Images from './Images'
 import DownloadLink from "react-download-link";
@@ -78,6 +77,7 @@ function MainPage({Logout}) {
         setTrades([...trades,newTask])
         //Call the Alpaca Api function to initialise the trade
 
+        manualTrade(task.sym, task.qty, task.side, task.type, task.time_in_force)
 
 
     }
