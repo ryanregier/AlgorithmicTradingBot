@@ -13,6 +13,7 @@ import DownloadLink from "react-download-link";
 import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
+import logo from '../Images/SB.png'
 import { FaLongArrowAltUp } from 'react-icons/fa'
 
 // Class component
@@ -62,9 +63,6 @@ function MainPage({Logout}) {
 
 
 
-
-
-
     //piece of state
     const [showAddTrade, setShowAskTrades] = useState(false)
 
@@ -104,6 +102,9 @@ function MainPage({Logout}) {
     <div3>
          <Images image = {im2}/>
     </div3>
+        <div5 className={"logo"}>
+            <Images image = {logo} />
+        </div5>
     <div4>
 
         <DownloadLink

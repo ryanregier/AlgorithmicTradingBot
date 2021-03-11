@@ -1,10 +1,12 @@
-import logo from './logo.svg';
+// node import logo from './logo.svg';
 import './App.css';
 import React, {useState} from 'react';
 import LoginForm from './components/LoginForm';
 import MainPage from './components/MainPage';
+import Images from "./components/Images";
 const Http = new XMLHttpRequest();
 
+// import logo from './Images/SB.png'
 /*Steven Barker*/
 
 var loggedIn = false;
