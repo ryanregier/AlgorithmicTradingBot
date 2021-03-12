@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@alpacahq/alpaca-trade-api": "^1.4.2",
+    "@material-ui/core": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
@@ -44,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@material-ui/icons": "^4.11.2"
   }
 }

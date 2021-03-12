@@ -1,7 +1,8 @@
 // node import logo from './logo.svg';
 import './App.css';
 import React, {useState} from 'react';
-import LoginForm from './components/LoginForm';
+import SignIn from "./components/SignIn";
+//import LoginForm from './components/LoginForm';
 import MainPage from './components/MainPage';
 import Images from "./components/Images";
 const Http = new XMLHttpRequest();
@@ -46,7 +47,7 @@ function App() {
       {(loggedIn) ? (
         <MainPage Logout = {Logout}/>
       ): ( 
-        <LoginForm Login={Login} error={error}/>
+        <SignIn Login={Login} error={error}/>
       )}
     </div>
   ) 
