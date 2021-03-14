@@ -87,12 +87,15 @@ def update_acctinfo_positions():
                "avg_entry_price": round(float(position.avg_entry_price), 2),
                "initial position": round(float(float(position.qty) * float(position.avg_entry_price)), 2),
                "exchange": position.exchange, "type": typeTrade, "date": date}
-        collection.insert_one(doc)
+        query = {
+            "symbol": position.symbol
+        }
+        collection.replace_one(query, doc, upsert=True)
 
     print("Added trades")
 
 
-# update_acctinfo_positions()
+update_acctinfo_positions()
 
 
 def create_order(sym, qty, side, action, time_in_force):
