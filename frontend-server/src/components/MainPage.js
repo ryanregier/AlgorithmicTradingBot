@@ -15,6 +15,7 @@ import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
 import logo from '../Images/SB.png'
+import vid from '../Images/Wellerman_Stock_Market_edition.mp3'
 import { FaLongArrowAltUp } from 'react-icons/fa'
 
 // Class component
@@ -27,9 +28,9 @@ import { FaLongArrowAltUp } from 'react-icons/fa'
 
 //Function compponent
 function MainPage({Logout}) {
-
+//http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
-    const audioTune = new Audio('<../Images/Wellerman_Stock_Market_edition.mp3>');
+    const audioTune = new Audio(vid);
 
 // variable to play audio in loop
     const [playInLoop, setPlayInLoop] = useState(false);
