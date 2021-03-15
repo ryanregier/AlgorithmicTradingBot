@@ -72,9 +72,9 @@ def checkStocks():
 
 
 def getTripleMovingAvgStrat(sym):
-    df1 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 10)
-    df2 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 20)
-    df3 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 30)
+    df1 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 10)
+    df2 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 20)
+    df3 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 30)
     # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
     df = pd.DataFrame()
     df['Date'] = df1['Date']
@@ -83,6 +83,17 @@ def getTripleMovingAvgStrat(sym):
     df['emaMed'] = df2['ema']
     df['emaShort'] = df1['ema']
     return df
+
+
+def calculatePNL(df, num):
+    profit = 0.0
+    priceBought = 0.0
+    for i in range(len(df)):
+        if df['Buy'][i] > 0:
+            priceBought = (num * df['Buy'][i])
+        elif df['Sell'][i] > 0:
+            profit += (num * df['Sell'][i]) - (num * priceBought)
+    return profit
 
 
 def generateEma(df, num=1):
@@ -94,7 +105,7 @@ def generateEma(df, num=1):
     short = False
     for i in range(0, len(df)):
         profit = (num * df['Price'][i]) - (num * priceBought)
-        print(profit)
+        # print(profit)
         if ((df['emaLong'][i] < df['emaMed'][i] < df['emaShort'][i]) or (
                 df['emaLong'][i] > df['emaMed'][i] > df['emaShort'][i])) and not long:
             buy_list.append(df['Price'][i])
@@ -137,11 +148,16 @@ def graph(df):
     plt.show()
 
 
-def execute():
-    df = getTripleMovingAvgStrat('TSLA')
+def execute(sym):
+    df = getTripleMovingAvgStrat(sym)
     df['Buy'] = generateEma(df)[0]
     df['Sell'] = generateEma(df)[1]
     df.to_csv("myTrades.csv")
+    holding = df['Price'][-1] - df['Price'][0]
+    print("Holding profit: " + str(holding))
+    print("BOT PNL: " + str(calculatePNL(df, 1)))
 
 
-execute()
+tickers = ['TSLA', 'MSFT', 'AAPL', 'DIS', 'PLTR', 'AMZN', 'NOK', 'BB', 'T', 'MORN']
+for i in tickers:
+    execute(i)
