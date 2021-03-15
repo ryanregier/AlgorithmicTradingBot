@@ -15,17 +15,25 @@ import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
 import logo from '../Images/SB.png'
 import { FaLongArrowAltUp } from 'react-icons/fa'
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
-// Class component
-// class App extends React.Component{
-//     render(){
-//         return <h1>Hello from a class</h1>
-//     }
-// }
-// //
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+}));
 
 //Function compponent
-function MainPage({Logout}) {
+function MainPage({Logout, setAlgoPage}) {
+    const classes = useStyles();
     //This makes our list a part of the component and it is called the State.
     //The list called tasks is no longer unchangable per say
     //We cant dirrectly change it but we can use setTasks to recreate the list
@@ -87,6 +95,19 @@ function MainPage({Logout}) {
     }
   return (
     <divM>
+    <div className="toolbar">
+    <AppBar position="static">
+  <Toolbar>
+    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+      <MenuIcon />
+    </IconButton>
+    <Typography variant="h6" className={classes.title}>
+      Wheaton Stock Bot
+    </Typography>
+    <Button color="inherit">Login</Button>
+  </Toolbar>
+</AppBar>
+    </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
@@ -94,7 +115,8 @@ function MainPage({Logout}) {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        <Button color = {"red"} text = {"Logout"} onClick = {Logout}/>
+        
+        <Button color = {""} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>
