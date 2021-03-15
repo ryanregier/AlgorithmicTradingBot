@@ -42,6 +42,10 @@ function App() {
     console.log("setting page to 2");
     setPage(2);
   }
+  const setHomePage = () => {
+    console.log("setting page to 0");
+    setPage(0);
+  }
 
   const Logout = () => {
 
@@ -52,14 +56,14 @@ function App() {
 
   return (
     <div className="App">
-      
+
 
       {(page == -1) ? (
         <SignIn Login={Login} error={error}/>
       ): (page == 0) ? ( 
-        <MainPage Logout = {Logout} setAlgoPage = {setAlgoPage}/>
+        <MainPage Logout = {Logout} setAlgoPage = {setAlgoPage} setHomePage={setHomePage}/>
       ): (page == 2) ? ( 
-        <AlgoPage setPage = {setPage}/>
+        <AlgoPage setAlgoPage = {setAlgoPage} setHomePage = {setHomePage}/>
       ): (page == 3) ? ( 
         <MainPage Logout = {Logout}/>
       ): (page == 4) ? ( 

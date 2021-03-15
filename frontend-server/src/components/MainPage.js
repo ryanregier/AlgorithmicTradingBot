@@ -23,19 +23,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ButtonAppBar from './AppBar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
+
 
 //Function compponent
-function MainPage({Logout, setAlgoPage}) {
-    const classes = useStyles();
+function MainPage({Logout, setAlgoPage, setHomePage}) {
+    
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
     const audioTune = new Audio(vid);
@@ -125,7 +119,7 @@ function MainPage({Logout, setAlgoPage}) {
 
 
     }
-
+    
     //Delete Trade
     const deleteTrade= (id) => {
         console.log('delete', id)
@@ -133,19 +127,9 @@ function MainPage({Logout, setAlgoPage}) {
     }
   return (
     <divM>
-    <div className="toolbar">
-    <AppBar position="static">
-  <Toolbar>
-    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-    </IconButton>
-    <Typography variant="h6" className={classes.title}>
-      Wheaton Stock Bot
-    </Typography>
-    <Button color="inherit">Login</Button>
-  </Toolbar>
-</AppBar>
-    </div>
+        <div>
+            <ButtonAppBar setAlgoPage = {setAlgoPage} setHomePage={setHomePage}/>
+        </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
@@ -153,8 +137,7 @@ function MainPage({Logout, setAlgoPage}) {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        
-        <Button color = {""} text = {"Logout"} onClick = {Logout}/>
+        <Button color = {"red"} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>
