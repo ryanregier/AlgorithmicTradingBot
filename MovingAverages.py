@@ -72,9 +72,9 @@ def checkStocks():
 
 
 def getTripleMovingAvgStrat(sym):
-    df1 = exponentialMovingAverage(sym, '2021-1-4', '2021-1-15', 10)
-    df2 = exponentialMovingAverage(sym, '2021-1-4', '2021-1-25', 20)
-    df3 = exponentialMovingAverage(sym, '2021-1-4', '2021-2-5', 30)
+    df1 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 10)
+    df2 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 20)
+    df3 = exponentialMovingAverage(sym, '2021-1-4', '2021-3-14', 30)
     # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
     df = pd.DataFrame()
     df['Date'] = df1['Date']
@@ -85,22 +85,32 @@ def getTripleMovingAvgStrat(sym):
     return df
 
 
-def generateEma(df):
+def generateEma(df, num=1):
     buy_list = []
     sell_list = []
+    priceBought = 0.0
+    daysBought = -1
     long = False
     short = False
     for i in range(0, len(df)):
+        profit = (num * df['Price'][i]) - (num * priceBought)
+        print(profit)
         if ((df['emaLong'][i] < df['emaMed'][i] < df['emaShort'][i]) or (
                 df['emaLong'][i] > df['emaMed'][i] > df['emaShort'][i])) and not long:
             buy_list.append(df['Price'][i])
+            priceBought = df['Price'][i]
             sell_list.append(np.nan)
             long = True
-        elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long:
+        elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long and profit > 0 \
+                or (profit < 0 and daysBought > 5):
             sell_list.append(df['Price'][i])
             buy_list.append(np.nan)
+            priceBought = 0
+            daysBought = -1
             long = False
         else:
+            if long:
+                daysBought += 1
             buy_list.append(np.nan)
             sell_list.append(np.nan)
     return buy_list, sell_list
