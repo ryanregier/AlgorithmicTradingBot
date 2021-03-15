@@ -2,10 +2,26 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+
+from pymongo import MongoClient
+import pandas as pd
 
 import alpacaPyConnection as ape
 
 pd.options.mode.chained_assignment = None  # default='warn'
+
+DATABASE_NAME = "tradingbot"
+DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
+
+DATABASE_USERNAME = "ryanregier"
+DATABASE_PASSWORD = "admin123"
+
+client = MongoClient("mongodb+srv://ryanregier:admin123@cluster0.b3s46.mongodb.net/<dbname>?retryWrites=true&w=majority")
+db = client['tradingbot']
+collection = db['backtestedtrades']
+
+
 
 # enter a long position when:
 #   1) fast MA crosses above medium
@@ -96,7 +112,7 @@ def calculatePNL(df, num):
     return profit
 
 
-def generateEma(df, num=1):
+def generateEma(df, sym, num=1):
     buy_list = []
     sell_list = []
     priceBought = 0.0
@@ -112,6 +128,16 @@ def generateEma(df, num=1):
             priceBought = df['Price'][i]
             sell_list.append(np.nan)
             long = True
+            doc = {
+                "sym": sym,
+                "qty": num,
+                "price": df['Price'][i],
+                "side": "buy",
+                "date": df['Date'][i],
+                "traderId": "Ryan",
+                "algo": "movingAvgs"
+            }
+            collection.insert_one(doc)
         elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long and profit > 0 \
                 or (profit < 0 and daysBought > 5):
             sell_list.append(df['Price'][i])
@@ -119,6 +145,16 @@ def generateEma(df, num=1):
             priceBought = 0
             daysBought = -1
             long = False
+            doc = {
+                "sym": sym,
+                "qty": num,
+                "price": df['Price'][i],
+                "side": "sell",
+                "date": df['Date'][i],
+                "traderId": "Ryan",
+                "algo": "movingAvgs"
+            }
+            collection.insert_one(doc)
         else:
             if long:
                 daysBought += 1
@@ -150,8 +186,8 @@ def graph(df):
 
 def execute(sym):
     df = getTripleMovingAvgStrat(sym)
-    df['Buy'] = generateEma(df)[0]
-    df['Sell'] = generateEma(df)[1]
+    df['Buy'] = generateEma(df, sym)[0]
+    df['Sell'] = generateEma(df, sym)[1]
     df.to_csv("myTrades.csv")
     holding = df['Price'][-1] - df['Price'][0]
     print("Holding profit: " + str(holding))
