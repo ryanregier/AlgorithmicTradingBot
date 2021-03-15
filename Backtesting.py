@@ -1,68 +1,81 @@
-import alpaca_backtrader_api as alpaca
-import backtrader as bt
-import pytz
-from datetime import datetime
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import yfinance as yf
 
-ALPACA_KEY_ID = 'PKTSOANLV7FIXQR8NJSR'
-ALPACA_SECRET_KEY = 'H211M4TJ7C7D8AUUuPt50IyAUh6AKTd4idPRWLZc'
-ALPACA_PAPER = True
-
-fromdate = datetime(2021, 1, 1)
-todate = datetime(2021, 3, 1)
-
-tickers = ['PLTR']
-timeframes = {
-    '15Min': 15,
-    '30Min': 30,
-    '1H': 60,
-}
+plt.style.use('fivethirtyeight')
 
 
-class RSIStack(bt.Strategy):
-
-    def next(self):
-        for i in range(0, len(self.datas)):
-            print(f'{self.datas[i].datetime.datetime(ago=0)} \
-            {self.datas[i].p.dataname}: OHLC: \
-                  o:{self.datas[i].open[0]} \
-                  h:{self.datas[i].high[0]} \
-                  l:{self.datas[i].low[0]} \
-                  c:{self.datas[i].close[0]} \
-                  v:{self.datas[i].volume[0]}')
+def getHistoricalData(sym):
+    stock = yf.Ticker(sym)
+    df = pd.DataFrame.from_dict(stock.history(start="2019-01-01", end="2021-01-01"))
+    df.to_csv("stockbacktest.csv")
+    return df
 
 
-cerebro = bt.Cerebro()
-cerebro.addstrategy(RSIStack)
-cerebro.broker.setcash(100000)
-cerebro.broker.setcommission(commission=0.0)
+def getEMAs(df):
+    ShortEMA = df.Close.ewm(span=10, adjust=False).mean()
+    MiddleEMA = df.Close.ewm(span=20, adjust=False).mean()
+    LongEMA = df.Close.ewm(span=50, adjust=False).mean()
+    df['Short'] = ShortEMA
+    df['Middle'] = MiddleEMA
+    df['Long'] = LongEMA
+    return df
 
-store = alpaca.AlpacaStore(
-    key_id=ALPACA_KEY_ID,
-    secret_key=ALPACA_SECRET_KEY,
-    paper=ALPACA_PAPER
-)
 
-if not ALPACA_PAPER:
-    print(f"LIVE TRADING")
-    broker = store.getbroker()
-    cerebro.setbroker(broker)
+def buy_sell_function(data):
+    buy_list = []
+    sell_list = []
+    flag_long = False
+    flag_short = False
+    for i in range(0, len(data)):
+        if data['Long'][i] > data['Middle'][i] > data['Short'][i] and not flag_long and not flag_short:
+            buy_list.append(data['Close'][i])
+            sell_list.append(np.nan)
+            flag_short = True
+        elif data['Long'][i] < data['Middle'][i] < data['Short'][i] and not flag_short and not flag_long:
+            buy_list.append(data['Close'][i])
+            sell_list.append(np.nan)
+            flag_long = True
+        elif flag_short and data['Short'][i] > data['Middle'][i]:
+            sell_list.append(data['Close'][i])
+            buy_list.append(np.nan)
+            flag_short = False
+        elif flag_long and data['Short'][i] < data['Middle'][i]:
+            sell_list.append(data['Close'][i])
+            buy_list.append(np.nan)
+            flag_long = False
+        else:
+            buy_list.append(np.nan)
+            sell_list.append(np.nan)
+    return buy_list, sell_list
 
-DataFactory = store.getdata
 
-for ticker in tickers:
-    for timeframe, minutes in timeframes.items():
-        print(f'Adding ticker {ticker} using {timeframe} timeframe at {minutes} minutes.')
+def calculatePNL(df, num):
+    profit = 0.0
+    priceBought = 0.0
+    for i in range(len(df)):
+        if df['Buy'][i] > 0:
+            priceBought = (num * df['Buy'][i])
+        elif df['Sell'][i] > 0:
+            profit += (num * df['Sell'][i]) - (num * priceBought)
+    print(profit)
 
-        d = DataFactory(
-            dataname=ticker,
-            timeframe=bt.TimeFrame.Minutes,
-            compression=minutes,
-            fromdate=fromdate,
-            todate=todate,
-            historical=True)
 
-        cerebro.adddata(d)
+def testDiamondHands(df):
+    profit = df['Close'][-1] - df['Close'][0]
+    print(profit)
 
-cerebro.run()
-print("Final Portfolio Value: %.2f" % cerebro.broker.getvalue())
-cerebro.plot(style='candlestick', barup='green', bardown='red')
+
+def runBacktest(sym):
+    df = getHistoricalData(sym)
+    df = getEMAs(df)
+    df['Buy'] = buy_sell_function(df)[0]
+    df['Sell'] = buy_sell_function(df)[1]
+    calculatePNL(df, 1)
+    # plot(df)
+    testHold = getHistoricalData(sym)
+    testDiamondHands(testHold)
+
+
+runBacktest('Z')

@@ -52,6 +52,8 @@ function App() {
 
   return (
     <div className="App">
+      
+
       {(page == -1) ? (
         <SignIn Login={Login} error={error}/>
       ): (page == 0) ? ( 

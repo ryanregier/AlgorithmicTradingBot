@@ -9,11 +9,13 @@ import manualTrade from './alpacafunctions.js'
 import Button from './Buttons'
 import Images from './Images'
 import DownloadLink from "react-download-link";
+import React2, { useEffect } from 'react';
 
 import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
 import logo from '../Images/SB.png'
+import vid from '../Images/Wellerman_Stock_Market_edition.mp3'
 import { FaLongArrowAltUp } from 'react-icons/fa'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -34,6 +36,42 @@ const useStyles = makeStyles((theme) => ({
 //Function compponent
 function MainPage({Logout, setAlgoPage}) {
     const classes = useStyles();
+//http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
+    //Sound Test
+    const audioTune = new Audio(vid);
+
+// variable to play audio in loop
+    const [playInLoop, setPlayInLoop] = useState(false);
+
+// load audio file on component load
+    useEffect(() => {
+        audioTune.load();
+    }, [])
+
+// set the loop of audio tune
+    useEffect(() => {
+        audioTune.loop = playInLoop;
+    }, [playInLoop])
+
+// play audio sound
+    const playSound = () => {
+        audioTune.play();
+    }
+
+// pause audio sound
+    const pauseSound = () => {
+        audioTune.pause();
+    }
+
+// stop audio sound
+    const stopSound = () => {
+        audioTune.pause();
+        audioTune.currentTime = 0;
+    }
+//End Sound Test
+
+
+
     //This makes our list a part of the component and it is called the State.
     //The list called tasks is no longer unchangable per say
     //We cant dirrectly change it but we can use setTasks to recreate the list
@@ -127,6 +165,13 @@ function MainPage({Logout, setAlgoPage}) {
         <div5 className={"logo"}>
             <Images image = {logo} />
         </div5>
+        <h3 className="mb-4"></h3>
+
+        <input type="button" className="btn btn-primary mr-2" value="Play" onClick={playSound}></input>
+        <input type="button" className="btn btn-warning mr-2" value="Pause" onClick={pauseSound}></input>
+        <input type="button" className="btn btn-danger mr-2" value="Stop" onClick={stopSound}></input>
+
+        <label><input type="checkbox" checked={playInLoop} onChange={e => setPlayInLoop(e.target.checked)} /> Play in Loop</label>
     <div4>
 
         <DownloadLink
@@ -148,7 +193,11 @@ const getDataFromURL = (url) => new Promise((resolve, reject) => {
                 });
         });
     }, 2000);
- 
+
+
+//End Sound Test
+
+
 
 
 export default MainPage;

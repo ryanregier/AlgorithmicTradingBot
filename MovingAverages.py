@@ -71,45 +71,39 @@ def checkStocks():
         print("Market isn't open buddy")
 
 
-def getTripleMovingAvgStrat():
-    df1 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-1-15', 10)
-    df2 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-1-25', 20)
-    df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-5', 30)
+def getTripleMovingAvgStrat(sym):
+    df1 = exponentialMovingAverage(sym, '2021-1-4', '2021-1-15', 10)
+    df2 = exponentialMovingAverage(sym, '2021-1-4', '2021-1-25', 20)
+    df3 = exponentialMovingAverage(sym, '2021-1-4', '2021-2-5', 30)
     # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
     df = pd.DataFrame()
     df['Date'] = df1['Date']
     df['Price'] = df3['Adj Close']
-    df['ema30'] = df3['ema']
-    df['ema20'] = df2['ema']
-    df['ema10'] = df1['ema']
+    df['emaLong'] = df3['ema']
+    df['emaMed'] = df2['ema']
+    df['emaShort'] = df1['ema']
     return df
 
 
-def generateBuySignals(df):
-    df['BuySignal'] = 0.0
-    df['BuySignal'] = np.where(df['ema10'] > df['ema30'], 1.0, 0.0)
-    df['Position'] = df['BuySignal'].diff()
-    print(df)
-    df.to_csv("signals.csv")
-    return df
-
-
-def checkBuyEma(df):
-    global BUY
-    print(df['ema10'].iloc[-1])
-    if df['ema10'].iloc[-1] > df['ema20'].iloc[-1]:
-        print("Small position")
-        smallPosition = True
-    if smallPosition:
-        if df['ema10'].iloc[-1] > df['ema30'].iloc[-1]:
-            print("Medium position")
-            increasePosition = True
-    if increasePosition:
-        if df['ema20'].iloc[-1] > df['ema30'].iloc[-1]:
-            print("Big Buy")
-            leverUp = True
-            BUY = True
-            print("LEVERED UP")
+def generateEma(df):
+    buy_list = []
+    sell_list = []
+    long = False
+    short = False
+    for i in range(0, len(df)):
+        if ((df['emaLong'][i] < df['emaMed'][i] < df['emaShort'][i]) or (
+                df['emaLong'][i] > df['emaMed'][i] > df['emaShort'][i])) and not long:
+            buy_list.append(df['Price'][i])
+            sell_list.append(np.nan)
+            long = True
+        elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long:
+            sell_list.append(df['Price'][i])
+            buy_list.append(np.nan)
+            long = False
+        else:
+            buy_list.append(np.nan)
+            sell_list.append(np.nan)
+    return buy_list, sell_list
 
 
 def graph(df):
@@ -119,9 +113,9 @@ def graph(df):
     plt.figure(figsize=(20, 10))
     # plot close price, short-term and long-term moving averages
     df['Price'].plot(color='k', lw=1, label='Close Price')
-    df['ema10'].plot(color='b', lw=1, label='10-day EMA')
-    df['ema20'].plot(color='g', lw=1, label='20-day EMA')
-    df['ema30'].plot(color='r', lw=1, label='30-day EMA')
+    df['emaShort'].plot(color='b', lw=1, label='10-day EMA')
+    df['emaMed'].plot(color='g', lw=1, label='20-day EMA')
+    df['emaLong'].plot(color='r', lw=1, label='30-day EMA')
     plt.plot(df['Price'], marker='*')
     plt.ylabel('Price in USD', fontsize=15)
     plt.xlabel('Date', fontsize=15)
@@ -133,18 +127,11 @@ def graph(df):
     plt.show()
 
 
-'''
-simpleMovingAverage('PLTR', '2021-1-4', '2021-1-15', 10)
-exponentialMovingAverage('PLTR', '2021-1-4', '2021-1-15', 10)
-triangularMovingAverage(10)
-generateGraph()
-'''
-# graphTripleMovingAvgStrat();
-print("Starting script")
-'''
-checkStocks()
-checkBuyEma(getTripleMovingAvgStrat())
-graph(getTripleMovingAvgStrat())
-'''
-# generateBuySignals(getTripleMovingAvgStrat())
-graph(generateBuySignals(getTripleMovingAvgStrat()))
+def execute():
+    df = getTripleMovingAvgStrat('TSLA')
+    df['Buy'] = generateEma(df)[0]
+    df['Sell'] = generateEma(df)[1]
+    df.to_csv("myTrades.csv")
+
+
+execute()
