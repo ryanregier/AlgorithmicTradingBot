@@ -28,7 +28,7 @@ import ButtonAppBar from './AppBar';
 
 
 //Function compponent
-function MainPage({Logout}) {
+function MainPage() {
     
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -134,7 +134,6 @@ function MainPage({Logout}) {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        <Button color = {"red"} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>

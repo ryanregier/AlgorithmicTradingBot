@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ButtonAppBar = props => {
+const ButtonAppBar = ({Logout}, props ) => {
   const classes = useStyles();
   
   const { history } = props;
@@ -42,7 +42,7 @@ const ButtonAppBar = props => {
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
           <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">Portfolio</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
-          <Button color="inherit">Login</Button>
+          <Button onClick={Logout} color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>
     </div>

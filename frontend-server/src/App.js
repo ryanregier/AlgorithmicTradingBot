@@ -9,19 +9,14 @@ import PortfolioPage from './components/Portfolio';
 import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 
 const Http = new XMLHttpRequest();
-// import logo from './Images/SB.png'
 /*Steven Barker*/
 
 
-const App = props => {
-  const { history } = props;
+const App = () => {
+  
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
-
-  const setURL = newURL => {
-    history.push(newURL);
-  }
   
   const Login = (details) => {
     console.log("Inside Login function");
@@ -33,7 +28,6 @@ const App = props => {
         console.log(Http.responseText);
         if(Http.responseText != ""){
             setLoggedIn(true);
-            console.log(history);
             console.log("logged in");
             setUser({name: Http.responseText, email: details.email});
           }else{
@@ -53,26 +47,41 @@ const App = props => {
   return (
     <div className="App">
       {console.log("new refresh")}
-        <ButtonAppBar/>
         {console.log('loggedIn:')}
           {console.log(loggedIn)}
-          {console.log(history.location)}
+        
               <Switch>
                 <Route exact path="/">
-                {(loggedIn) ? (<MainPage Logout={Logout} />):(<SignIn Login={Login}/>)}
+                {(loggedIn) ? (
+                  <div>
+                <ButtonAppBar Logout={Logout}/>
+                <MainPage />
+                </div>
+                )
+                :(<SignIn Login={Login}/>)}
                 </Route>
                 <Route exact path="/login">
                     <SignIn Login={Login}/>
                 </Route>
                 <Route exact path="/algo">
-                {(loggedIn) ? (<AlgoPage />):(<SignIn Login={Login}/>)}
+                {(loggedIn) ? (
+                  <div>
+                    <ButtonAppBar Logout={Logout}/>
+                    <AlgoPage />
+                  </div>
+                ):(<SignIn Login={Login}/>)}
                 </Route>
                 <Route exact path="/portfolio">
-                {(loggedIn) ? (<PortfolioPage />):(<SignIn Login={Login}/>)}
+                {(loggedIn) ? (
+                  <div>
+                   <ButtonAppBar Logout={Logout}/>
+                    <PortfolioPage />
+                  </div>
+                ):(<SignIn Login={Login}/>)}
               </Route>
             </Switch>
     </div>
   ) 
 }
 
-export default withRouter(App);
+export default App;
