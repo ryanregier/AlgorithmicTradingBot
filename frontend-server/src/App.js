@@ -4,20 +4,27 @@ import SignIn from "./components/SignIn";
 import MainPage from './components/MainPage';
 import Images from "./components/Images";
 import AlgoPage from "./components/AlgoPage";
-const Http = new XMLHttpRequest();
+import ButtonAppBar from './components/AppBar';
+import PortfolioPage from './components/Portfolio';
+import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 
+const Http = new XMLHttpRequest();
 // import logo from './Images/SB.png'
 /*Steven Barker*/
 
 
-
-function App() {
-  const [page, setPage] = useState(-1);
+const App = props => {
+  const { history } = props;
+  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
+
+  const setURL = newURL => {
+    history.push(newURL);
+  }
   
   const Login = (details) => {
-    console.log("Inside Login functions");
+    console.log("Inside Login function");
     Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
     Http.send();
     console.log("sending http request");
@@ -25,57 +32,47 @@ function App() {
       if (this.readyState == 4 && this.status == 200) {
         console.log(Http.responseText);
         if(Http.responseText != ""){
+            setLoggedIn(true);
+            console.log(history);
             console.log("logged in");
-            var update  = {name: Http.responseText, email: details.email};
-            console.log(0);
-            setPage(0);
-            setUser(update); 
+            setUser({name: Http.responseText, email: details.email});
           }else{
-            console.log("failure");
+            console.log("failure"); 
             setError("Details do not match");
           }
         }
       }
   }
 
-  const setAlgoPage = () => {
-    console.log("setting page to 2");
-    setPage(2);
-  }
-  const setHomePage = () => {
-    console.log("setting page to 0");
-    setPage(0);
-  }
-
   const Logout = () => {
-
     console.log("Logout");
-    setPage(-1);
+    setLoggedIn(false);
     setUser(({name: "", email: ""}));
   }
 
   return (
     <div className="App">
-
-
-      {(page == -1) ? (
-        <SignIn Login={Login} error={error}/>
-      ): (page == 0) ? ( 
-        <MainPage Logout = {Logout} setAlgoPage = {setAlgoPage} setHomePage={setHomePage}/>
-      ): (page == 2) ? ( 
-        <AlgoPage setAlgoPage = {setAlgoPage} setHomePage = {setHomePage}/>
-      ): (page == 3) ? ( 
-        <MainPage Logout = {Logout}/>
-      ): (page == 4) ? ( 
-        <MainPage Logout = {Logout}/>
-      ): (page == 5) ? ( 
-        <MainPage Logout = {Logout}/>
-      ):(
-        <MainPage Logout = {Logout} setPage = {setPage}/>
-      )
-      }
+      {console.log("new refresh")}
+        <ButtonAppBar/>
+        {console.log('loggedIn:')}
+          {console.log(loggedIn)}
+          {console.log(history.location)}
+              <Switch>
+                <Route exact path="/">
+                {(loggedIn) ? (<MainPage Logout={Logout} />):(<SignIn Login={Login}/>)}
+                </Route>
+                <Route exact path="/login">
+                    <SignIn Login={Login}/>
+                </Route>
+                <Route exact path="/algo">
+                {(loggedIn) ? (<AlgoPage />):(<SignIn Login={Login}/>)}
+                </Route>
+                <Route exact path="/portfolio">
+                {(loggedIn) ? (<PortfolioPage />):(<SignIn Login={Login}/>)}
+              </Route>
+            </Switch>
     </div>
   ) 
 }
 
-export default App;
+export default withRouter(App);

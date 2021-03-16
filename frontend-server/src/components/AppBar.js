@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,9 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar({setAlgoPage, setHomePage}) {
-  const classes = useStyles();
 
+const ButtonAppBar = props => {
+  const classes = useStyles();
+  
+  const { history } = props;
+  
+  const handleToolBarClick = (newURL) => {
+      history.push(newURL);
+  }
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -32,12 +39,14 @@ export default function ButtonAppBar({setAlgoPage, setHomePage}) {
           <Typography variant="h6" className={classes.title}>
             Wheaton Stock Bot
           </Typography>
-          <Button onClick={setHomePage} color="inherit">Manual Trades</Button>
-          <Button color="inherit">Portfolio</Button>
-          <Button onClick={setAlgoPage} color="inherit">Algo</Button>
+          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
+          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">Portfolio</Button>
+          <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+export default withRouter(ButtonAppBar);

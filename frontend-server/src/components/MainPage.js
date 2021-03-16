@@ -28,7 +28,7 @@ import ButtonAppBar from './AppBar';
 
 
 //Function compponent
-function MainPage({Logout, setAlgoPage, setHomePage}) {
+function MainPage({Logout}) {
     
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -127,9 +127,6 @@ function MainPage({Logout, setAlgoPage, setHomePage}) {
     }
   return (
     <divM>
-        <div>
-            <ButtonAppBar setAlgoPage = {setAlgoPage} setHomePage={setHomePage}/>
-        </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}

@@ -47,12 +47,12 @@ const useStyles = makeStyles((theme) =>({
 }));
 
 
-export default function SignIn({Login, error}){
+const SignIn = ({Login}) => {
     const classes = useStyles();
 
     const [details, setDetails] = useState({email: "", password: ""});
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         Login(details)
     }
@@ -120,3 +120,5 @@ export default function SignIn({Login, error}){
         </Container>
     );
 }
+
+export default SignIn;

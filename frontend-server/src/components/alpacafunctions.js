@@ -18,7 +18,6 @@ function checkIfTradable(sym){
         alpaca.getAsset(sym)
             .then((asset) => {
                 if (asset.tradable) {
-                    console.log('We can trade ' + sym)
                     return true
                 }
             })
