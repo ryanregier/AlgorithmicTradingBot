@@ -121,6 +121,14 @@ def execute_trade(sym, qty, side, action, time_in_force):
     print("The bot " + side + " " + sym)
 
 
+def portfolioHas(sym):
+    try:
+        position = api.get_position(sym)
+    except Exception:
+        return False
+    return True
+
+
 def test_alpaca():
     print("Print account info:")
     print(api.get_account())
