@@ -1,13 +1,15 @@
 import threading
+from asyncio.subprocess import Process
+
 import VolumeScraper as VS
 import MovingAverages as MA
 import alpacaPyConnection as alpaca
 import requests
-import time
 import yfinance as yf
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
+import time
 
 
 def getPrice(sym):
@@ -32,45 +34,14 @@ def generatePastSignals(df):
 
 
 def generateSignal(df):
-    if ((df['emaLong'][-1] < df['emaMed'][-1] < df['emaShort'][-1]) or (
-            df['emaLong'][-1] > df['emaMed'][-1] > df['emaShort'][-1])):
+    if df['emaShort'][-1] > df['emaLong'][-1]:
         df['BUY'] = "B"
         df['SELL'] = np.nan
         return True
-    elif df['emaShort'][-1] < df['emaMed'][-1] or df['emaShort'][-1] > df['emaMed'][-1]:
+    elif df['emaShort'][-1] < df['emaMed'][-1]:
         df['BUY'] = np.nan
         df['SELL'] = "S"
         return False
-
-
-def algoRun(sym, num=1):
-    own = True
-    while True:
-        data = yf.download(tickers=sym, period='1d', interval='1m')
-        xVals = data.index.tolist()
-        df = pd.DataFrame(data)
-        df['Date'] = xVals
-        df['emaShort'] = df['Adj Close'].ewm(span=10).mean()
-        df['emaMed'] = df['Adj Close'].ewm(span=30).mean()
-        df['emaLong'] = df['Adj Close'].ewm(span=50).mean()
-        df.to_csv('df.csv')
-        # df = MA.getTripleMovingAvgStrat(sym)
-        signal = generateSignal(df)
-        print(signal)
-        # break
-        print("Price: " + str(df['Price'][-1]))
-        print(str(df['Buy'][-1]))
-        print(str(df['Sell'][-1]))
-        if not own and signal:
-            alpaca.execute_trade(sym, 1, 'buy', 'market', 'fok')
-            own = True
-            print("We bought a share of " + sym)
-        elif own and not signal:
-            alpaca.execute_trade(sym, 1, 'sell', 'market', 'fok')
-            print("We sold a share of TSLA")
-            own = False
-        # price = getPrice('TSLA')
-        # print("The current price: " + str(price))
 
 
 def getStocks():
@@ -78,39 +49,54 @@ def getStocks():
     return VS.getTopTickers()
 
 
-def startAlgo(sym, qty=1, side="buy", action="market", time_in_force='fok'):
+def startAlgo(sym, qty=10, action="market", time_in_force='fok'):
     # alpaca.execute_trade(sym, 1, 'buy', 'market', 'fok')
-    own = alpaca.portfolioHas(sym)
+    priceBought = 0
+    profit = 0
+    qtyOwned = 0
+    own = False
     while True:
+        # time.sleep(1)
+        own = alpaca.portfolioHas(sym)
         data = yf.download(tickers=sym, period='1d', interval='1m')
         xVals = data.index.tolist()
         df = pd.DataFrame(data)
         df['Date'] = xVals
-        df['emaShort'] = df['Adj Close'].ewm(span=10).mean()
-        df['emaMed'] = df['Adj Close'].ewm(span=30).mean()
+        df['emaShort'] = df['Adj Close'].ewm(span=15).mean()
+        df['emaMed'] = df['Adj Close'].ewm(span=25).mean()
         df['emaLong'] = df['Adj Close'].ewm(span=50).mean()
-        df.to_csv('df.csv')
+        # df.to_csv('df.csv')
         # df = MA.getTripleMovingAvgStrat(sym)
+        # break
         signal = generateSignal(df)
         print(signal)
-        # break
-        print("Price: " + str(df['Price'][-1]))
-        print(str(df['Buy'][-1]))
-        print(str(df['Sell'][-1]))
-        if not own and signal:
-            alpaca.execute_trade(sym, 1, 'buy', 'market', 'fok')
+        print("Price: " + str(df['Adj Close'][-1]))
+        print(str(df['BUY'][-1]))
+        print(str(df['SELL'][-1]))
+        if own:
+            profit += qty * df['Adj Close'][-1]
+        if signal:
+            alpaca.execute_trade(sym, qty, 'buy', 'market', 'fok')
+            priceBought = float(getPrice(sym))
+            qtyOwned += qty
+            print(qtyOwned)
+            print("Price Bought: " + str(priceBought * 1.0009))
+            print("We bought shares of " + sym)
+            # alpaca.update_lastTrade(sym)
             own = True
-            print("We bought a share of " + sym)
-        elif own and not signal:
-            alpaca.execute_trade(sym, 1, 'sell', 'market', 'fok')
-            print("We sold a share of TSLA")
+        elif (own and not signal) or (own and profit > 0):
+            alpaca.create_order(sym, qtyOwned, 'sell', action, 'fok')
+            print("We sold all our shares")
+            # alpaca.update_lastTrade(sym)
+            qtyOwned = 0
             own = False
-            alpaca.create_order(sym, qty, side, action, time_in_force)
+            profit = 0
 
 
 def enterStocks(ls):
     for i in ls:
         if alpaca.marketIsOpen():
+            print("Algo starting on: " + i[0])
             threading.Thread(target=startAlgo(i[0])).start()
         else:
             print("Sorry, market is closed.")
@@ -118,4 +104,6 @@ def enterStocks(ls):
 
 
 # enterStocks(getStocks())
-# algoRun('TSLA')
+# startAlgo(sym='TSLA')
+
+
