@@ -17,11 +17,10 @@ DATABASE_HOST = "cluster0-shard-00-02.b3s46.mongodb.net:27017"
 DATABASE_USERNAME = "ryanregier"
 DATABASE_PASSWORD = "admin123"
 
-client = MongoClient("mongodb+srv://ryanregier:admin123@cluster0.b3s46.mongodb.net/<dbname>?retryWrites=true&w=majority")
+client = MongoClient(
+    "mongodb+srv://ryanregier:admin123@cluster0.b3s46.mongodb.net/<dbname>?retryWrites=true&w=majority")
 db = client['tradingbot']
 collection = db['backtestedtrades']
-
-
 
 # enter a long position when:
 #   1) fast MA crosses above medium
@@ -88,9 +87,9 @@ def checkStocks():
 
 
 def getTripleMovingAvgStrat(sym):
-    df1 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 10)
-    df2 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 20)
-    df3 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-14', 30)
+    df1 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 10)
+    df2 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 20)
+    df3 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 30)
     # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
     df = pd.DataFrame()
     df['Date'] = df1['Date']
@@ -119,7 +118,7 @@ def generateEma(df, sym, num=1):
     daysBought = -1
     long = False
     short = False
-    for i in range(0, len(df)):
+    for i in range(0, len(df) - 1):
         profit = (num * df['Price'][i]) - (num * priceBought)
         # print(profit)
         if ((df['emaLong'][i] < df['emaMed'][i] < df['emaShort'][i]) or (
@@ -137,7 +136,7 @@ def generateEma(df, sym, num=1):
                 "traderId": "Ryan",
                 "algo": "movingAvgs"
             }
-            collection.insert_one(doc)
+            # collection.insert_one(doc)
         elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long and profit > 0 \
                 or (profit < 0 and daysBought > 5):
             sell_list.append(df['Price'][i])
@@ -154,12 +153,14 @@ def generateEma(df, sym, num=1):
                 "traderId": "Ryan",
                 "algo": "movingAvgs"
             }
-            collection.insert_one(doc)
+            # collection.insert_one(doc)
         else:
             if long:
                 daysBought += 1
             buy_list.append(np.nan)
             sell_list.append(np.nan)
+    buy_list.append(np.nan)
+    sell_list.append(np.nan)
     return buy_list, sell_list
 
 
@@ -192,8 +193,13 @@ def execute(sym):
     holding = df['Price'][-1] - df['Price'][0]
     print("Holding profit: " + str(holding))
     print("BOT PNL: " + str(calculatePNL(df, 1)))
+    return df
 
 
+execute('PLTR')
+
+'''
 tickers = ['TSLA', 'MSFT', 'AAPL', 'DIS', 'PLTR', 'AMZN', 'NOK', 'BB', 'T', 'MORN']
 for i in tickers:
     execute(i)
+'''
