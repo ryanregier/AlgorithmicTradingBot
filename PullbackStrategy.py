@@ -12,7 +12,8 @@ import pandas_ta as ta
 
 
 def getSPMA():
-    data = yf.download(tickers='SPY', period='200d', interval='1d')
+    # data = yf.download(tickers='SPY', period='200d', interval='1d')
+    data = yf.download(tickers='SPY', period='3650d', interval='1d')
     xVals = data.index.tolist()
     df = pd.DataFrame(data)
     df['Date'] = xVals
@@ -30,9 +31,9 @@ def algo(sym='SPY', qty=100):
     df = getSPMA()
     rsiSeries = getRSI(df)
     df['rsi'] = rsiSeries
-    # df.to_csv('rsi.csv')
+    df.to_csv('rsi.csv')
     long_position = False
-    if df['ema'][-1] > df['Price'][-1] and df['rsi'][-1] < 40 and not long_position:
+    if df['ema'][-1] > df['Price'][-1] and df['rsi'][-1] < 30 and not long_position:
         alpaca.execute_trade(sym, qty, 'buy', 'market', 'fok')
         long_position = True
     elif long_position and df['rsi'][-1] > 40:
