@@ -25,6 +25,7 @@ app.get('/login/:email/:password', async(req,res) => {
       console.log(err);
     }else{
 
+      
       const query = {email: req.params.email, password: req.params.password};
       const options  = {
         projections: { 'firstName': 1, 'lastName': 1}
