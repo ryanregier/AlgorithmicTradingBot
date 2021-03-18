@@ -4,20 +4,22 @@ import SignIn from "./components/SignIn";
 import MainPage from './components/MainPage';
 import Images from "./components/Images";
 import AlgoPage from "./components/AlgoPage";
-const Http = new XMLHttpRequest();
+import ButtonAppBar from './components/AppBar';
+import PortfolioPage from './components/Portfolio';
+import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 
-// import logo from './Images/SB.png'
+const Http = new XMLHttpRequest();
 /*Steven Barker*/
 
 
-
-function App() {
-  const [page, setPage] = useState(-1);
+const App = () => {
+  
+  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
   
   const Login = (details) => {
-    console.log("Inside Login functions");
+    console.log("Inside Login function");
     Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
     Http.send();
     console.log("sending http request");
@@ -25,51 +27,60 @@ function App() {
       if (this.readyState == 4 && this.status == 200) {
         console.log(Http.responseText);
         if(Http.responseText != ""){
+            setLoggedIn(true);
             console.log("logged in");
-            var update  = {name: Http.responseText, email: details.email};
-            console.log(0);
-            setPage(0);
-            setUser(update); 
+            setUser({name: Http.responseText, email: details.email});
           }else{
-            console.log("failure");
+            console.log("failure"); 
             setError("Details do not match");
           }
         }
       }
   }
 
-  const setAlgoPage = () => {
-    console.log("setting page to 2");
-    setPage(2);
-  }
-
   const Logout = () => {
-
     console.log("Logout");
-    setPage(-1);
+    setLoggedIn(false);
     setUser(({name: "", email: ""}));
+    return 1;
   }
 
   return (
     <div className="App">
-      
-
-      {(page == -1) ? (
-        <SignIn Login={Login} error={error}/>
-      ): (page == 0) ? ( 
-        <MainPage Logout = {Logout} setAlgoPage = {setAlgoPage}/>
-      ): (page == 2) ? ( 
-        <AlgoPage setPage = {setPage}/>
-      ): (page == 3) ? ( 
-        <MainPage Logout = {Logout}/>
-      ): (page == 4) ? ( 
-        <MainPage Logout = {Logout}/>
-      ): (page == 5) ? ( 
-        <MainPage Logout = {Logout}/>
-      ):(
-        <MainPage Logout = {Logout} setPage = {setPage}/>
-      )
-      }
+      {console.log("new refresh")}
+        {console.log('loggedIn:')}
+          {console.log(loggedIn)}
+        
+              <Switch>
+                <Route exact path="/">
+                {(loggedIn) ? (
+                  <div>
+                <ButtonAppBar Logout={Logout}/>
+                <MainPage />
+                </div>
+                )
+                :(<SignIn Login={Login}/>)}
+                </Route>
+                <Route exact path="/login">
+                    <SignIn Login={Login}/>
+                </Route>
+                <Route exact path="/algo">
+                {(loggedIn) ? (
+                  <div>
+                    <ButtonAppBar Logout={Logout}/>
+                    <AlgoPage />
+                  </div>
+                ):(<SignIn Login={Login}/>)}
+                </Route>
+                <Route exact path="/portfolio">
+                {(loggedIn) ? (
+                  <div>
+                   <ButtonAppBar Logout={Logout}/>
+                    <PortfolioPage />
+                  </div>
+                ):(<SignIn Login={Login}/>)}
+              </Route>
+            </Switch>
     </div>
   ) 
 }

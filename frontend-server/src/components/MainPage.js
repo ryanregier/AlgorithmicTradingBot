@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //Function compponent
-function MainPage({Logout, setAlgoPage}) {
+function MainPage() {
     const classes = useStyles();
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -134,17 +134,6 @@ function MainPage({Logout, setAlgoPage}) {
   return (
     <divM>
     <div className="toolbar">
-    <AppBar position="static">
-  <Toolbar>
-    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-    </IconButton>
-    <Typography variant="h6" className={classes.title}>
-      Wheaton Stock Bot
-    </Typography>
-    <Button color="inherit">Login</Button>
-  </Toolbar>
-</AppBar>
     </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
@@ -153,8 +142,6 @@ function MainPage({Logout, setAlgoPage}) {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        
-        <Button color = {""} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>
