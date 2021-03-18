@@ -104,6 +104,6 @@ def enterStocks(ls):
 
 
 # enterStocks(getStocks())
+alpaca.create_order('SPY', 50, 'buy', 'market', 'gtc')
+alpaca.create_order('TSLA', 100, 'buy', 'market', 'gtc')
 # startAlgo(sym='TSLA')
-
-
