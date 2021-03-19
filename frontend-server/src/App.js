@@ -12,6 +12,7 @@ const Http = new XMLHttpRequest();
 /*Steven Barker*/
 
 
+
 const App = () => {
   
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,6 +31,10 @@ const App = () => {
             setLoggedIn(true);
             console.log("logged in");
             setUser({name: Http.responseText, email: details.email});
+            localStorage.setItem('email', details.email);
+            localStorage.setItem('password',details.password);
+            console.log(localStorage.getItem('email'));
+            console.log(localStorage.getItem('password'));
           }else{
             console.log("failure"); 
             setError("Details do not match");
