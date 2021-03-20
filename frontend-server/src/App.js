@@ -6,6 +6,7 @@ import Images from "./components/Images";
 import AlgoPage from "./components/AlgoPage";
 import ButtonAppBar from './components/AppBar';
 import PortfolioPage from './components/Portfolio';
+import AboutPage from './components/AboutPage';
 import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 
 const Http = new XMLHttpRequest();
