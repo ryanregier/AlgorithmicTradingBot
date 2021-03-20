@@ -23,19 +23,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ButtonAppBar from './AppBar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
+
 
 //Function compponent
 function MainPage() {
-    const classes = useStyles();
+    
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
     const audioTune = new Audio(vid);
@@ -125,7 +119,7 @@ function MainPage() {
 
 
     }
-
+    
     //Delete Trade
     const deleteTrade= (id) => {
         console.log('delete', id)
@@ -133,8 +127,6 @@ function MainPage() {
     }
   return (
     <divM>
-    <div className="toolbar">
-    </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
@@ -150,7 +142,7 @@ function MainPage() {
          <Images image = {im2}/>
     </div3>
         <div5 className={"logo"}>
-           
+            <Images image = {logo} />
         </div5>
         <h3 className="mb-4"></h3>
 
