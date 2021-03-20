@@ -210,6 +210,7 @@ const ButtonAppBar = ({Logout, history}) => {
           className={classes.menuButton}
           color="inherit"
           aria-label="open drawer"
+          OnClick={()=>{history.push('/')}}
         >
           <MenuIcon />
         </IconButton>
