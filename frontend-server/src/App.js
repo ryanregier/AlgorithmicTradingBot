@@ -53,39 +53,38 @@ const App = () => {
   return (
     <div className="App">
       {console.log("new refresh")}
-        {console.log('loggedIn:')}
-          {console.log(loggedIn)}
-        
-              <Switch>
-                <Route exact path="/">
-                {(loggedIn) ? (
-                  <div>
-                <ButtonAppBar Logout={Logout}/>
-                <MainPage />
-                </div>
-                )
-                :(<SignIn Login={Login}/>)}
-                </Route>
-                <Route exact path="/login">
-                    <SignIn Login={Login}/>
-                </Route>
-                <Route exact path="/algo">
-                {(loggedIn) ? (
-                  <div>
-                    <ButtonAppBar Logout={Logout}/>
-                    <AlgoPage />
-                  </div>
-                ):(<SignIn Login={Login}/>)}
-                </Route>
-                <Route exact path="/portfolio">
-                {(loggedIn) ? (
-                  <div>
-                   <ButtonAppBar Logout={Logout}/>
-                    <PortfolioPage />
-                  </div>
-                ):(<SignIn Login={Login}/>)}
-              </Route>
-            </Switch>
+      {console.log('loggedIn:')}
+      {console.log(loggedIn)}
+      <Switch>
+        <Route exact path="/">
+        {(loggedIn) ? (
+          <div>
+        <ButtonAppBar Logout={Logout}/>
+        <MainPage />
+        </div>
+        )
+        :(<SignIn Login={Login}/>)}
+        </Route>
+        <Route exact path="/login">
+            <SignIn Login={Login}/>
+        </Route>
+        <Route exact path="/algo">
+        {(loggedIn) ? (
+          <div>
+            <ButtonAppBar Logout={Logout}/>
+            <AlgoPage />
+          </div>
+        ):(<SignIn Login={Login}/>)}
+        </Route>
+        <Route exact path="/portfolio">
+        {(loggedIn) ? (
+          <div>
+            <ButtonAppBar Logout={Logout}/>
+            <PortfolioPage />
+          </div>
+        ):(<SignIn Login={Login}/>)}
+      </Route>
+    </Switch>
     </div>
   ) 
 }
