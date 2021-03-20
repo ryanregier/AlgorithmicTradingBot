@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
+import Input from '@material-ui/core/Input';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   search: {
+    
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -171,7 +173,9 @@ const ButtonAppBar = ({Logout, history}) => {
       </MenuItem>
     </Menu>
   );
+  
 
+  
   return(
     <div className={classes.grow}>
     <AppBar position="static">
@@ -191,8 +195,9 @@ const ButtonAppBar = ({Logout, history}) => {
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
-          <InputBase
+          <Input
             placeholder="Search…"
+            autoComplete="true"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,

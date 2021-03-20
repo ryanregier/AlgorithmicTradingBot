@@ -150,7 +150,7 @@ function MainPage() {
          <Images image = {im2}/>
     </div3>
         <div5 className={"logo"}>
-            <Images image = {logo} />
+           
         </div5>
         <h3 className="mb-4"></h3>
 
