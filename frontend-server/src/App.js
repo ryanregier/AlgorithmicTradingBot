@@ -7,7 +7,9 @@ import AlgoPage from "./components/AlgoPage";
 import ButtonAppBar from './components/AppBar';
 import PortfolioPage from './components/Portfolio';
 import AboutPage from './components/AboutPage';
+import BuySellPage from './components/BuySellPage';
 import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import { PinDropSharp } from '@material-ui/icons';
 
 const Http = new XMLHttpRequest();
 /*Steven Barker*/
@@ -82,6 +84,14 @@ const App = () => {
           <div>
             <ButtonAppBar Logout={Logout}/>
             <PortfolioPage />
+          </div>
+        ):(<SignIn Login={Login}/>)}
+      </Route>
+      <Route exact path="/buysell/:sym">
+        {(loggedIn) ? (
+          <div>
+            <ButtonAppBar Logout={Logout}/>
+            <BuySellPage />
           </div>
         ):(<SignIn Login={Login}/>)}
       </Route>

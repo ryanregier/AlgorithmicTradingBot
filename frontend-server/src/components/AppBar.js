@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,6 +16,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -84,11 +86,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 const ButtonAppBar = ({Logout, history}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [value, setValue] = useState(null);
 
   const handleToolBarClick = (newURL) => {
       history.push(newURL);
@@ -119,6 +121,25 @@ const ButtonAppBar = ({Logout, history}) => {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const searchOnChangeHandler = (event, value, reason) => {
+    if(reason === "select-option"){
+      history.push(`/buysell/${value}`);
+      console.log(value);
+    }
+  };
+
+  const handlePopUpClose = (object, reason) => {
+    
+    if(reason === "select-option"){
+      //change pages
+      console.log("select-option");
+    }else if (reason === "escape"){
+      console.log("escape");
+
+    }
+
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -178,7 +199,7 @@ const ButtonAppBar = ({Logout, history}) => {
     </Menu>
   );
   
-
+  
 
   return(
     <div className={classes.grow}>
@@ -189,26 +210,13 @@ const ButtonAppBar = ({Logout, history}) => {
           className={classes.menuButton}
           color="inherit"
           aria-label="open drawer"
+          OnClick={()=>{history.push('/')}}
         >
           <MenuIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
           Wheaton Stock Bot
         </Typography>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <Input
-            placeholder="Search…"
-            autoComplete="true"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
@@ -238,6 +246,23 @@ const ButtonAppBar = ({Logout, history}) => {
         </div>
       </Toolbar>
     </AppBar>
+    <Autocomplete
+        id="free-solo-demo"
+        value={value}
+        freeSolo={false}
+        options={stocks.map((option) => option.Symbol)}
+        onClose={handlePopUpClose}
+        onChange={searchOnChangeHandler}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Search"
+            margin="normal"
+            variant="outlined"
+            InputProps={{ ...params.InputProps }}
+          />
+        )}
+        />
     {renderMobileMenu}
     {renderMenu}
   </div>
@@ -245,6 +270,18 @@ const ButtonAppBar = ({Logout, history}) => {
 
   
   /*
+<Input
+              {...params}
+              placeholder="Search…"
+              autoComplete="true"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
