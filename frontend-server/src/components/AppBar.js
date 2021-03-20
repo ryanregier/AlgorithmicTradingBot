@@ -42,15 +42,15 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
+    marginLeft: 1,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
+      marginLeft: theme.spacing(5),
+      width: '25%',
     },
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 1),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -131,7 +131,6 @@ const ButtonAppBar = ({Logout, history}) => {
   };
 
   const handlePopUpClose = (object, reason) => {
-    
     if(reason === "select-option"){
       //change pages
       console.log("select-option");
@@ -210,13 +209,37 @@ const ButtonAppBar = ({Logout, history}) => {
           className={classes.menuButton}
           color="inherit"
           aria-label="open drawer"
-          OnClick={()=>{history.push('/')}}
+          onClick={()=>{history.push('/')}}
         >
           <MenuIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
           Wheaton Stock Bot
         </Typography>
+        <SearchIcon style={{position:"absolute", right:0, left:260}}/>
+        <div className={classes.search}>
+            <Autocomplete
+              id="free-solo-demo"
+              value={value}
+              handleHomeEndKeys
+              freeSolo={false}
+              options={stocks.map((option) => option.Symbol)}
+              onClose={handlePopUpClose}
+              onChange={searchOnChangeHandler}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size={"small"}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  InputProps={{ ...params.InputProps }}
+                />
+              )}
+              
+            />
+          </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
@@ -246,23 +269,6 @@ const ButtonAppBar = ({Logout, history}) => {
         </div>
       </Toolbar>
     </AppBar>
-    <Autocomplete
-        id="free-solo-demo"
-        value={value}
-        freeSolo={false}
-        options={stocks.map((option) => option.Symbol)}
-        onClose={handlePopUpClose}
-        onChange={searchOnChangeHandler}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search"
-            margin="normal"
-            variant="outlined"
-            InputProps={{ ...params.InputProps }}
-          />
-        )}
-        />
     {renderMobileMenu}
     {renderMenu}
   </div>
