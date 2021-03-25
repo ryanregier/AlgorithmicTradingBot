@@ -6,6 +6,18 @@ const alpaca = new Alpaca({
     usePolygon: false
 })
 
+export const getStocks = async () => { 
+    var stocks = await alpaca.getAssets({ status: 'active' })
+    return stocks;
+    /*
+    ((activeAssets) => {
+    // Filter the assets down to just those on NASDAQ.
+    return activeAssets.filter(asset => asset.exchange == 'NASDAQ' || 'NYSE')
+   // console.log(nasdaqAssets)
+   })
+   */
+};
+
 function getAcctInfo(){
     alpaca.getAccount().then((account) => {
         console.log('Current Account:', account)
@@ -81,6 +93,7 @@ function getPrice(sym){
 
 }
 
-export default manualTrade
+
+export default manualTrade;
 //manualTrade('MSFT',8,'buy','market','day')
 //console.log("Committed trade!")
