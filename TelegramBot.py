@@ -14,10 +14,12 @@ def start_command(update, context):
 
 def help_command(update, context):
     update.message.reply_text('Ask for help on google!')
+    update.message.reply_text('Here are my current commands:\t\n/help\n/positions\n/holds\n/portfolio\n/buy\n/sell\n'
+                              '/hello\n/marketopen\n/start')
 
 
 def handle_message(update, context):
-    text = str(update.message.text).lower()
+    text = str(update.message.text).upper()
     response = R.sample_responses(text)
     update.message.reply_text(response)
 

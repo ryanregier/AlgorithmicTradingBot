@@ -124,6 +124,7 @@ def execute_trade(sym, qty, side, action, time_in_force):
 def portfolioHas(sym):
     try:
         position = api.get_position(sym)
+        print(position)
     except Exception:
         return False
     return True

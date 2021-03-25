@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import SignIn from "./components/SignIn";
-import MainPage from './components/MainPage';
+import ManualTrades from './components/ManualTrades';
 import Images from "./components/Images";
 import AlgoPage from "./components/AlgoPage";
 import ButtonAppBar from './components/AppBar';
@@ -63,7 +63,7 @@ const App = () => {
         {(loggedIn) ? (
           <div>
         <ButtonAppBar Logout={Logout}/>
-        <MainPage />
+        <ManualTrades />
         </div>
         )
         :(<SignIn Login={Login}/>)}

@@ -15,6 +15,20 @@ app.get('/', (req,res) => {
   res.send("hello");
 });
 
+//Used to easisly serve static files
+//simply type localhost:port/images/*.* to get that static file
+app.use(express.static('public'))
+app.use(express.static('images'))
+app.use(express.static('sound'))
+app.use(express.static('html'))
+app.use(express.static('txt'))
+
+app.get('/manualtrade/', (req,res) => {
+
+    res.image();
+
+})
+
 app.get('/login/:email/:password', async(req,res) => {
   //check the email and the password with database
   //send back null dictionary if false
