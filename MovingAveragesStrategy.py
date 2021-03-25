@@ -1,8 +1,9 @@
 import threading
 from asyncio.subprocess import Process
 
+import alpaca_trade_api
+
 import VolumeScraper as VS
-import MovingAverages as MA
 import alpacaPyConnection as alpaca
 import requests
 import yfinance as yf
@@ -49,7 +50,7 @@ def getStocks():
     return VS.getTopTickers()
 
 
-def startAlgo(sym, qty=10, action="market", time_in_force='fok'):
+def startAlgo(sym, qty=1, action="market", time_in_force='fok'):
     # alpaca.execute_trade(sym, 1, 'buy', 'market', 'fok')
     priceBought = 0
     profit = 0
@@ -76,17 +77,22 @@ def startAlgo(sym, qty=10, action="market", time_in_force='fok'):
         if own:
             profit += qty * df['Adj Close'][-1]
         if signal:
-            alpaca.execute_trade(sym, qty, 'buy', 'market', 'fok')
-            priceBought = float(getPrice(sym))
-            qtyOwned += qty
-            print(qtyOwned)
-            print("Price Bought: " + str(priceBought * 1.0009))
-            print("We bought shares of " + sym)
-            # alpaca.update_lastTrade(sym)
-            own = True
-        elif (own and not signal) or (own and profit > 0):
+            try:
+                alpaca.execute_trade(sym, qty, 'buy', 'market', 'fok')
+                priceBought = float(getPrice(sym))
+                qtyOwned += qty
+                print(qtyOwned)
+                print("Price Bought: " + str(priceBought * 1.0009))
+                print("We bought shares of " + sym)
+                # alpaca.update_lastTrade(sym)
+                own = True
+            except alpaca_trade_api.rest.APIError:
+                print("Insufficient buying power")
+                pass
+        if own and not signal:  # or (own and profit > 0):
             alpaca.create_order(sym, qtyOwned, 'sell', action, 'fok')
             print("We sold all our shares")
+            print("Profit: " + str(profit))
             # alpaca.update_lastTrade(sym)
             qtyOwned = 0
             own = False
@@ -103,7 +109,17 @@ def enterStocks(ls):
             print("Try buying: " + i[0] + " tomorrow!")
 
 
+def main():
+    if alpaca.marketIsOpen():
+        startAlgo(sym='SNDL')
+    else:
+        print("Sorry, market is closed.")
+        print("Try buying tomorrow!")
+
+
 # enterStocks(getStocks())
-alpaca.create_order('SPY', 50, 'buy', 'market', 'gtc')
-alpaca.create_order('TSLA', 100, 'buy', 'market', 'gtc')
+# print("Hello world!")
 # startAlgo(sym='TSLA')
+
+if __name__ == '__main__':
+    main()

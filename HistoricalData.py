@@ -132,6 +132,7 @@ def queryHistData(period=None, interval=None, start=None, end=None):
                                              low=df['Low'],
                                              close=df['Close'])])
         fig.show()
+        fig.write_html("fig0.html")
         fig = go.Figure(data=[go.Candlestick(x=df['Date'],
                                              open=df['Open'], high=df['High'],
                                              low=df['Low'], close=df['Close'])
@@ -139,6 +140,7 @@ def queryHistData(period=None, interval=None, start=None, end=None):
 
         fig.update_layout(xaxis_rangeslider_visible=False)
         fig.show()
+        fig.write_html("fig00.html")
         alternateCS(df)
         # print(stock.history(start=start, end=end))
 
@@ -205,7 +207,7 @@ def buildCS(sym):
     })
     fig = go.Figure(data=data, layout=layout)
     fig.write_image("images/fig1.png")
-    py.plot(fig)
+    py.plot(fig, "fig1.html")
 
 
 def buildAnalysis():
@@ -259,7 +261,7 @@ for i in ls:
 # buildCS('TSLA')
 # alpacaScript.update_acct_balance_change()
 getTicker("AAPL")
-commands("a")
+# commands("a")
 queryHistData(start="2020-1-1", end="2021-1-1")
 '''
 queryHistData(period="ytd")

@@ -22,6 +22,6 @@ def sample_responses(input_text):
         return "Yoloing GME because r/WSB"
     if user_message in ("/time"):
         now = datetime.now()
-        date_time = now.strftime("%d/%m/%y, %H:%M:%S")
+        date_time = now.strftime("%m/%d/%y, %H:%M:%S")
         return date_time
     return "I don't understand you."
