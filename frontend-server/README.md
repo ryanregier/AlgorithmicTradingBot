@@ -10,6 +10,8 @@ IF NPM START DOESNT WORK AND YOUR MISSING A REACT-SCRIPT START OR SOME SUCH RUN 
 npm cache clean --force
 rm -rf node_modules
 npm install
+npm install react-icons --save
+npm install @material-ui/core
 
 
 ### `npm start`
