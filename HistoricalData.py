@@ -260,9 +260,9 @@ for i in ls:
 
 # buildCS('TSLA')
 # alpacaScript.update_acct_balance_change()
-getTicker("AAPL")
+# getTicker("AAPL")
 # commands("a")
-queryHistData(start="2020-1-1", end="2021-1-1")
+# queryHistData(start="2020-1-1", end="2021-1-1")
 '''
 queryHistData(period="ytd")
 queryHistData(period="max")
