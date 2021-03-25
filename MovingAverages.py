@@ -87,16 +87,14 @@ def checkStocks():
 
 
 def getTripleMovingAvgStrat(sym):
-    df1 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 10)
-    df2 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 20)
-    df3 = exponentialMovingAverage(sym, '2021-1-1', '2021-3-16', 30)
-    # df3 = exponentialMovingAverage('MSFT', '2021-1-4', '2021-2-23', 50)
-    df = pd.DataFrame()
-    df['Date'] = df1['Date']
-    df['Price'] = df3['Adj Close']
-    df['emaLong'] = df3['ema']
-    df['emaMed'] = df2['ema']
-    df['emaShort'] = df1['ema']
+    data = yf.download(tickers=sym, period='1d', interval='1m')
+    xVals = data.index.tolist()
+    df = pd.DataFrame(data)
+    df['Date'] = xVals
+    df['Price'] = df['Adj Close']
+    df['emaShort'] = df['Adj Close'].ewm(span=15).mean()
+    df['emaMed'] = df['Adj Close'].ewm(span=25).mean()
+    df['emaLong'] = df['Adj Close'].ewm(span=50).mean()
     return df
 
 
@@ -111,18 +109,19 @@ def calculatePNL(df, num):
     return profit
 
 
-def generateEma(df, sym, num=1):
+def generateEma(df, sym, num=100):
     buy_list = []
     sell_list = []
     priceBought = 0.0
     daysBought = -1
     long = False
     short = False
-    for i in range(0, len(df) - 1):
-        profit = (num * df['Price'][i]) - (num * priceBought)
+    profit = 0
+    for i in range(0, len(df)):
+        if long:
+            profit = (num * df['Price'][i]) - (num * priceBought)
         # print(profit)
-        if ((df['emaLong'][i] < df['emaMed'][i] < df['emaShort'][i]) or (
-                df['emaLong'][i] > df['emaMed'][i] > df['emaShort'][i])) and not long:
+        if df['emaShort'][i] > df['emaLong'][i] and not long:
             buy_list.append(df['Price'][i])
             priceBought = df['Price'][i]
             sell_list.append(np.nan)
@@ -137,8 +136,7 @@ def generateEma(df, sym, num=1):
                 "algo": "movingAvgs"
             }
             # collection.insert_one(doc)
-        elif (df['emaShort'][i] < df['emaMed'][i] or df['emaShort'][i] > df['emaMed'][i]) and long and profit > 0 \
-                or (profit < 0 and daysBought > 5):
+        elif (df['emaShort'][i] < df['emaMed'][i] and profit > 0) and long:
             sell_list.append(df['Price'][i])
             buy_list.append(np.nan)
             priceBought = 0
@@ -159,8 +157,6 @@ def generateEma(df, sym, num=1):
                 daysBought += 1
             buy_list.append(np.nan)
             sell_list.append(np.nan)
-    buy_list.append(np.nan)
-    sell_list.append(np.nan)
     return buy_list, sell_list
 
 
@@ -196,7 +192,7 @@ def execute(sym):
     return df
 
 
-execute('PLTR')
+execute('MAX')
 
 '''
 tickers = ['TSLA', 'MSFT', 'AAPL', 'DIS', 'PLTR', 'AMZN', 'NOK', 'BB', 'T', 'MORN']

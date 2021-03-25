@@ -95,7 +95,7 @@ def update_acctinfo_positions():
     print("Added trades")
 
 
-update_acctinfo_positions()
+# update_acctinfo_positions()
 
 
 def create_order(sym, qty, side, action, time_in_force):
@@ -124,6 +124,7 @@ def execute_trade(sym, qty, side, action, time_in_force):
 def portfolioHas(sym):
     try:
         position = api.get_position(sym)
+        print(position)
     except Exception:
         return False
     return True

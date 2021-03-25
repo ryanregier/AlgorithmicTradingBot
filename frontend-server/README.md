@@ -6,9 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+#######
 IF NPM START DOESNT WORK AND YOUR MISSING A REACT-SCRIPT START OR SOME SUCH RUN THESE COMMANDS IT WILL TAKE A WHILE
 npm cache clean --force
-rm -rf node_modules
+rm -rf node_moduless
 npm install
 npm install react-icons --save
 npm install @material-ui/core

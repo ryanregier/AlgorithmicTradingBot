@@ -11,6 +11,7 @@ import Images from './Images'
 import DownloadLink from "react-download-link";
 import React2, { useEffect } from 'react';
 
+
 import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
@@ -23,6 +24,20 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+//import input from '../Images/temp-plot.html'
+
+
+// const temp = document.querySelector('input[type="file"]')
+// input.addEventListener('load', function(e){
+//     const reader = new FileReader()
+//     reader.readAsText(input.files[0])
+//     reader.onload = function(){
+//         console.log(reader.result);
+//     }
+//
+// },false)
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //Function compponent
-function MainPage({Logout, setAlgoPage}) {
+function MainPage() {
     const classes = useStyles();
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -131,20 +146,35 @@ function MainPage({Logout, setAlgoPage}) {
         console.log('delete', id)
         setTrades(trades.filter((task) => task.id !== id))
     }
+
+
+
   return (
+
     <divM>
+
+
+        {/*<input type="file" onLoad="readFile(this)>">*/}
+            {/*<script>*/}
+            {/*    function readFile(input) {*/}
+            {/*    const file = input.files[0];*/}
+            {/*    const reader = new FileReader();*/}
+            {/*    reader.readAsText(file);*/}
+            {/*    reader.onload = funtion() {*/}
+
+            {/*    };*/}
+
+            {/*    reader.onerro = function(){*/}
+            {/*        consol.log(reader.error)*/}
+            {/*    };*/}
+            {/*}*/}
+            {/*</script>*/}
+
+
+        {/*<div5 dangerouslySetInnerHTML = {__html: reader.result}>*/}
+        {/*</div5>*/}
+
     <div className="toolbar">
-    <AppBar position="static">
-  <Toolbar>
-    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-    </IconButton>
-    <Typography variant="h6" className={classes.title}>
-      Wheaton Stock Bot
-    </Typography>
-    <Button color="inherit">Login</Button>
-  </Toolbar>
-</AppBar>
     </div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
@@ -153,8 +183,6 @@ function MainPage({Logout, setAlgoPage}) {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
-        
-        <Button color = {""} text = {"Logout"} onClick = {Logout}/>
     </div>
     <div2>
          <Images image = {im1}/>
@@ -163,7 +191,7 @@ function MainPage({Logout, setAlgoPage}) {
          <Images image = {im2}/>
     </div3>
         <div5 className={"logo"}>
-            <Images image = {logo} />
+           
         </div5>
         <h3 className="mb-4"></h3>
 
