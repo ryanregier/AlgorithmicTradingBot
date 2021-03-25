@@ -11,6 +11,7 @@ import Images from './Images'
 import DownloadLink from "react-download-link";
 import React2, { useEffect } from 'react';
 
+
 import im1 from '../Images/info1.jpg'
 import im2 from '../Images/info2.jpg'
 import url from '../Images/analysis.txt'
@@ -23,6 +24,20 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+//import input from '../Images/temp-plot.html'
+
+
+// const temp = document.querySelector('input[type="file"]')
+// input.addEventListener('load', function(e){
+//     const reader = new FileReader()
+//     reader.readAsText(input.files[0])
+//     reader.onload = function(){
+//         console.log(reader.result);
+//     }
+//
+// },false)
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,8 +146,34 @@ function MainPage() {
         console.log('delete', id)
         setTrades(trades.filter((task) => task.id !== id))
     }
+
+
+
   return (
+
     <divM>
+
+
+        {/*<input type="file" onLoad="readFile(this)>">*/}
+            {/*<script>*/}
+            {/*    function readFile(input) {*/}
+            {/*    const file = input.files[0];*/}
+            {/*    const reader = new FileReader();*/}
+            {/*    reader.readAsText(file);*/}
+            {/*    reader.onload = funtion() {*/}
+
+            {/*    };*/}
+
+            {/*    reader.onerro = function(){*/}
+            {/*        consol.log(reader.error)*/}
+            {/*    };*/}
+            {/*}*/}
+            {/*</script>*/}
+
+
+        {/*<div5 dangerouslySetInnerHTML = {__html: reader.result}>*/}
+        {/*</div5>*/}
+
     <div className="toolbar">
     </div>
     <div className="container">
