@@ -10,13 +10,10 @@ import Button from './Buttons'
 import Images from './Images'
 import DownloadLink from "react-download-link";
 import React2, { useEffect } from 'react';
+import $ from 'jquery';
 
 
-import im1 from '../Images/info1.jpg'
-import im2 from '../Images/info2.jpg'
-import url from '../Images/analysis.txt'
 import logo from '../Images/SB.png'
-import vid from '../Images/Wellerman_Stock_Market_edition.mp3'
 import { FaLongArrowAltUp } from 'react-icons/fa'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -24,7 +21,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-//import input from '../Images/temp-plot.html'
+
 
 
 // const temp = document.querySelector('input[type="file"]')
@@ -36,7 +33,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 //     }
 //
 // },false)
-
+let vid = "http://localhost:3500/sound/Wellerman_Stock_Market_edition.mp3"
+//let audioTune;
+let im1 = "http://localhost:3500/images/info1.jpg";
+let im2 = "http://localhost:3500/images/info2.jpg";
+let text = "http://localhost:3500/txt/analysis.txt";
+let plot = "http://localhost:3500/html/temp-plot.html";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //Function compponent
-function MainPage() {
+function ManualTrades() {
     const classes = useStyles();
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -147,12 +149,22 @@ function MainPage() {
         setTrades(trades.filter((task) => task.id !== id))
     }
 
-
+    function jQueryCode(){
+        $(document).ready(function () {
+            $(".temp-plot").load(plot)
+        });
+    }
 
   return (
 
     <divM>
-
+        <div>
+            <script src={$}></script>
+        </div>
+        {/*{getSound()}*/}
+        {/*{getIm1()}*/}
+        {/*{getIm2()}*/}
+        {/*{getUrl()}*/}
 
         {/*<input type="file" onLoad="readFile(this)>">*/}
             {/*<script>*/}
@@ -174,8 +186,7 @@ function MainPage() {
         {/*<div5 dangerouslySetInnerHTML = {__html: reader.result}>*/}
         {/*</div5>*/}
 
-    <div className="toolbar">
-    </div>
+    <div className="toolbar"></div>
     <div className="container">
         <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
         {/* && is basical ? : with out an else wich is and if else statement*/}
@@ -183,6 +194,10 @@ function MainPage() {
         {trades.length > 0 ? <Trades tasks = {trades}
                                      onDelete = {deleteTrade}
         /> : "No Trades"}
+    </div>
+
+    <div className = "temp-plot">
+        This is a test
     </div>
     <div2>
          <Images image = {im1}/>
@@ -205,10 +220,13 @@ function MainPage() {
         <DownloadLink
           label= 'Download_Analysis'
           filename= 'analysis.txt'
-          exportFile= {() => Promise.resolve(getDataFromURL(url))}
+          exportFile= {() => Promise.resolve(getDataFromURL(text))}
         />
     </div4>
+        {jQueryCode()}
     </divM>
+
+
   )
 }
 
@@ -228,4 +246,4 @@ const getDataFromURL = (url) => new Promise((resolve, reject) => {
 
 
 
-export default MainPage;
+export default ManualTrades;
