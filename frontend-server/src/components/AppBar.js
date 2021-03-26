@@ -187,7 +187,7 @@ const ButtonAppBar = ({Logout, history}) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-      <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
+      <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -255,8 +255,8 @@ const ButtonAppBar = ({Logout, history}) => {
           </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
-          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
-          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">Portfolio</Button>
+          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
+          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">CoolStock</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
           <IconButton
             edge="end"

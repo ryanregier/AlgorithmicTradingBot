@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 
 import SignUp from "./SignUp";
-import ManualTrades from "./ManualTrades"
+import ManualTrades from "./MainPortfolio"
 
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container'

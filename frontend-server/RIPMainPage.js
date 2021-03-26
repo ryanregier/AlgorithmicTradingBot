@@ -245,5 +245,4 @@ const getDataFromURL = (url) => new Promise((resolve, reject) => {
 
 
 
-
 export default MainPortfolio;
