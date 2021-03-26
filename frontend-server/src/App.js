@@ -56,9 +56,6 @@ const App = () => {
 
   return (
     <div className="App">
-      {console.log("new refresh")}
-      {console.log('loggedIn:')}
-      {console.log(loggedIn)}
       <Switch>
         <Route exact path="/">
         {(loggedIn) ? (
@@ -80,14 +77,6 @@ const App = () => {
           </div>
         ):(<SignIn Login={Login}/>)}
         </Route>
-        <Route exact path="/portfolio">
-        {(loggedIn) ? (
-          <div>
-            <ButtonAppBar Logout={Logout}/>
-            <PortfolioPage />
-          </div>
-        ):(<SignIn Login={Login}/>)}
-      </Route>
       <Route exact path="/buysell/:sym">
         {(loggedIn) ? (
           <div>
@@ -99,6 +88,14 @@ const App = () => {
           <Route exact path="/SignUp">
               <SignUp/>
           </Route>
+      <Route exact path="/about">
+        {(loggedIn) ? (
+          <div>
+            <ButtonAppBar Logout={Logout}/>
+            <AboutPage />
+          </div>
+        ):(<SignIn Login={Login}/>)}
+      </Route>
     </Switch>
     </div>
   ) 
