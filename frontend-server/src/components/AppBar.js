@@ -20,18 +20,15 @@ import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 import {getStocks} from './alpacafunctions';
+import {manualTrade} from './alpacafunctions';
 
 
-var stocks;
+  var stocks
+  const getStockFun = async () => { stocks = await getStocks(); };
+  getStockFun();
+  
 
-const getStockFun = async () => {
-  stocks = await getStocks();
-  console.log("stocks: ")
-  console.log(stocks);
-};
 
-getStockFun();
-console.log(stocks);
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -104,13 +101,9 @@ const ButtonAppBar = ({Logout, history}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [value, setValue] = useState(null);
-
+  
   const handleToolBarClick = (newURL) => {
       history.push(newURL);
-  }
-
-  const handleAboutClick = () => {
-    handleToolBarClick('/about');
   }
 
   const handleLogout = () => {
@@ -171,7 +164,6 @@ const ButtonAppBar = ({Logout, history}) => {
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      <MenuItem onClick={handleAboutClick}>About</MenuItem>
     </Menu>
   );
 
@@ -256,8 +248,8 @@ const ButtonAppBar = ({Logout, history}) => {
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
-          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">CoolStock</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
+          <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
           <IconButton
             edge="end"
             aria-label="account of current user"

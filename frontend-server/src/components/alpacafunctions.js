@@ -9,13 +9,6 @@ const alpaca = new Alpaca({
 export const getStocks = async () => { 
     var stocks = await alpaca.getAssets({ status: 'active' })
     return stocks;
-    /*
-    ((activeAssets) => {
-    // Filter the assets down to just those on NASDAQ.
-    return activeAssets.filter(asset => asset.exchange == 'NASDAQ' || 'NYSE')
-   // console.log(nasdaqAssets)
-   })
-   */
 };
 
 function getAcctInfo(){
@@ -42,7 +35,7 @@ function checkIfTradable(sym){
 //needs to work when it can't trade symbol and shouldn't crash
 checkIfTradable('MSFT')
 
-function manualTrade(sym, qty, side, type, time_in_force){
+export function manualTrade(sym, qty, side, type, time_in_force){
     alpaca.createOrder({
         symbol: sym,
         qty: qty,

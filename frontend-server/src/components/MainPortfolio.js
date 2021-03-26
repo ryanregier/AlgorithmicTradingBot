@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Images from "./Images"
 import Typography from "@material-ui/core/Typography"
@@ -12,6 +12,7 @@ import Container from "@material-ui/core/Container"
 
 let port1 = "http://localhost:3500/images/port1.jpg"
 let port2 = "http://localhost:3500/images/port2.jpg"
+let vid = "http://localhost:3500/sound/Wellerman_Stock_Market_edition.mp3"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,39 @@ const useStyles = makeStyles((theme) => ({
 //Function compponent
 function MainPortfolio() {
 
+  const audioTune = new Audio(vid);
+
+  audioTune.volume = .05;
+// variable to play audio in loop
+  const [playInLoop, setPlayInLoop] = useState(false);
+
+// load audio file on component load
+  useEffect(() => {
+    audioTune.load();
+  }, [])
+
+// set the loop of audio tune
+  useEffect(() => {
+    audioTune.loop = playInLoop;
+  }, [playInLoop])
+
+// play audio sound
+  const playSound = () => {
+    audioTune.play();
+  }
+
+// pause audio sound
+  const pauseSound = () => {
+    audioTune.pause();
+  }
+
+// stop audio sound
+  const stopSound = () => {
+    audioTune.pause();
+    audioTune.currentTime = 0;
+  }
+//End Sound Test
+
     const classes = useStyles();
 
   return (
@@ -36,6 +70,10 @@ function MainPortfolio() {
     <div>
         <Images image = {port2}></Images>
     </div>
+
+    <Button onClick={playSound}>Play</Button>
+    <Button onClick={pauseSound}>Pause</Button>
+    <Button onClick={stopSound}>Stop</Button>
           {/*<Box component={"span"} m={3}>*/}
           {/*  <Typography variant = "h1" align = "center"> idk why no work </Typography>*/}
           {/*    <Button> test</Button>*/}
