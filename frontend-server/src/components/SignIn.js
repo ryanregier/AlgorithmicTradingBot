@@ -10,26 +10,26 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
+
 import SignUp from "./SignUp";
-import {BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import ManualTrades from "./ManualTrades"
 
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container'
 import {GiLockedBox} from "react-icons/all";
 import React from "react";
 import CardMedia from '@material-ui/core';
-
-import AlgoPage from "./AlgoPage";
-
+import {Link as Linker, NavLink, Redirect} from "react-router-dom"
 
 import Images from "./Images";
 import logo from "../Images/SB.png"
 import animatedLogo from "../Images/SB (1).gif"
-import graph from '../Images/info1.jpg'
 import {Image} from "@material-ui/icons";
 import {Paper} from "@material-ui/core";
-import * as url from "url";
+import { BrowserRouter, Switch } from 'react-router-dom'
 import ButtonAppBar from "./AppBar";
+import {BrowserRouter as Router} from "react-router-dom";
+import Route from 'react-router-dom/Route'
 
 const useStyles = makeStyles((theme) => ({
 
@@ -130,15 +130,21 @@ export default function SignIn({Login, error}) {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Link href="/SignUp" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
+                            <nav>
+                                <Linker to='/SignUp'>
+                                    {"Click here to Sign up"}
+                                </Linker>
+                            </nav>
+                            <Route
+                                path="/SignUp"
+                                component={SignUp}
+                                exact
+                                />
                         </Grid>
                     </form>
                 </div>
                 <Grid item img src={animatedLogo}/>
             </Grid>
-
         </Grid>
 );
 }
