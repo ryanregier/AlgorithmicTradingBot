@@ -8,6 +8,7 @@ import ButtonAppBar from './components/AppBar';
 import PortfolioPage from './components/Portfolio';
 import AboutPage from './components/AboutPage';
 import BuySellPage from './components/BuySellPage';
+import SignUp from './components/SignUp'
 import { BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import { PinDropSharp } from '@material-ui/icons';
 
@@ -95,6 +96,9 @@ const App = () => {
           </div>
         ):(<SignIn Login={Login}/>)}
       </Route>
+          <Route exact path="/SignUp">
+              <SignUp/>
+          </Route>
     </Switch>
     </div>
   ) 
