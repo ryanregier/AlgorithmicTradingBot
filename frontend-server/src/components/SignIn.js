@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
 
+    image2:{
+        backgroundImage: 'url(${logo})',
+
+    },
+
     image: {
         backgroundImage: 'url(https://source.unsplash.com/B7rqd7NCe_g)',
         backgroundRepeat: 'no-repeat',
@@ -143,7 +148,6 @@ export default function SignIn({Login, error}) {
                         </Grid>
                     </form>
                 </div>
-                <Grid item img src={animatedLogo}/>
             </Grid>
         </Grid>
 );
