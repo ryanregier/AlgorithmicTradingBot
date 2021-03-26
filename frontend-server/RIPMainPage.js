@@ -42,16 +42,16 @@ let plot = "http://localhost:3500/html/temp-plot.html";
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
 }));
 
 //Function compponent
-function ManualTrades() {
+function MainPortfolio() {
     const classes = useStyles();
 //http://localhost:3000/static/js/C:/Users/William Carrera/Desktop/School/StockBot/AlgorithmicTradingBot/frontend-server/src/Images/SB (1).gif
     //Sound Test
@@ -155,18 +155,18 @@ function ManualTrades() {
         });
     }
 
-  return (
+    return (
 
-    <divM>
-        <div>
-            <script src={$}></script>
-        </div>
-        {/*{getSound()}*/}
-        {/*{getIm1()}*/}
-        {/*{getIm2()}*/}
-        {/*{getUrl()}*/}
+        <divM>
+            <div>
+                <script src={$}></script>
+            </div>
+            {/*{getSound()}*/}
+            {/*{getIm1()}*/}
+            {/*{getIm2()}*/}
+            {/*{getUrl()}*/}
 
-        {/*<input type="file" onLoad="readFile(this)>">*/}
+            {/*<input type="file" onLoad="readFile(this)>">*/}
             {/*<script>*/}
             {/*    function readFile(input) {*/}
             {/*    const file = input.files[0];*/}
@@ -183,62 +183,62 @@ function ManualTrades() {
             {/*</script>*/}
 
 
-        {/*<div5 dangerouslySetInnerHTML = {__html: reader.result}>*/}
-        {/*</div5>*/}
+            {/*<div5 dangerouslySetInnerHTML = {__html: reader.result}>*/}
+            {/*</div5>*/}
 
-    <div className="toolbar"></div>
-    <div className="container">
-        <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
-        {/* && is basical ? : with out an else wich is and if else statement*/}
-        {showAddTrade && <AddTrade onAdd = {addTrade} />}
-        {trades.length > 0 ? <Trades tasks = {trades}
-                                     onDelete = {deleteTrade}
-        /> : "No Trades"}
-    </div>
+            <div className="toolbar"></div>
+            <div className="container">
+                <Header title = "Trades Queued" onAdd = {() => setShowAskTrades(!showAddTrade)} showAdd = {showAddTrade}/>
+                {/* && is basical ? : with out an else wich is and if else statement*/}
+                {showAddTrade && <AddTrade onAdd = {addTrade} />}
+                {trades.length > 0 ? <Trades tasks = {trades}
+                                             onDelete = {deleteTrade}
+                /> : "No Trades"}
+            </div>
 
-    <div className = "temp-plot">
-        This is a test
-    </div>
-    <div2>
-         <Images image = {im1}/>
-    </div2>
-    <div3>
-         <Images image = {im2}/>
-    </div3>
-        <div5 className={"logo"}>
-           
-        </div5>
-        <h3 className="mb-4"></h3>
+            <div className = "temp-plot">
+                This is a test
+            </div>
+            <div2>
+                <Images image = {im1}/>
+            </div2>
+            <div3>
+                <Images image = {im2}/>
+            </div3>
+            <div5 className={"logo"}>
 
-        <input type="button" className="btn btn-primary mr-2" value="Play" onClick={playSound}></input>
-        <input type="button" className="btn btn-warning mr-2" value="Pause" onClick={pauseSound}></input>
-        <input type="button" className="btn btn-danger mr-2" value="Stop" onClick={stopSound}></input>
+            </div5>
+            <h3 className="mb-4"></h3>
 
-        <label><input type="checkbox" checked={playInLoop} onChange={e => setPlayInLoop(e.target.checked)} /> Play in Loop</label>
-    <div4>
+            <input type="button" className="btn btn-primary mr-2" value="Play" onClick={playSound}></input>
+            <input type="button" className="btn btn-warning mr-2" value="Pause" onClick={pauseSound}></input>
+            <input type="button" className="btn btn-danger mr-2" value="Stop" onClick={stopSound}></input>
 
-        <DownloadLink
-          label= 'Download_Analysis'
-          filename= 'analysis.txt'
-          exportFile= {() => Promise.resolve(getDataFromURL(text))}
-        />
-    </div4>
-        {jQueryCode()}
-    </divM>
+            <label><input type="checkbox" checked={playInLoop} onChange={e => setPlayInLoop(e.target.checked)} /> Play in Loop</label>
+            <div4>
+
+                <DownloadLink
+                    label= 'Download_Analysis'
+                    filename= 'analysis.txt'
+                    exportFile= {() => Promise.resolve(getDataFromURL(text))}
+                />
+            </div4>
+            {jQueryCode()}
+        </divM>
 
 
-  )
+    )
 }
 
 const getDataFromURL = (url) => new Promise((resolve, reject) => {
-        setTimeout(() => {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    resolve(data)
-                });
-        });
-    }, 2000);
+    setTimeout(() => {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                resolve(data)
+            });
+    });
+}, 2000);
 
 
 //End Sound Test
@@ -246,4 +246,4 @@ const getDataFromURL = (url) => new Promise((resolve, reject) => {
 
 
 
-export default ManualTrades;
+export default MainPortfolio;
