@@ -250,6 +250,7 @@ const ButtonAppBar = ({Logout, history}) => {
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
           <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
+          <Button onClick={()=>handleToolBarClick('/teacher')} color="inherit">Teacher</Button>
           <IconButton
             edge="end"
             aria-label="account of current user"
