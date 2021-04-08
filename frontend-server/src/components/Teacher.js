@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -28,8 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
     stocks: {
         backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(2, 0, 2),
-        paddingLeft: theme.spacing(0),
+        padding: theme.spacing(3, 3, 3),
     },
 
     cardGrid: {
@@ -60,7 +56,7 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Album(props) {
     const classes = useStyles();
-    const { post } = props;
+    //const { post } = props;
 
     return (
         <React.Fragment>
@@ -78,26 +74,48 @@ export default function Album(props) {
                         </Typography>
                         <div className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
-
                             </Grid>
                         </div>
                     </Container>
                 </div>
+
                 <div className={classes.stocks}>
-                    <Container maxWidth="sm">
+                    <Container maxWidth="xl" spacing={10}>
                         <Typography component="h1" variant="h4" align="left" color="textPrimary" gutterBottom>
                             What is a stock?
                         </Typography>
-                        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                            On this page we will teach you some of the basics about markets, stocks and what it takes to
-                            be a person who invests!
+                        <Typography spacing="m" variant="h6" align="left" color="textSecondary" paragraph>
+                            A stock is a type of investment that represents an ownership share in a company.
+                            Investors buy stocks that they think will go up in value over time... A stock is an investment.
+                        </Typography>
+                    </Container>
+                </div>
+                <div className={classes.stocks}>
+                    <Container maxWidth="xl" spacing={10}>
+                        <Typography component="h1" variant="h4" align="left" color="textPrimary" gutterBottom>
+                            What is a trading algorithm?
+                        </Typography>
+                        <Typography variant="h6" align="left" color="textSecondary" paragraph>
+                            Algorithmic trading (also called automated trading, black-box trading, or algo-trading) uses a computer program that follows a defined set of instructions (an algorithm) to place a trade.
+                            The defined sets of instructions are based on timing, price, quantity, or any mathematical model.
+                        </Typography>
+                    </Container>
+                </div>
+                <div className={classes.stocks}>
+                    <Container maxWidth="xl" spacing={10}>
+                        <Typography component="h1" variant="h4" align="left" color="textPrimary" gutterBottom>
+                            Do Stocks only go up?
+                        </Typography>
+                        <Typography spacing="m" variant="h6" align="left" color="textSecondary" paragraph>
+                            A stock is a type of investment that represents an ownership share in a company.
+                            Investors buy stocks that they think will go up in value over time... A stock is an investment.
                         </Typography>
                     </Container>
                 </div>
             </main>
 
-            <Grid item xs={12} md={6}>
-                <CardActionArea component="a" href="#">
+            <Grid item xl={12} md={6}>
+                <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp">
                     <Card className={classes.card}>
                         <div className={classes.cardDetails}>
                             <CardContent>
