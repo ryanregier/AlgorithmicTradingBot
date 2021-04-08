@@ -23,9 +23,9 @@ import {getStocks} from './alpacafunctions';
 import {manualTrade} from './alpacafunctions';
 
 
-var stocks
-const getStockFun = async () => { stocks = await getStocks(); };
-getStockFun();
+  var stocks
+  const getStockFun = async () => { stocks = await getStocks(); };
+  getStockFun();
   
 
 
@@ -132,12 +132,14 @@ const ButtonAppBar = ({Logout, history}) => {
   const searchOnChangeHandler = (event, value, reason) => {
     if(reason === "select-option"){
       history.push(`/buysell/${value}`);
+      console.log(value);
     }
   };
 
   const handlePopUpClose = (object, reason) => {
     if(reason === "select-option"){
       //change pages
+      console.log("select-option");
     }else if (reason === "escape"){
       console.log("escape");
 
@@ -205,77 +207,79 @@ const ButtonAppBar = ({Logout, history}) => {
 
   return(
     <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="open drawer"
+          onClick={()=>{history.push('/')}}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography className={classes.title} variant="h6" noWrap>
+          Wheaton Stock Bot
+        </Typography>
+        <SearchIcon style={{position:"absolute", right:0, left:260}}/>
+        <div className={classes.search}>
+            <Autocomplete
+              id="free-solo-demo"
+              value={value}
+              handleHomeEndKeys
+              freeSolo={false}
+              options={stocks.map((option) => option.symbol)}
+              onClose={handlePopUpClose}
+              onChange={searchOnChangeHandler}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size={"small"}
+                  classes={{
+                    root: classes.inputRoot,
+                    //input: classes.inputInput, this might be a source of problems in the future
+                  }}
+                  InputProps={{ ...params.InputProps }}
+                />
+              )}
+              
+            />
+          </div>
+        <div className={classes.grow} />
+        <div className={classes.sectionDesktop}>
+          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
+          <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
+          <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
+          <Button onClick={()=>handleToolBarClick('/teacher')} color="inherit">Teacher</Button>
           <IconButton
-            edge="start"
-            className={classes.menuButton}
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={menuId}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
             color="inherit"
-            aria-label="open drawer"
-            onClick={()=>{history.push('/')}}
           >
-            <MenuIcon />
+            <AccountCircle />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Wheaton Stock Bot
-          </Typography>
-          <SearchIcon style={{position:"absolute", right:0, left:260}}/>
-          <div className={classes.search}>
-              <Autocomplete
-                id="free-solo-demo"
-                value={value}
-                handleHomeEndKeys
-                freeSolo={false}
-                options={stocks.map((option) => option.symbol)}
-                onClose={handlePopUpClose}
-                onChange={searchOnChangeHandler}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    size={"small"}
-                    classes={{
-                      root: classes.inputRoot,
-                      //input: classes.inputInput, this might be a source of problems in the future
-                    }}
-                    InputProps={{ ...params.InputProps }}
-                  />
-                )}
-                
-              />
-            </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
-            <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
-            <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMenu}
-    </div>
-  );
-
+        </div>
+        <div className={classes.sectionMobile}>
+          <IconButton
+            aria-label="show more"
+            aria-controls={mobileMenuId}
+            aria-haspopup="true"
+            onClick={handleMobileMenuOpen}
+            color="inherit"
+          >
+            <MoreIcon />
+          </IconButton>
+        </div>
+      </Toolbar>
+    </AppBar>
+    {renderMobileMenu}
+    {renderMenu}
+  </div>
+);
 }
+
 export default withRouter(ButtonAppBar);
 

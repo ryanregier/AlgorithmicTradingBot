@@ -2,6 +2,7 @@ import './App.css';
 import React, {useState} from 'react';
 import SignIn from "./components/SignIn";
 import MainPortfolio from './components/MainPortfolio';
+import Teacher from './components/Teacher';
 import Images from "./components/Images";
 import AlgoPage from "./components/AlgoPage";
 import ButtonAppBar from './components/AppBar';
@@ -46,6 +47,20 @@ const App = () => {
         }
       }
   }
+
+  const CreateAccount = (details) => {
+      console.log("Inside CreateAccount function");
+      Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
+      Http.send();
+      console.log("sending http request");
+      Http.onreadystatechange = function (e){
+          console.log(localStorage.setItem('firstName', details.firstName));
+          console.log(localStorage.setItem('lastName', details.lastName));
+          console.log(localStorage.setItem('email', details.email));
+          console.log(localStorage.setItem('password', details.password));
+      }
+  }
+
 
   const Logout = () => {
     console.log("Logout");
@@ -97,6 +112,14 @@ const App = () => {
           </div>
         ):(<SignIn Login={Login}/>)}
       </Route>
+          <Route exact path="/teacher">
+              {(loggedIn) ? (
+                  <div>
+                      <ButtonAppBar Logout={Logout}/>
+                      <Teacher />
+                  </div>
+              ):(<SignIn Login={Login}/>)}
+          </Route>
     </Switch>
     </div>
   ) 
