@@ -139,7 +139,6 @@ const ButtonAppBar = ({Logout, history}) => {
   const handlePopUpClose = (object, reason) => {
     if(reason === "select-option"){
       //change pages
-      console.log("select-option");
     }else if (reason === "escape"){
       console.log("escape");
 

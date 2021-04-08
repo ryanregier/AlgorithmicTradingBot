@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import $ from 'jquery';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -12,7 +12,8 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
-import StockGraph from './StockGraph'
+import StockGraph from './StockGraph';
+import Plot from 'react-plotly.js';
 
 
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
@@ -26,13 +27,6 @@ import {Paper} from "@material-ui/core";
 import manualTrade from "./alpacafunctions";
 
 
-
-/*
-To do:
-Replace Hard coded array with alpaca call
-Make plotly request dynamic
-Add section for buy/sell
-*/
 const Http = new XMLHttpRequest();
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
 const BuySellPage = () =>{
 
     const {sym} = useParams();
-    let plot = "http://localhost:3500/html/temp-plot.html";
 
     const submitHandler = (e) => {
       e.preventDefault();
@@ -94,11 +87,7 @@ const BuySellPage = () =>{
       manualTrade(sym,numShares,side,'market','gtc');
       console.log("trade executed");
     };
-  function jQueryCode(){
-    $(document).ready(function () {
-        $(".temp-plot").load(plot)
-    });
-  }
+ 
 
   const[numShares, setNumShares] = useState(0);
   const[buyorsell, setBuySell] = useState(true);
@@ -107,13 +96,12 @@ const BuySellPage = () =>{
   const toggleBuySell = () => {
       setBuySell(!buyorsell);
   };
-  
+
     return(
-    
       <divM>
-       <StockGraph symbol={sym}/>
-      <div className="whattheheck">
         <h1>{sym}</h1>
+        <StockGraph symbol={sym}/>
+      <div className="whattheheck">
       </div>
       <div className="temp-plot"></div>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
