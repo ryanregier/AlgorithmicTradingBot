@@ -279,41 +279,7 @@ const ButtonAppBar = ({Logout, history}) => {
     {renderMenu}
   </div>
 );
-
-  
-  /*
-<Input
-              {...params}
-              placeholder="Search…"
-              autoComplete="true"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Wheaton Stock Bot
-          </Typography>
-          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
-          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">Portfolio</Button>
-          <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
-          <Button onClick={Logout} color="inherit">Logout</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
 }
-*/
-}
+
 export default withRouter(ButtonAppBar);
 
