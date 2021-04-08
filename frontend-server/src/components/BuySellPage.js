@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
+import StockGraph from './StockGraph'
 
 
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
@@ -79,25 +80,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 const BuySellPage = () =>{
-    const [htmlstring, setHTML] = useState("");
-    let {sym} = useParams();
-    console.log(sym)
-    
+
+    const {sym} = useParams();
     let plot = "http://localhost:3500/html/temp-plot.html";
 
-    /*
-    useEffect(()=> {
-      Http.open("GET", `http://localhost:3500/historical/${sym}`);
-      console.log("sending graph request")
-      Http.send();
-      Http.onreadystatechange = function (e) {
-        if (this.readyState == 4 && this.status == 200) {
-          setHTML(Http.responseText);
-          console.log("setHTML ");
-        }
-      }
-    });
-*/
     const submitHandler = (e) => {
       e.preventDefault();
       var side;
@@ -125,9 +111,7 @@ const BuySellPage = () =>{
     return(
     
       <divM>
-        <div>
-            <script src={$}></script>
-        </div>
+       <StockGraph symbol={sym}/>
       <div className="whattheheck">
         <h1>{sym}</h1>
       </div>
@@ -165,8 +149,6 @@ const BuySellPage = () =>{
                     </form>
                 </div>
             </Grid>
-  
-      {jQueryCode()}
       </divM>
     )
 }
