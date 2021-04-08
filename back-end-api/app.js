@@ -26,6 +26,7 @@ app.use(express.static('txt'))
 app.get('/manualtrade/', (req,res) => {
 
     res.image();
+    console.log("sending image");
 
 })
 
