@@ -29,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
     },
 
     cardGrid: {
-        paddingTop: theme.spacing(8),
+        paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(8),
+        alignItems: 'left'
     },
 
     footer: {
@@ -114,8 +115,8 @@ export default function Album(props) {
                 </div>
             </main>
 
-            <Grid item xl={12} md={6}>
-                <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp">
+            <Grid item className={classes.cardGrid}>
+                <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp" target={"_blank"}>
                     <Card className={classes.card}>
                         <div className={classes.cardDetails}>
                             <CardContent>
@@ -135,9 +136,8 @@ export default function Album(props) {
                         </div>
                     </Card>
                 </CardActionArea>
-            </Grid>
 
-            <Grid item xs={12} md={6}>
+
                 <CardActionArea component="a" href="#">
                     <Card className={classes.card}>
                         <div className={classes.cardDetails}>
@@ -156,12 +156,13 @@ export default function Album(props) {
                                 </Typography>
                             </CardContent>
                         </div>
-                        <Hidden xsDown>
-                            <CardMedia className={classes.cardMedia}/>
-                        </Hidden>
+                        {/*<Hidden xsDown>*/}
+                        {/*    <CardMedia className={classes.cardMedia}/>*/}
+                        {/*</Hidden>*/}
                     </Card>
                 </CardActionArea>
             </Grid>
+
         </React.Fragment>
     );
 }
