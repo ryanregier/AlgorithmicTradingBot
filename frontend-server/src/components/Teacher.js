@@ -29,22 +29,18 @@ const useStyles = makeStyles((theme) => ({
     },
 
     cardGrid: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(8),
-        alignItems: 'left'
+
+        padding: theme.spacing(1),
     },
 
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6),
-    },
 
     card: {
         display: 'flex',
+        backgroundColor: 'lightgrey',
     },
+
     cardDetails: {
         flex: 1,
-        alignItems: 'center',
     },
     cardMedia: {
         width: 160,
@@ -53,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function Album(props) {
+export default function Album() {
     const classes = useStyles();
-    //const { post } = props;
+
 
     return (
         <React.Fragment>
@@ -108,23 +104,18 @@ export default function Album(props) {
                             Do Stocks only go up?
                         </Typography>
                         <Typography spacing="m" variant="h6" align="left" color="textSecondary" paragraph>
-                            A stock is a type of investment that represents an ownership share in a company.
-                            Investors buy stocks that they think will go up in value over time... A stock is an investment.
-                        </Typography>
+                            Yes. Well... no.</Typography>
                     </Container>
                 </div>
             </main>
 
-            <Grid item className={classes.cardGrid}>
+            <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
                 <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp" target={"_blank"}>
                     <Card className={classes.card}>
-                        <div className={classes.cardDetails}>
+                        <div className={classes.cardDetails} >
                             <CardContent>
                                 <Typography component="h2" variant="h5">
                                     More about Stocks
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    4.7.2021
                                 </Typography>
                                 <Typography variant="subtitle1" paragraph>
                                     In this post you can read more about what stocks are and how they work!
@@ -136,17 +127,15 @@ export default function Album(props) {
                         </div>
                     </Card>
                 </CardActionArea>
+            </Grid>
 
-
-                <CardActionArea component="a" href="#">
+                <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
+                <CardActionArea component="a" href="https://www.investopedia.com/articles/active-trading/101014/basics-algorithmic-trading-concepts-and-examples.asp" target={"_blank"}>
                     <Card className={classes.card}>
                         <div className={classes.cardDetails}>
                             <CardContent>
                                 <Typography component="h2" variant="h5">
                                     More about Trading Algorithms
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    4.7.2021
                                 </Typography>
                                 <Typography variant="subtitle1" paragraph>
                                     In this post you can read more about how our algorithm works!
@@ -156,12 +145,9 @@ export default function Album(props) {
                                 </Typography>
                             </CardContent>
                         </div>
-                        {/*<Hidden xsDown>*/}
-                        {/*    <CardMedia className={classes.cardMedia}/>*/}
-                        {/*</Hidden>*/}
                     </Card>
                 </CardActionArea>
-            </Grid>
+                </Grid>
 
         </React.Fragment>
     );
