@@ -64,8 +64,6 @@ function MainPortfolio(props) {
 
   return (
       <body>
-      <h1>Status: {(props.loggedInStatus) ? ("yes"): ("no")}</h1>
-      <h1>Name: {props.currentUser.email}</h1>
     <div>
         <Images image = {port1}></Images>
     </div>

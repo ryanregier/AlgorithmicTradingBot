@@ -10,9 +10,11 @@ import PortfolioPage from './components/Portfolio';
 import AboutPage from './components/AboutPage';
 import BuySellPage from './components/BuySellPage';
 import SignUp from './components/SignUp'
-import { Router, BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+
 import AuthApi from "./AuthApi"
-import Cookies from 'js-cookie';
+import Cookies from 'react-cookies';
+
 
 import { PinDropSharp } from '@material-ui/icons';
 
@@ -20,26 +22,48 @@ const Http = new XMLHttpRequest();
 /*Steven Barker*/
 
 
-
 const App = () => {
   
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email:""});
   const [error, setError] = useState("");
-  const Auth = React.useContext(AuthApi);
+    const Auth = React.useContext(AuthApi);
 
   const readCookies = () =>{
-      const user = Cookies.get("user"); //Might need to use another word that user
+
+      const user = Cookies.load("email",true); //Might need to use another word that user
+      const password = Cookies.load("password",true);
+
       //For example I might want to input their user name
       //Maybe factor out the part that verifies them with the database and also use it here
 
-      if(user){
-          setLoggedIn(true);
+      Http.open("GET", `http://localhost:3500/login/${user}/${password}`);
+      Http.send();
+      console.log("checking cookies http request");
+      Http.onreadystatechange = function (e) {
+          if (this.readyState == 4 && this.status == 200) {
+              console.log(Http.responseText);
+              if(Http.responseText != ""){
+                  setLoggedIn(true)
+                  // Auth.setLoggedIn(true)
+                  console.log("still logged in");
+                  setUser({name: Http.responseText, email: user});
+                  localStorage.setItem('email', user);
+                  localStorage.setItem('password',user);
+                  console.log(localStorage.getItem('email'));
+                  console.log(localStorage.getItem('password'));
+              }else{
+                  console.log("failure Here");
+                  console.log(loggedIn)
+                  setError("Details do not match");
+              }
+          }
       }
+
   }
-  React.useEffect(() => {
-      readCookies()
-  })
+  // React.useLayoutEffect(() => {
+  //     readCookies()
+  // })
 
 
 
@@ -53,9 +77,18 @@ const App = () => {
       if (this.readyState == 4 && this.status == 200) {
         console.log(Http.responseText);
         if(Http.responseText != ""){
-            //setLoggedIn(true);
-            Auth.setLoggedIn(true);
-            Cookies.set("user","loginTrue")
+            setLoggedIn(true);
+            //Auth.setLoggedIn(true);
+            Cookies.save("email",details.email,
+            {
+                path: "/"
+            }
+            )
+            Cookies.save("password",details.password,
+            {
+                path: "/"
+            })
+
             console.log("logged in");
             setUser({name: Http.responseText, email: details.email});
             localStorage.setItem('email', details.email);
@@ -85,9 +118,16 @@ const App = () => {
 
 
   const Logout = () => {
-      const Auth = React.useContext(AuthApi);
-      Auth.setLoggedIn(false);
-      Cookies.remove("user") //Maybe don't use "user" this a ha ha ha
+      setLoggedIn(false)
+      //Auth.setLoggedIn(false);
+      Cookies.remove("email",
+          {
+          path: "/"
+      }
+      )
+      Cookies.remove("password",{
+          path: "/"
+      })//Maybe don't use "user" this a ha ha ha
     console.log("Logout");
     setUser(({name: "", email: ""}));
     return 1;
@@ -96,11 +136,13 @@ const App = () => {
 
   return (
     <div className="App">
-        <AuthApi.Provider value = {{loggedIn,setLoggedIn}}>
+        <AuthApi.Provider value = {{loggedIn, setLoggedIn}}>
             <Router>
-                <Routes/> {/*Probably going to need components*/}
+                {readCookies()}
+                <Routes Login = {Login} Logout = {Logout}/> {/*Probably going to need components*/}
             </Router>
         </AuthApi.Provider>
+
       {/*<Switch>*/}
         {/*<Route exact path="/">*/}
         {/*{(loggedIn) ? (*/}
@@ -153,36 +195,31 @@ const App = () => {
     </div>
   ) 
 }
+{/* REMEMBER THAT THESE ROUTES NEED THINGS GOING INTO THEM*/}
+{/*THIS ONE OFFICER*/}
+{/*This exact path is wrong*/}
 
-const Routes = () => {
+const Routes = ({Login,Logout}) => {
     const Auth = React.useContext(AuthApi)
     return(
-        <switch>
+        <Switch>
+
             {/*This exact path is wrong*/}
-            <ProtectedLogin exact path="/" component={SignIn}/> {/* REMEMBER THAT THESE ROUTES NEED THINGS GOING INTO THEM*/}
-            <ProtectedRoutes exact path="/about" auth = {Auth.auth} component={AboutPage}/>
-            <ProtectedRoutes exact path="/teacher" auth = {Auth.auth} component = {Teacher}/>
-            <ProtectedRoutes exact path="/signup" auth = {Auth.auth} component={SignUp}/>
-            <ProtectedRoutes exact path="/buysell/:sym" auth = {Auth.auth} component={BuySellPage}/>{/*THIS ONE OFFICER*/}
-            <ProtectedRoutes exact path="/algo" auth = {Auth.auth} component={AlgoPage}/>
-            <ProtectedRoutes exact path="/mainportfolio" auth = {Auth.auth} component={MainPortfolio}/> {/*This exact path is wrong*/}
-        </switch>
+            <ProtectedLogin exact path="/" Login = {Login} auth = {Auth.loggedIn} component={SignIn}/>
+            <ProtectedRoutes exact path="/about" Logout = {Logout} auth = {Auth.loggedIn} component={AboutPage}/>
+            <ProtectedRoutes exact path="/teacher" Logout = {Logout} auth = {Auth.loggedIn} component = {Teacher}/>
+            <ProtectedRoutes exact path="/signup" Logout = {Logout} auth = {Auth.loggedIn} component={SignUp}/>
+            <ProtectedRoutes exact path="/buysell/:sym" Logout = {Logout} auth = {Auth.loggedIn} component={BuySellPage}/>
+            <ProtectedRoutes exact path="/algo" Logout = {Logout} auth = {Auth.loggedIn} component={AlgoPage}/>
+            <ProtectedRoutes exact path="/mainportfolio" Logout = {Logout} auth = {Auth.loggedIn} component={MainPortfolio}/>
+        </Switch>
     )
 }
-const ProtectedRoutes = ({auth, component:Component,...rest}) => {
 
-    //This might not work here who knows
-
-    const Logout = () => {
-        const Auth = React.useContext(AuthApi);
-        Auth.setLoggedIn(false);
-        Cookies.remove("user") //Maybe don't use "user" this a ha ha ha
-        console.log("Logout");
-        return 1;
-    }
-
+const ProtectedRoutes = ({Logout, auth, component:Component,...rest}) => {
     return(
         <div>
+            {console.log("Uhm loading?")}
             <ButtonAppBar Logout={Logout}/>
         <Route
             {...rest}
@@ -190,7 +227,7 @@ const ProtectedRoutes = ({auth, component:Component,...rest}) => {
                 <Component/>
             ):
                 (
-                    <Redirect to={"/login"}/>
+                    <Redirect to={"/"}/>
             // This path is not right
                 )
             }
@@ -198,12 +235,12 @@ const ProtectedRoutes = ({auth, component:Component,...rest}) => {
         </div>
     )
 }
-const ProtectedLogin = ({auth, component:Component,...rest}) => {
+const ProtectedLogin = ({Login,auth, component:Component,...rest}) => {
     return(
         <Route
             {...rest}
             render ={() => !auth? (
-                    <Component/>
+                    <Component Login={Login}/>
                 ):
                 (
                     <Redirect to={"/mainportfolio"}/>
