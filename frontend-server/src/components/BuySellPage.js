@@ -131,8 +131,14 @@ const BuySellPage = () =>{
       <div className="whattheheck">
         <h1>{sym}</h1>
       </div>
-      <div className="temp-plot"></div>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Container >
+            <div className="temp-plot"></div>
+          </Container>
+          <div>
+
+          </div>
+          {/*<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>*/}
+      <Container xs={12} sm={8} md={5} component = {Paper} elevation = {6} square>
                 <div className={classes.paper}>
                     {(buyorsell) ? 
                     <Typography componenet="h1" variant="h5">Buy Shares</Typography>
@@ -164,7 +170,7 @@ const BuySellPage = () =>{
                         </Button>
                     </form>
                 </div>
-            </Grid>
+      </Container>
   
       {jQueryCode()}
       </divM>

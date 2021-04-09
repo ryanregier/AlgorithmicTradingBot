@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 //Function compponent
-function MainPortfolio() {
+function MainPortfolio(props) {
 
   const audioTune = new Audio(vid);
 
-  audioTune.volume = .05;
+  audioTune.volume = .005;
 // variable to play audio in loop
   const [playInLoop, setPlayInLoop] = useState(false);
 
@@ -64,6 +64,8 @@ function MainPortfolio() {
 
   return (
       <body>
+      <h1>Status: {(props.loggedInStatus) ? ("yes"): ("no")}</h1>
+      <h1>Name: {props.currentUser.email}</h1>
     <div>
         <Images image = {port1}></Images>
     </div>
