@@ -77,7 +77,7 @@ const App = () => {
         {(loggedIn) ? (
           <div>
         <ButtonAppBar Logout={Logout}/>
-        <MainPortfolio />
+        <PortfolioPage />
         </div>
         )
         :(<SignIn Login={Login}/>)}

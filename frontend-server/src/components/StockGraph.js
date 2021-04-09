@@ -2,9 +2,6 @@ import { Zoom } from '@material-ui/core';
 import React,{useEffect, useState, useRef} from 'react';
 import Plot from 'react-plotly.js';
 
-
-
-
 const StockGraph = ({symbol}) => {
     const [loaded, setLoaded] = useState(false); 
     const [sym, setSym] = useState("");
@@ -86,6 +83,8 @@ const StockGraph = ({symbol}) => {
         <Plot
         data={[trace.current]}
         layout={{
+          width: 750, 
+          height: 440,
           dragmode: 'zoom', 
           margin: {
             r: 10, 
