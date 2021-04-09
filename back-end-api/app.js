@@ -37,15 +37,11 @@ app.get('/login/:email/:password', async(req,res) => {
     if(err !== null){
       console.log(err);
     }else{
-
-      
       const query = {email: req.params.email, password: req.params.password};
       const options  = {
         projections: { 'firstName': 1, 'lastName': 1}
       };
-
       const collection = client.db("tradingbot").collection("users");
-
       const result = collection.findOne(query, options)
       .then( (result) =>{
         if(result){
