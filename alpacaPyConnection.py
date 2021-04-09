@@ -50,9 +50,9 @@ def update_lastTrade():
         after=dt
     )
     last = last[0]
-    doc = {"symbol": last.symbol, "type": last.side, "price": last.filled_avg_price, "size": last.filled_qty,
+    doc = {"sym": last.symbol, "side": last.side, "price": last.filled_avg_price, "qty": last.filled_qty,
            "timestamp": last.filled_at,
-           "order position": float(last.filled_qty) * float(last.filled_avg_price)}
+           "order position": float(last.filled_qty) * float(last.filled_avg_price), "traderId": "Ryan/Algo"}
     print(doc)
     collection.insert_one(doc)
 
@@ -99,7 +99,7 @@ def update_acctinfo_todb():
     print("Added to DB")
 
 
-update_acctinfo_todb()
+# update_acctinfo_todb()
 
 
 def update_acct_balance_change():
