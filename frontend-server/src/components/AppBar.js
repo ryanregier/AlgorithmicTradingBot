@@ -139,7 +139,6 @@ const ButtonAppBar = ({Logout, history}) => {
   const handlePopUpClose = (object, reason) => {
     if(reason === "select-option"){
       //change pages
-      console.log("select-option");
     }else if (reason === "escape"){
       console.log("escape");
 
@@ -250,6 +249,7 @@ const ButtonAppBar = ({Logout, history}) => {
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
           <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
+          <Button onClick={()=>handleToolBarClick('/teacher')} color="inherit">Teacher</Button>
           <IconButton
             edge="end"
             aria-label="account of current user"
@@ -278,41 +278,7 @@ const ButtonAppBar = ({Logout, history}) => {
     {renderMenu}
   </div>
 );
-
-  
-  /*
-<Input
-              {...params}
-              placeholder="Search…"
-              autoComplete="true"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Wheaton Stock Bot
-          </Typography>
-          <Button onClick={()=>handleToolBarClick('/')} color="inherit">Manual Trades</Button>
-          <Button onClick={()=>handleToolBarClick('/portfolio')} color="inherit">Portfolio</Button>
-          <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
-          <Button onClick={Logout} color="inherit">Logout</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
 }
-*/
-}
+
 export default withRouter(ButtonAppBar);
 

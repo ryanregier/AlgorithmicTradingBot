@@ -26,6 +26,7 @@ app.use(express.static('txt'))
 app.get('/manualtrade/', (req,res) => {
 
     res.image();
+    console.log("sending image");
 
 })
 
@@ -57,6 +58,37 @@ app.get('/login/:email/:password', async(req,res) => {
       .then((error, result) => {
         client.close();
       });//end of .then() block
+    }
+  });//end of MongoClient.connect
+});//end of app.get
+
+app.set('/login/:email/:password/:firstName/:lastName', async(req,res) => {
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if(err !== null){
+      console.log(err);
+    }else {
+      const query = {email: req.params.email, password: req.params.password};
+      const options  = {
+        projections: { 'firstName': 1, 'lastName': 1}
+      };
+
+      const collection = client.db("tradingbot").collection("users");
+
+      const result = collection.findOne(query, options)
+          .then( (result) =>{
+            if(result){
+              console.log(result);
+              res.send(result.firstName.concat(" "+result.lastName));
+            }else{
+              if(result === null){
+                console.log("sending null");
+                res.send(null);
+              }
+            }
+          })
+          .then((error, result) => {
+            client.close();
+          });//end of .then() block
     }
   });//end of MongoClient.connect
 });//end of app.get

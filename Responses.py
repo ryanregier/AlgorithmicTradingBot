@@ -44,9 +44,9 @@ def sample_responses(input_text):
         alpaca.create_order(stock, 1, 'buy', 'market', 'gtc')
         return "Bought a share of: " + stock
     if "/portfolio" in user_message:
-        acct = alpaca.get_account()
-        text = "Your Acct Info\n" + "Balance: $" + acct.equity + "\nTrader: Algo and Ryan\n" \
-               + " Acct. Number: " + acct.account_number + "\nCreated Date: " + str(acct.created_at)
+        text = "Your Acct Info\n" + "Balance: $" + alpaca.get_account().equity + "\nTrader: Algo and Ryan\n" \
+               + " Acct. Number: " + alpaca.get_account().account_number + "\nCreated Date: " +\
+               str(alpaca.get_account().created_at)
         return text
     if "/positions" in user_message:
         portfolio = alpaca.getPositions()

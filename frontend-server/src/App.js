@@ -101,7 +101,6 @@ const App = () => {
                 <Routes/> {/*Probably going to need components*/}
             </Router>
         </AuthApi.Provider>
-
       {/*<Switch>*/}
         {/*<Route exact path="/">*/}
         {/*{(loggedIn) ? (*/}

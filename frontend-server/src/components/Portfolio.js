@@ -1,17 +1,24 @@
-import $ from "jquery"
 import React, {useEffect, useState} from "react";
-import Button from "@material-ui/core/Button"
+import Button from "@material-ui/core/Button";
+import Plot from 'react-plotly.js';
+import TradesTable from './TradesTable';
 
-let plot = "http://localhost:3500/html/temp-plot.html"
-let vid = "http://localhost:3500/sound/Wellerman_Stock_Market_edition.mp3"
-function jQueryCode(){
-    $(document).ready(function () {
-        $(".html").load(plot)
-    });
 
+const Http = new XMLHttpRequest();
+
+
+function PortfolioPage() {
+   
+    return (
+        <div>
+           <TradesTable /> 
+        </div>
+    )
 }
 
-function PortfolioPage(){
+export default PortfolioPage;
+
+ /*
     const audioTune = new Audio(vid);
 
     audioTune.volume = .05;
@@ -44,18 +51,15 @@ function PortfolioPage(){
         audioTune.currentTime = 0;
     }
 //End Sound Test
-    return (
-        <div>
-            <script src={$}></script>
-            <h1 className = "html"></h1>
 
-            <Button onClick={playSound}>Play</Button>
-            <Button onClick={pauseSound}>Pause</Button>
-            <Button onClick={stopSound}>Stop</Button>
+*/
+/*
+let vid = "http://localhost:3500/sound/Wellerman_Stock_Market_edition.mp3"
 
-            {jQueryCode()}
-        </div>
-    )
+function jQueryCode(){
+    $(document).ready(function () {
+        $(".html").load(plot)
+    });
+
 }
-
-export default PortfolioPage;
+*/

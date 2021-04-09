@@ -39,15 +39,25 @@ def marketIsOpen():
     return False
 
 
-def update_lastTrade(sym):
+def update_lastTrade():
     collection = db['histrades']
-    last = api.get_last_trade(sym)
-    doc = {"symbol": sym, "price": last.price, "size": last.size, "timestamp": last.timestamp,
-           "order position": last.size * last.price}
+    ts = time.time() - 5
+    dt = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    print(dt)
+    last = api.list_orders(
+        status='closed',
+        limit=1,
+        after=dt
+    )
+    last = last[0]
+    doc = {"sym": last.symbol, "side": last.side, "price": last.filled_avg_price, "qty": last.filled_qty,
+           "timestamp": last.filled_at,
+           "order position": float(last.filled_qty) * float(last.filled_avg_price), "traderId": "Ryan/Algo"}
+    print(doc)
     collection.insert_one(doc)
 
 
-# update_lastTrade('AAPL')
+# update_lastTrade()
 
 
 def get_account():
@@ -56,8 +66,40 @@ def get_account():
 
 def update_acctinfo_todb():
     collection = db['accountinfo']
-    collection.insert_one(get_account())
+    myAccount = get_account()
+    doc = {
+       "id": myAccount.id,
+        "account_number": myAccount.account_number,
+        "status": myAccount.status,
+        "currency": myAccount.currency,
+        "buying_power": myAccount.buying_power,
+        "regt_buying_power": myAccount.regt_buying_power,
+        "daytrading_buying_power": myAccount.daytrading_buying_power,
+        "cash": myAccount.cash,
+        "portfolio_value": myAccount.portfolio_value,
+        "pattern_day_trader": myAccount.pattern_day_trader,
+        "trading_blocked":myAccount.trading_blocked,
+        "transfers_blocked": myAccount.transfers_blocked,
+        "account_blocked":myAccount.account_blocked,
+        "created_at":myAccount.created_at,
+        "trade_suspended_by_user": myAccount.trade_suspended_by_user,
+        "multiplier": myAccount.multiplier,
+        "shorting_enabled": myAccount.shorting_enabled,
+        "equity": myAccount.equity,
+        "last_equity": myAccount.last_equity,
+        "long_market_value": myAccount.long_market_value,
+        "short_market_value": myAccount.short_market_value,
+        "intial_margin": myAccount.initial_margin,
+        "maintenance_margin": myAccount.maintenance_margin,
+        "last_maintenance_margin": myAccount.last_maintenance_margin,
+        "sma": myAccount.sma,
+        "daytrade_count": myAccount.daytrade_count
+    }
+    collection.insert_one(doc)
     print("Added to DB")
+
+
+# update_acctinfo_todb()
 
 
 def update_acct_balance_change():
@@ -70,6 +112,9 @@ def update_acct_balance_change():
     }
     collection.insert_one(doc)
     print(f'Today\'s portfolio balance change: ${balance_change}')
+
+
+# update_acct_balance_change()
 
 
 def update_acctinfo_positions():
@@ -95,7 +140,8 @@ def update_acctinfo_positions():
     print("Added trades")
 
 
-# update_acctinfo_positions()
+update_acctinfo_positions()
+print("Updated positions")
 
 
 def create_order(sym, qty, side, action, time_in_force):
