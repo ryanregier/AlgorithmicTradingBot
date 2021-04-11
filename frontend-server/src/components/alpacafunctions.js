@@ -17,7 +17,7 @@ function getAcctInfo(){
         return account
     })
 }
-
+/*
 function checkIfTradable(sym){
     try {
         alpaca.getAsset(sym)
@@ -32,8 +32,8 @@ function checkIfTradable(sym){
         return false
     }
 }
-//needs to work when it can't trade symbol and shouldn't crash
-checkIfTradable('MSFT')
+*/
+
 
 export function manualTrade(sym, qty, side, type, time_in_force){
     alpaca.createOrder({

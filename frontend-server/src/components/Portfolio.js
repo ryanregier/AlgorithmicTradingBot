@@ -4,13 +4,26 @@ import Plot from 'react-plotly.js';
 import TradesTable from './TradesTable';
 
 
+
 const Http = new XMLHttpRequest();
 
+ 
 
-function PortfolioPage() {
+const PortfolioPage = () => {
+    const getData = () => {
+        Http.open("GET", `http://localhost:3500/account`);
+        Http.send();
+        Http.onreadystatechange = function (e) {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(JSON.parse(Http.response))
+            }
+        }
+        };
+        getData();
    
     return (
         <div>
+            <Plot/>
            <TradesTable /> 
         </div>
     )
