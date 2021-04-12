@@ -75,8 +75,6 @@ def startAlgo(sym, qty=10, action="market", time_in_force='fok'):
         signal = generateSignal(df)
         print(signal)
         print("Price: " + str(df['Adj Close'][-1]))
-        print(str(df['BUY'][-1]))
-        print(str(df['SELL'][-1]))
         if own:
             profit += qty * df['Adj Close'][-1]
         if signal and not own:

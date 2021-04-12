@@ -46,15 +46,18 @@ def update_lastTrade():
     print(dt)
     last = api.list_orders(
         status='closed',
-        limit=1,
-        after=dt
+        limit=1
     )
     last = last[0]
-    doc = {"sym": last.symbol, "side": last.side, "price": last.filled_avg_price, "qty": last.filled_qty,
-           "timestamp": last.filled_at,
-           "order position": float(last.filled_qty) * float(last.filled_avg_price), "traderId": "Ryan/Algo"}
-    print(doc)
-    collection.insert_one(doc)
+    try:
+        doc = {"sym": last.symbol, "side": last.side, "price": last.filled_avg_price, "qty": last.filled_qty,
+               "timestamp": last.filled_at,
+               "order position": float(last.filled_qty) * float(last.filled_avg_price), "traderId": "Ryan/Algo"}
+        print(doc)
+        collection.insert_one(doc)
+    except TypeError:
+        pass
+        print("Type error on updating DB")
 
 
 # update_lastTrade()
