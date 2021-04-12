@@ -71,8 +71,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
 const BuySellPage = () =>{
 
     const {sym} = useParams();
@@ -99,12 +97,26 @@ const BuySellPage = () =>{
 
     return(
       <divM>
-        <h1>{sym}</h1>
+        <Typography component='h1' variant='h2 '>
+          {sym}
+        </Typography>
+        {/* /<h1>{sym}</h1> */}
         <StockGraph symbol={sym}/>
       <div className="whattheheck">
       </div>
+
+      {/*    <Container >*/}
+      {/*      <div className="temp-plot"></div>*/}
+      {/*    </Container>*/}
+      {/*    <div>*/}
+
+      {/*    </div>*/}
+      {/*    /!*<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>*!/*/}
+      {/*<Container xs={12} sm={8} md={5} component = {Paper} elevation = {6} square>*/}
+
       <div className="temp-plot"></div>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={4} component={Paper} square>
+
                 <div className={classes.paper}>
                     {(buyorsell) ? 
                     <Typography componenet="h1" variant="h5">Buy Shares</Typography>
@@ -136,7 +148,13 @@ const BuySellPage = () =>{
                         </Button>
                     </form>
                 </div>
+
+      {/*</Container>*/}
+
+      {/*{jQueryCode()}*/}
+
             </Grid>
+
       </divM>
     )
 }

@@ -1,61 +1,51 @@
-import $ from "jquery"
 import React, {useEffect, useState} from "react";
-import Button from "@material-ui/core/Button"
+import Button from "@material-ui/core/Button";
+import Plot from 'react-plotly.js';
+import TradesTable from './TradesTable';
 
-let plot = "http://localhost:3500/html/temp-plot.html"
-let vid = "http://localhost:3500/sound/Wellerman_Stock_Market_edition.mp3"
-function jQueryCode(){
-    $(document).ready(function () {
-        $(".html").load(plot)
-    });
 
-}
 
-function PortfolioPage(){
-    const audioTune = new Audio(vid);
+const Http = new XMLHttpRequest();
 
-    audioTune.volume = .05;
-// variable to play audio in loop
-    const [playInLoop, setPlayInLoop] = useState(false);
+ 
 
-// load audio file on component load
-    useEffect(() => {
-        audioTune.load();
-    }, [])
+const PortfolioPage = () => {
+    const [loaded, setLoaded] = useState(false);
+    let xvals = [];
+    let yvals = [];
+    let trace = {};
 
-// set the loop of audio tune
-    useEffect(() => {
-        audioTune.loop = playInLoop;
-    }, [playInLoop])
-
-// play audio sound
-    const playSound = () => {
-        audioTune.play();
+    const getData = () => {
+        if(!loaded){
+            Http.open("GET",`http://localhost:3500/account`);
+            Http.send();
+            Http.onreadystatechange = function (e) {
+                if (this.readyState == 4 && this.status == 200) {
+                    const accountdata = JSON.parse(Http.responseText);
+                    for(var i=0; i< accountdata.length;i++){
+                        xvals.push(accountdata[i].created_at);
+                        yvals.push(accountdata[i].portfolio_value);
+                    }
+                    trace = {x:xvals, y:yvals, type:'scatter'};
+                }
+            }
+            setLoaded(true);
+        };
+       
     }
 
-// pause audio sound
-    const pauseSound = () => {
-        audioTune.pause();
-    }
+    useEffect(()=>{getData();})
 
-// stop audio sound
-    const stopSound = () => {
-        audioTune.pause();
-        audioTune.currentTime = 0;
-    }
-//End Sound Test
+   
     return (
         <div>
-            <script src={$}></script>
-            <h1 className = "html"></h1>
-
-            <Button onClick={playSound}>Play</Button>
-            <Button onClick={pauseSound}>Pause</Button>
-            <Button onClick={stopSound}>Stop</Button>
-
-            {jQueryCode()}
+            {console.log(trace)}
+            <Plot data={[trace]}/>
+           <TradesTable /> 
         </div>
     )
 }
 
 export default PortfolioPage;
+
+ 

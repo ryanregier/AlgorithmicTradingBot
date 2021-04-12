@@ -30,6 +30,53 @@ app.get('/manualtrade/', (req,res) => {
 
 })
 
+
+
+
+app.get('/account', (req,res) => {
+    MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+      if(err != null){
+        console.log(err)
+      }else{
+        const collection = client.db("tradingbot").collection("accountinfo");
+        
+  
+        const result = collection.find({},{sort:{created_at:1}}).limit(200).toArray().then((result) => {
+          res.contentType('application/json');
+          console.log("accountinfo result");
+          console.log(result)
+          res.json(result);
+        });
+      }
+    });
+  });
+  
+  
+  app.get('/trades', (req,res) => {
+    MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+      if(err != null){
+        console.log(err)
+      }else{
+        const collection = client.db("tradingbot").collection("backtestedtrades");
+  
+        const options = {
+          sort:{date:-1},
+          projection:{_id:0}
+        };
+        
+  
+        const result = collection.find({},options).limit(100).toArray().then((result) => {
+          res.contentType('application/json');
+          console.log("trades");
+          console.log(result)
+          res.json(result);
+        });
+      }
+    });
+  });
+  
+  
+
 app.get('/login/:email/:password', async(req,res) => {
   //check the email and the password with database
   //send back null dictionary if false
@@ -38,15 +85,11 @@ app.get('/login/:email/:password', async(req,res) => {
     if(err !== null){
       console.log(err);
     }else{
-
-      
       const query = {email: req.params.email, password: req.params.password};
       const options  = {
         projections: { 'firstName': 1, 'lastName': 1}
       };
-
       const collection = client.db("tradingbot").collection("users");
-
       const result = collection.findOne(query, options)
       .then( (result) =>{
         if(result){
