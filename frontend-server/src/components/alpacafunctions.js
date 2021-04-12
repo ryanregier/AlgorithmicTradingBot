@@ -17,23 +17,6 @@ function getAcctInfo(){
         return account
     })
 }
-/*
-function checkIfTradable(sym){
-    try {
-        alpaca.getAsset(sym)
-            .then((asset) => {
-                if (asset.tradable) {
-                    console.log('We can trade ' + sym)
-                    return true
-                }
-            })
-    } catch (e) {
-        console.log('ERROR')
-        return false
-    }
-}
-*/
-
 
 export function manualTrade(sym, qty, side, type, time_in_force){
     alpaca.createOrder({

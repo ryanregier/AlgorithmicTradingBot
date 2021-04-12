@@ -28,8 +28,6 @@ import {manualTrade} from './alpacafunctions';
   getStockFun();
   
 
-
-
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
