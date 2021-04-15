@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import SignIn from "./components/SignIn";
 import MainPortfolio from './components/MainPortfolio';
 import Teacher from './components/Teacher';
@@ -11,6 +11,7 @@ import AboutPage from './components/AboutPage';
 import BuySellPage from './components/BuySellPage';
 import SignUp from './components/SignUp'
 import { BrowserRouter as Router, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import getStocks from './components/alpacafunctions';
 
 import AuthApi from "./AuthApi"
 import Cookies from 'react-cookies';
@@ -23,50 +24,27 @@ const Http = new XMLHttpRequest();
 
 
 const App = () => {
+
+  const [user, setUser] = useState();
+  const [loaded, setLoaded] = useState(false);
   
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState({name: "", email:""});
-  const [error, setError] = useState("");
-    const Auth = React.useContext(AuthApi);
-
-  const readCookies = () =>{
-
-      const user = Cookies.load("email",true); //Might need to use another word that user
-      const password = Cookies.load("password",true);
-
-      //For example I might want to input their user name
-      //Maybe factor out the part that verifies them with the database and also use it here
-
-      Http.open("GET", `http://localhost:3500/login/${user}/${password}`);
-      Http.send();
-      console.log("checking cookies http request");
-      Http.onreadystatechange = function (e) {
-          if (this.readyState == 4 && this.status == 200) {
-              console.log(Http.responseText);
-              if(Http.responseText != ""){
-                  setLoggedIn(true)
-                  // Auth.setLoggedIn(true)
-                  console.log("still logged in");
-                  setUser({name: Http.responseText, email: user});
-                  localStorage.setItem('email', user);
-                  localStorage.setItem('password',user);
-                  console.log(localStorage.getItem('email'));
-                  console.log(localStorage.getItem('password'));
-              }else{
-                  console.log("failure Here");
-                  console.log(loggedIn)
-                  setError("Details do not match");
-              }
-          }
-      }
-
+  
+  const googleSuccess = (res) => {
+    console.log("running google success");
+    console.log(res);
+    setUser(res);
+    console.log(user);
   }
-  // React.useLayoutEffect(() => {
-  //     readCookies()
-  // })
 
-
-
+  const isLoggedIn = () =>{
+    try{
+      console.log(user.isSignedIn());
+      return user.isSignedIn();
+    }catch (err){
+      //console.log(err);
+      return false;
+    }
+  }
 
   const Login = (details) => {
     console.log("Inside Login function");
@@ -77,27 +55,12 @@ const App = () => {
       if (this.readyState == 4 && this.status == 200) {
         console.log(Http.responseText);
         if(Http.responseText != ""){
-            setLoggedIn(true);
-            //Auth.setLoggedIn(true);
-            Cookies.save("email",details.email,
-            {
-                path: "/"
-            }
-            )
-            Cookies.save("password",details.password,
-            {
-                path: "/"
-            })
+            
 
             console.log("logged in");
             setUser({name: Http.responseText, email: details.email});
-            localStorage.setItem('email', details.email);
-            localStorage.setItem('password',details.password);
-            console.log(localStorage.getItem('email'));
-            console.log(localStorage.getItem('password'));
           }else{
             console.log("failure"); 
-            setError("Details do not match");
           }
         }
       }
@@ -118,138 +81,68 @@ const App = () => {
 
 
   const Logout = () => {
-      setLoggedIn(false)
+      //setLoggedIn(false)
       //Auth.setLoggedIn(false);
-      Cookies.remove("email",
-          {
-          path: "/"
-      }
-      )
-      Cookies.remove("password",{
-          path: "/"
-      })//Maybe don't use "user" this a ha ha ha
     console.log("Logout");
-    setUser(({name: "", email: ""}));
-    return 1;
+    setUser(null);
   }
 
 
   return (
+      
     <div className="App">
-        <AuthApi.Provider value = {{loggedIn, setLoggedIn}}>
-            <Router>
-                {readCookies()}
-                <Routes Login = {Login} Logout = {Logout}/> {/*Probably going to need components*/}
-            </Router>
-        </AuthApi.Provider>
 
-      {/*<Switch>*/}
-        {/*<Route exact path="/">*/}
-        {/*{(loggedIn) ? (*/}
-        {/*  <div>*/}
-        {/*<ButtonAppBar Logout={Logout}/>*/}
-        {/*<MainPortfolio />*/}
-        {/*</div>*/}
-        {/*)*/}
-        {/*:(<SignIn Login={Login}/>)}*/}
-        {/*</Route>*/}
-        {/*<Route exact path="/login">*/}
-        {/*    <SignIn Login={Login}/>*/}
-        {/*</Route>*/}
-        {/*<Route exact path="/algo">*/}
-        {/*{(loggedIn) ? (*/}
-        {/*  <div>*/}
-        {/*    <ButtonAppBar Logout={Logout}/>*/}
-        {/*    <AlgoPage />*/}
-        {/*  </div>*/}
-        {/*):(<SignIn Login={Login}/>)}*/}
-        {/*</Route>*/}
-      {/*<Route exact path="/buysell/:sym">*/}
-      {/*  {(loggedIn) ? (*/}
-      {/*    <div>*/}
-      {/*      <ButtonAppBar Logout={Logout}/>*/}
-      {/*      <BuySellPage />*/}
-      {/*    </div>*/}
-      {/*  ):(<SignIn Login={Login}/>)}*/}
-      {/*</Route>*/}
-          {/*<Route exact path="/SignUp">*/}
-          {/*    <SignUp/>*/}
-          {/*</Route>*/}
-      {/*<Route exact path="/about">*/}
-      {/*  {(loggedIn) ? (*/}
-      {/*    <div>*/}
-      {/*      <ButtonAppBar Logout={Logout}/>*/}
-      {/*      <AboutPage />*/}
-      {/*    </div>*/}
-      {/*  ):(<SignIn Login={Login}/>)}*/}
-      {/*</Route>*/}
-          {/*<Route exact path="/teacher">*/}
-          {/*    {(loggedIn) ? (*/}
-          {/*        <div>*/}
-          {/*            <ButtonAppBar Logout={Logout}/>*/}
-          {/*            <Teacher />*/}
-          {/*        </div>*/}
-          {/*    ):(<SignIn Login={Login}/>)}*/}
-          {/*</Route>*/}
-    {/*</Switch>*/}
+      <Switch>
+        <Route exact path="/">
+        {(isLoggedIn()) ? (
+         <div>
+        <ButtonAppBar Logout={Logout}/>
+        <PortfolioPage />
+        </div>
+        )
+        :(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+        </Route>
+        <Route exact path="/login">
+           <SignIn Login={Login} onSuccess={googleSuccess}/>
+        </Route>
+        <Route exact path="/algo">
+        {(isLoggedIn()) ? (
+         <div>
+           <ButtonAppBar Logout={Logout}/>
+           <AlgoPage />
+         </div>
+        ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+        </Route>
+      <Route exact path="/buysell/:sym">
+       {(isLoggedIn()) ? (
+      <div>
+           <ButtonAppBar Logout={Logout}/>
+           <BuySellPage />
+         </div>
+        ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+      </Route>
+          <Route exact path="/SignUp">
+             <SignUp/>
+          </Route>
+      <Route exact path="/about">
+       {(isLoggedIn()) ? (
+      <div>
+           <ButtonAppBar Logout={Logout}/>
+           <AboutPage />
+         </div>
+       ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+      </Route>
+      <Route exact path="/teacher">
+        {(isLoggedIn()) ? (
+          <div>
+            <ButtonAppBar Logout={Logout}/>
+            <Teacher />
+          </div>
+          ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+          </Route>
+    </Switch>
     </div>
   ) 
 }
-{/* REMEMBER THAT THESE ROUTES NEED THINGS GOING INTO THEM*/}
-{/*THIS ONE OFFICER*/}
-{/*This exact path is wrong*/}
-
-const Routes = ({Login,Logout}) => {
-    const Auth = React.useContext(AuthApi)
-    return(
-        <Switch>
-
-            {/*This exact path is wrong*/}
-            <ProtectedLogin exact path="/" Login = {Login} auth = {Auth.loggedIn} component={SignIn}/>
-            <ProtectedRoutes exact path="/about" Logout = {Logout} auth = {Auth.loggedIn} component={AboutPage}/>
-            <ProtectedRoutes exact path="/teacher" Logout = {Logout} auth = {Auth.loggedIn} component = {Teacher}/>
-            <ProtectedRoutes exact path="/signup" Logout = {Logout} auth = {Auth.loggedIn} component={SignUp}/>
-            <ProtectedRoutes exact path="/buysell/:sym" Logout = {Logout} auth = {Auth.loggedIn} component={BuySellPage}/>
-            <ProtectedRoutes exact path="/algo" Logout = {Logout} auth = {Auth.loggedIn} component={AlgoPage}/>
-            <ProtectedRoutes exact path="/mainportfolio" Logout = {Logout} auth = {Auth.loggedIn} component={MainPortfolio}/>
-        </Switch>
-    )
-}
-
-const ProtectedRoutes = ({Logout, auth, component:Component,...rest}) => {
-    return(
-        <div>
-            {console.log("Uhm loading?")}
-            <ButtonAppBar Logout={Logout}/>
-        <Route
-            {...rest}
-            render ={() => auth? (
-                <Component/>
-            ):
-                (
-                    <Redirect to={"/"}/>
-            // This path is not right
-                )
-            }
-        />
-        </div>
-    )
-}
-const ProtectedLogin = ({Login,auth, component:Component,...rest}) => {
-    return(
-        <Route
-            {...rest}
-            render ={() => !auth? (
-                    <Component Login={Login}/>
-                ):
-                (
-                    <Redirect to={"/mainportfolio"}/>
-                    // This path is not right
-                )
-            }
-        />
-    )
-}
-
 
 export default App;

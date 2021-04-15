@@ -3,11 +3,7 @@ import Button from "@material-ui/core/Button";
 import Plot from 'react-plotly.js';
 import TradesTable from './TradesTable';
 
-
-
 const Http = new XMLHttpRequest();
-
- 
 
 const PortfolioPage = () => {
     const [loaded, setLoaded] = useState(false);
@@ -30,8 +26,7 @@ const PortfolioPage = () => {
                 }
             }
             setLoaded(true);
-        };
-       
+        }; 
     }
 
     useEffect(()=>{getData();})
@@ -41,7 +36,7 @@ const PortfolioPage = () => {
         <div>
             {console.log(trace)}
             <Plot data={[trace]}/>
-           <TradesTable /> 
+           <TradesTable />
         </div>
     )
 }

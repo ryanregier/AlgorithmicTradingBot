@@ -20,13 +20,7 @@ import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 import {getStocks} from './alpacafunctions';
-import {manualTrade} from './alpacafunctions';
-
-
-  var stocks
-  const getStockFun = async () => { stocks = await getStocks(); };
-  getStockFun();
-  
+import {manualTrade} from './alpacafunctions';  
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -99,6 +93,13 @@ const ButtonAppBar = ({Logout, history}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [value, setValue] = useState(null);
+  const [stocklist, setStocks] = useState([]);
+  
+  useEffect(async()=>{
+    const temp = await getStocks();
+    console.log(`temp: ${temp}`);
+    setStocks(temp);
+  },[])
   
   const handleToolBarClick = (newURL) => {
       history.push(newURL);
@@ -225,7 +226,7 @@ const ButtonAppBar = ({Logout, history}) => {
               value={value}
               handleHomeEndKeys
               freeSolo={false}
-              options={stocks.map((option) => option.symbol)}
+              options={stocklist.map((option) => option.symbol)}
               onClose={handlePopUpClose}
               onChange={searchOnChangeHandler}
               renderInput={(params) => (

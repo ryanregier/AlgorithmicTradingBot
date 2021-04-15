@@ -1,3 +1,5 @@
+import { getConstructorTypeOfClassLikeDeclaration } from 'tsutils';
+
 const Alpaca = require('@alpacahq/alpaca-trade-api')
 const alpaca = new Alpaca({
     keyId: 'PKTSOANLV7FIXQR8NJSR',
@@ -19,13 +21,15 @@ function getAcctInfo(){
 }
 
 export function manualTrade(sym, qty, side, type, time_in_force){
+
     alpaca.createOrder({
         symbol: sym,
         qty: qty,
         side: side,
         type: type,
         time_in_force: time_in_force,
-    })
+    }).catch()
+   
 }
 
 function manualTradeLim(sym, qty, side, type, time_in_force, limit_price){
@@ -51,7 +55,7 @@ function getClosedOrders(){
         console.log(closedAaplOrders)
     })
 }
-//getClosedOrders()
+
 
 function getAssetList(){
     // Get a list of all active assets.
@@ -63,13 +67,7 @@ function getAssetList(){
         console.log(nasdaqAssets)
     })
 }
-//getAssetList()
 
-function getPrice(sym){
-
-}
 
 
 export default manualTrade;
-//manualTrade('MSFT',8,'buy','market','day')
-//console.log("Committed trade!")

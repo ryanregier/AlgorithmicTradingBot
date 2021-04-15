@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +8,7 @@ import { AutoSizer, Column, Table } from 'react-virtualized';
 
 const Http = new XMLHttpRequest();
 
-
+let rows = [];
 
 const styles = (theme) => ({
   flexContainer: {
@@ -153,18 +153,29 @@ function createData(id, dessert, calories, fat, carbs, protein) {
   return { id, dessert, calories, fat, carbs, protein };
 }
 
-let rows = [];
-Http.open("GET", `http://localhost:3500/trades`);
-Http.send();
-Http.onreadystatechange = function (e) {
-    if (this.readyState == 4 && this.status == 200) {
-        rows = JSON.parse(Http.response);
-    }
-  }
+
 
 export default function ReactVirtualizedTable() {
+  
+  const [loaded, setLoaded] = useState(false);
+  useEffect(()=>{
+    if(!loaded){
+      Http.open("GET", `http://localhost:3500/trades`);
+      Http.send();
+      Http.onreadystatechange = function (e) {
+      if (this.readyState == 4 && this.status == 200) {
+          rows = JSON.parse(Http.response);
+          setLoaded(true)
+        }
+      }
+
+   } 
+  })
+
   return (
     <Paper style={{ height: 400, width: '100%' }}>
+      {console.log("making table:")}
+      {console.log(rows)}
       <VirtualizedTable
         rowCount={rows.length}
         rowGetter={({ index }) => rows[index]}

@@ -30,6 +30,7 @@ import { BrowserRouter, Switch } from 'react-router-dom'
 import ButtonAppBar from "./AppBar";
 import {BrowserRouter as Router} from "react-router-dom";
 import Route from 'react-router-dom/Route'
+import  GoogleLogin  from 'react-google-login';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -78,16 +79,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignIn({Login, error}) {
+export default function SignIn({Login, onSuccess, error}) {
 
+    const clientId = "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com"
     const classes = useStyles();
-
     const [details, setDetails] = useState({email: "", password: ""});
 
     const submitHandler = (e) => {
         e.preventDefault();
-
         Login(details)
+    }
+
+    const googleFailure = (res) => {
+        console.log(`failure: ${res}`);
     }
 
     return (
@@ -136,6 +140,16 @@ export default function SignIn({Login, error}) {
                         >
                             Sign In
                         </Button>
+                        <Typography>or</Typography>
+                        <div>
+                        <GoogleLogin
+                            clientId= "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={onSuccess}
+                            onFailure={googleFailure}
+                            isSignedIn={true}
+                        />
+                        </div>
                         <Grid container>
                             <nav>
                                 <Linker to='/SignUp'>
