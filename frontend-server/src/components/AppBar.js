@@ -11,6 +11,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -23,6 +24,11 @@ import {getStocks} from './alpacafunctions';
 import {manualTrade} from './alpacafunctions';  
 
 const useStyles = makeStyles((theme) => ({
+
+  appBar:{
+   // backgroundColor: '#355c7D',
+    background:  'linear-gradient(45deg, #355c7D 70%, #F8B192 90%)'
+  },
   grow: {
     flexGrow: 1,
   },
@@ -204,7 +210,7 @@ const ButtonAppBar = ({Logout, history}) => {
 
   return(
     <div className={classes.grow}>
-    <AppBar position="static">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <IconButton
           edge="start"
@@ -213,7 +219,7 @@ const ButtonAppBar = ({Logout, history}) => {
           aria-label="open drawer"
           onClick={()=>{history.push('/')}}
         >
-          <MenuIcon />
+          <HomeIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
           Wheaton Stock Bot

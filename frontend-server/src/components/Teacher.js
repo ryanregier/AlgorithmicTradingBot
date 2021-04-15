@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
     heroContent: {
         background:  'linear-gradient(0deg, #ffffff 1%, #f3f3f3 15%)',
-
         padding: theme.spacing(8, 0, 6),
 
     },
