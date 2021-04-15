@@ -18,13 +18,26 @@ import Hidden from '@material-ui/core/Hidden';
 const useStyles = makeStyles((theme) => ({
 
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
+        background:  'linear-gradient(0deg, #ffffff 1%, #f3f3f3 15%)',
+
         padding: theme.spacing(8, 0, 6),
 
     },
 
     stocks: {
-        backgroundColor: theme.palette.background.default,
+        //backgroundColor: "#F8B195",
+        background:  'linear-gradient(90deg, #d3d3d3 1%, #F8B192 80%)',
+        padding: theme.spacing(3, 3, 3),
+    },
+
+    algo: {
+        //backgroundColor: "#F67280",
+        background: 'linear-gradient(90deg, #d3d3d3 3%, #F8B192 80%)',
+        padding: theme.spacing(3, 3, 3),
+    },
+
+    onlyUp: {
+        background: 'linear-gradient(90deg, #d3d3d3 5%, #F8B192 80%)',
         padding: theme.spacing(3, 3, 3),
     },
 
@@ -48,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
 
     card: {
         display: 'flex',
-        backgroundColor: "lightgrey",
+        background: 'linear-gradient(45deg, #d3d3d3 30%, #Ffffff 70%)',
+        //backgroundColor: "#355C7D",
     },
 
     cardDetails: {
@@ -93,7 +107,7 @@ export default function Album() {
                         </Typography>
                     </Container>
                 </div>
-                <div className={classes.stocks}>
+                <div className={classes.algo}>
                     <Container maxWidth="xl" spacing={10}>
                         <Typography component="h1" variant="h4" align="left" color="textPrimary" gutterBottom>
                             What is a trading algorithm?
@@ -104,7 +118,7 @@ export default function Album() {
                         </Typography>
                     </Container>
                 </div>
-                <div className={classes.stocks}>
+                <div className={classes.onlyUp}>
                     <Container maxWidth="xl" spacing={10}>
                         <Typography component="h1" variant="h4" align="left" color="textPrimary" gutterBottom>
                             Do Stocks only go up?
