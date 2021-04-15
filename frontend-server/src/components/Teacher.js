@@ -29,23 +29,35 @@ const useStyles = makeStyles((theme) => ({
     },
 
     cardGrid: {
-
         padding: theme.spacing(1),
+    },
+
+    cardContainer1: {
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(4),
+        paddingTop: theme.spacing(4),
+    },
+
+    cardContainer2: {
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(4),
+        paddingTop: theme.spacing(0),
+        paddingBlockEnd: theme.spacing(4),
     },
 
 
     card: {
         display: 'flex',
-        backgroundColor: 'lightgrey',
+        backgroundColor: "lightgrey",
     },
 
     cardDetails: {
         flex: 1,
     },
+
     cardMedia: {
         width: 160,
         backgroundImage: 'url(https://source.unsplash.com/B7rqd7NCe_g)',
-
     },
 }));
 
@@ -67,10 +79,6 @@ export default function Album() {
                             On this page we will teach you some of the basics about markets, stocks and what it takes to
                             be a person who invests!
                         </Typography>
-                        <div className={classes.heroButtons}>
-                            <Grid container spacing={2} justify="center">
-                            </Grid>
-                        </div>
                     </Container>
                 </div>
 
@@ -107,6 +115,8 @@ export default function Album() {
                 </div>
             </main>
 
+
+            <Grid container direction={'row'} className={classes.cardContainer1}>
             <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
                 <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp" target={"_blank"}>
                     <Card className={classes.card}>
@@ -117,9 +127,6 @@ export default function Album() {
                                 </Typography>
                                 <Typography variant="subtitle1" paragraph>
                                     In this post you can read more about what stocks are and how they work!
-                                </Typography>
-                                <Typography variant="subtitle1" color="primary">
-                                    Continue reading...
                                 </Typography>
                             </CardContent>
                         </div>
@@ -138,14 +145,49 @@ export default function Album() {
                                 <Typography variant="subtitle1" paragraph>
                                     In this post you can read more about how our algorithm works!
                                 </Typography>
-                                <Typography variant="subtitle1" color="primary">
-                                    Continue reading...
-                                </Typography>
                             </CardContent>
                         </div>
                     </Card>
                 </CardActionArea>
                 </Grid>
+            </Grid>
+
+
+            <Grid container direction={'row'} className={classes.cardContainer2}>
+                <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
+                    <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp" target={"_blank"}>
+                        <Card className={classes.card}>
+                            <div className={classes.cardDetails} >
+                                <CardContent>
+                                    <Typography component="h2" variant="h5">
+                                        More about Stocks
+                                    </Typography>
+                                    <Typography variant="subtitle1" paragraph>
+                                        In this post you can read more about what stocks are and how they work!
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                        </Card>
+                    </CardActionArea>
+                </Grid>
+
+                <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
+                    <CardActionArea component="a" href="https://www.investopedia.com/articles/active-trading/101014/basics-algorithmic-trading-concepts-and-examples.asp" target={"_blank"}>
+                        <Card className={classes.card}>
+                            <div className={classes.cardDetails}>
+                                <CardContent>
+                                    <Typography component="h2" variant="h5">
+                                        More about Trading Algorithms
+                                    </Typography>
+                                    <Typography variant="subtitle1" paragraph>
+                                        In this post you can read more about how our algorithm works!
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                        </Card>
+                    </CardActionArea>
+                </Grid>
+            </Grid>
 
         </React.Fragment>
     );
