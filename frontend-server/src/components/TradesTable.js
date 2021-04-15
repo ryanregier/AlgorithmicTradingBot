@@ -206,7 +206,7 @@ export default function ReactVirtualizedTable() {
           {
             width: 200,
             label: 'date\u00A0',
-            dataKey: 'date',
+            dataKey: 'timestamp',
           },
         ]}
       />

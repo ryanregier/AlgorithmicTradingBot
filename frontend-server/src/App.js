@@ -30,8 +30,6 @@ const App = () => {
   
   
   const googleSuccess = (res) => {
-    console.log("running google success");
-    console.log(res);
     setUser(res);
     console.log(user);
   }
