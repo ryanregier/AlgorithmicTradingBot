@@ -23,10 +23,41 @@ app.use(express.static('sound'))
 app.use(express.static('html'))
 app.use(express.static('txt'))
 
-app.get('/manualtrade/', (req,res) => {
+app.get('/positions', (req,res) => {
 
-    res.image();
-    console.log("sending image");
+  MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+    if(err != null){
+      console.log(err)
+      client.close();
+    }else{
+      const collection = client.db("tradingbot").collection("positions");
+      const result = collection.find({},{sort:{created_at:1}}).toArray().then((result) => {
+        res.contentType('application/json');
+        console.log("accountinfo result");
+        console.log(result)
+        res.json(result);
+      }).then(()=>{client.close()});
+    }
+  });
+
+})
+
+app.get('/keystats/:sym', (req,res) => {
+
+  MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+    if(err != null){
+      console.log(err)
+    }else{
+      const collection = client.db("tradingbot").collection("stockinfo");
+      const result = collection.find({symbol:req.params.sym}).toArray().then((result=>{
+        res.contentType('application/json');
+        console.log("accountinfo result");
+        console.log(result)
+        res.json(result);
+      }));
+       
+    }
+  });
 
 })
 
@@ -37,6 +68,7 @@ app.get('/account', (req,res) => {
     MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
       if(err != null){
         console.log(err)
+        client.close();
       }else{
         const collection = client.db("tradingbot").collection("accountinfo");
         
@@ -46,7 +78,7 @@ app.get('/account', (req,res) => {
           console.log("accountinfo result");
           console.log(result)
           res.json(result);
-        });
+        }).then(()=>{client.close});
       }
     });
   });
@@ -55,22 +87,19 @@ app.get('/account', (req,res) => {
   app.get('/trades', (req,res) => {
     MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
       if(err != null){
-        console.log(err)
+        console.log(err);
+        client.close();
       }else{
-        const collection = client.db("tradingbot").collection("backtestedtrades");
+        const collection = client.db("tradingbot").collection("histrades");
   
-        const options = {
-          sort:{date:-1},
-          projection:{_id:0}
-        };
-        
-  
-        const result = collection.find({},options).limit(100).toArray().then((result) => {
+        const options = { sort:{date:1}, projection:{_id:0} };
+
+        const result = collection.find({},options).limit(20).toArray().then((result) => {
           res.contentType('application/json');
           console.log("trades");
           console.log(result)
           res.json(result);
-        });
+        }).then(()=>{client.close();});
       }
     });
   });
@@ -84,6 +113,7 @@ app.get('/login/:email/:password', async(req,res) => {
   MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
     if(err !== null){
       console.log(err);
+      client.close();
     }else{
       const query = {email: req.params.email, password: req.params.password};
       const options  = {
@@ -113,6 +143,7 @@ app.set('/login/:email/:password/:firstName/:lastName', async(req,res) => {
   MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
     if(err !== null){
       console.log(err);
+      client.close();
     }else {
       const query = {email: req.params.email, password: req.params.password};
       const options  = {
@@ -135,13 +166,10 @@ app.set('/login/:email/:password/:firstName/:lastName', async(req,res) => {
           })
           .then((error, result) => {
             client.close();
-          });//end of .then() block
-    }
+          });
+        }
   });//end of MongoClient.connect
 });//end of app.get
 
-function errorFunc(error) {
-  console.log(error);
-}
 
 app.listen(port, ()=> console.log(`listening on ${port}`));

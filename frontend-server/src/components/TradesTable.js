@@ -145,16 +145,6 @@ MuiVirtualizedTable.propTypes = {
 
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
-// ---
-
-
-
-function createData(id, dessert, calories, fat, carbs, protein) {
-  return { id, dessert, calories, fat, carbs, protein };
-}
-
-
-
 export default function ReactVirtualizedTable() {
   
   const [loaded, setLoaded] = useState(false);
