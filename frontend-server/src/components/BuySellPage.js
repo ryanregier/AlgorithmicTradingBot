@@ -14,14 +14,12 @@ import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
 import StockGraph from './StockGraph';
 import Plot from 'react-plotly.js';
-
-
+import KeyStats from './KeyStats';
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container'
 import {GiLockedBox} from "react-icons/all";
 import CardMedia from '@material-ui/core';
 import {Link as Linker, NavLink, Redirect} from "react-router-dom"
-
 import {Image} from "@material-ui/icons";
 import {Paper} from "@material-ui/core";
 import manualTrade from "./alpacafunctions";
@@ -75,6 +73,22 @@ const BuySellPage = () =>{
 
     const {sym} = useParams();
 
+    const[stats, setStats] = useState({});
+
+    useEffect(()=>{
+      console.log('indside useeffect');
+      Http.open("GET", `http://localhost:3500/keystats/${sym}`);
+      Http.send();
+      Http.onreadystatechange = function (e) {
+      if (this.readyState == 4 && this.status == 200) {
+          console.log(JSON.parse(Http.responseText));
+          setStats(JSON.parse(Http.responseText)[0]);
+        }
+      }
+    },[]);
+     
+    
+
     const submitHandler = (e) => {
       e.preventDefault();
       var side;
@@ -97,26 +111,12 @@ const BuySellPage = () =>{
 
     return(
       <divM>
-        <Typography component='h1' variant='h2 '>
-          {sym}
-        </Typography>
-        {/* /<h1>{sym}</h1> */}
+        <Typography component='h1' variant='h2 '>{sym}</Typography>
         <StockGraph symbol={sym}/>
       <div className="whattheheck">
       </div>
-
-      {/*    <Container >*/}
-      {/*      <div className="temp-plot"></div>*/}
-      {/*    </Container>*/}
-      {/*    <div>*/}
-
-      {/*    </div>*/}
-      {/*    /!*<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>*!/*/}
-      {/*<Container xs={12} sm={8} md={5} component = {Paper} elevation = {6} square>*/}
-
       <div className="temp-plot"></div>
       <Grid item xs={12} sm={8} md={4} component={Paper} square>
-
                 <div className={classes.paper}>
                     {(buyorsell) ? 
                     <Typography componenet="h1" variant="h5">Buy Shares</Typography>
@@ -148,13 +148,8 @@ const BuySellPage = () =>{
                         </Button>
                     </form>
                 </div>
-
-      {/*</Container>*/}
-
-      {/*{jQueryCode()}*/}
-
             </Grid>
-
+        <KeyStats stats={stats}/>
       </divM>
     )
 }

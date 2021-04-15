@@ -8,7 +8,6 @@ const StockGraph = ({symbol}) => {
     const trace = useRef({});
 
     if(sym.localeCompare(symbol) != 0){
-      console.log("inside if statement");
       setLoaded(false);
       setSym(symbol);
     }
@@ -39,7 +38,7 @@ const StockGraph = ({symbol}) => {
                 }
             ).then(
                 function(data){
-                    console.log(data);
+                   // console.log(data);
                     
                     for(var key in data['Time Series (5min)']){
                         xvals.push(key)

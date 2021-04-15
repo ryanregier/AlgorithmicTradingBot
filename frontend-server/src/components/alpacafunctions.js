@@ -55,6 +55,10 @@ function getClosedOrders(){
     })
 }
 
+export function getPos(){
+    return alpaca.getPositions();
+}
+
 
 function getAssetList(){
     // Get a list of all active assets.

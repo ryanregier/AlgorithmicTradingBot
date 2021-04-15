@@ -12,7 +12,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 
 import SignUp from "./SignUp";
-import ManualTrades from "./MainPortfolio"
 
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container'
@@ -21,7 +20,7 @@ import React from "react";
 import CardMedia from '@material-ui/core';
 import {Link as Linker, NavLink, Redirect} from "react-router-dom"
 
-import Images from "./Images";
+
 import logo from "../Images/SB.png"
 import animatedLogo from "../Images/SB (1).gif"
 import {Image} from "@material-ui/icons";

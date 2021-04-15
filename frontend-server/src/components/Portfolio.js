@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import Button from "@material-ui/core/Button";
 import Plot from 'react-plotly.js';
 import TradesTable from './TradesTable';
-import {getAcctInfo} from './alpacafunctions';
+import {getAcctInfo, getPos} from './alpacafunctions';
 import { Typography } from "@material-ui/core";
+import GoogleLogout  from 'react-google-login';
 
 
 const Http = new XMLHttpRequest();
@@ -11,31 +12,25 @@ const Http = new XMLHttpRequest();
 // Create our number formatter.
 var formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',});
   
-
-
 const PortfolioPage = () => {
     const [trace, setTrace] = useState({});
-    const [totalequity, setEquity] = useState("$");
+    const [totalequity, setEquity] = useState("");
     let xvals = [];
     let yvals = [];
 
     useEffect(async()=>{
-        Http.open("GET", `http://localhost:3500/positions`);
-        Http.send();
-        Http.onreadystatechange = function (e){
-            const data = JSON.parse(Http.responseText);
-            for(var i=0;i<data.length;i++){
-                xvals.push(data[i].sym);
-                yvals.push(data[i].qty);
+        const pos = getPos().then(response=>{
+           for(var i=0;i<response.length;i++){
+                xvals.push(response[i].symbol);
+                yvals.push(response[i].qty);
             }
-            setTrace({x:xvals, y:yvals, type:'bar', name: 'positions'});
-            const acct = getAcctInfo().then((account)=>{
-                console.log(account)
-                setEquity(account.equity);   
-            });
+            return({x:xvals, y:yvals, type:'bar', name:'Positions'});
+        }).then(dict=>{setTrace(dict)});
+        const acct = getAcctInfo().then((account)=>{
+            setEquity(account.equity);   
+        });
+       
 
-           
-        }   
     },[])
  
     return (
