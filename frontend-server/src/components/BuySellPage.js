@@ -73,22 +73,6 @@ const BuySellPage = () =>{
 
     const {sym} = useParams();
 
-    const[stats, setStats] = useState({});
-
-    useEffect(()=>{
-      console.log('indside useeffect');
-      Http.open("GET", `http://localhost:3500/keystats/${sym}`);
-      Http.send();
-      Http.onreadystatechange = function (e) {
-      if (this.readyState == 4 && this.status == 200) {
-          console.log(JSON.parse(Http.responseText));
-          setStats(JSON.parse(Http.responseText)[0]);
-        }
-      }
-    },[]);
-     
-    
-
     const submitHandler = (e) => {
       e.preventDefault();
       var side;
@@ -149,7 +133,7 @@ const BuySellPage = () =>{
                     </form>
                 </div>
             </Grid>
-        <KeyStats stats={stats}/>
+        <KeyStats symbol={sym}/>
       </divM>
     )
 }
