@@ -36,10 +36,8 @@ const App = () => {
 
   const isLoggedIn = () =>{
     try{
-      console.log(user.isSignedIn());
       return user.isSignedIn();
     }catch (err){
-      //console.log(err);
       return false;
     }
   }

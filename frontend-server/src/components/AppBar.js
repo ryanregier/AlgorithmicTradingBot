@@ -97,7 +97,6 @@ const ButtonAppBar = ({Logout, history}) => {
   
   useEffect(async()=>{
     const temp = await getStocks();
-    console.log(`temp: ${temp}`);
     setStocks(temp);
   },[])
   

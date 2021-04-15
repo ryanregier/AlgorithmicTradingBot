@@ -13,9 +13,8 @@ export const getStocks = async () => {
     return stocks;
 };
 
-function getAcctInfo(){
-    alpaca.getAccount().then((account) => {
-        console.log('Current Account:', account)
+export function getAcctInfo(){
+    return alpaca.getAccount().then((account) => {
         return account
     })
 }

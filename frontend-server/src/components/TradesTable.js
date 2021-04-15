@@ -174,8 +174,6 @@ export default function ReactVirtualizedTable() {
 
   return (
     <Paper style={{ height: 400, width: '100%' }}>
-      {console.log("making table:")}
-      {console.log(rows)}
       <VirtualizedTable
         rowCount={rows.length}
         rowGetter={({ index }) => rows[index]}
