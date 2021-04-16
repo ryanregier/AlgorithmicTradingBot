@@ -10,13 +10,8 @@ import BuySellPage from './components/BuySellPage';
 import SignUp from './components/SignUp'
 import { BrowserRouter as Router, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import getStocks from './components/alpacafunctions';
+import {useGoogleLogout} from 'react-google-login';
 
-
-import AuthApi from "./AuthApi"
-import Cookies from 'react-cookies';
-
-
-import { PinDropSharp } from '@material-ui/icons';
 
 const Http = new XMLHttpRequest();
 /*Steven Barker*/
@@ -24,11 +19,29 @@ const Http = new XMLHttpRequest();
 
 const App = () => {
 
+  const clientId = "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com";
+  const redirectUri="http://localhost:3000/algo"
+
+  
   const [user, setUser] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  //const [isloaded, setLoaded] = useState(false);
   
   
   const googleSuccess = (res) => { setUser(res); }
+  
+  const onLogoutSuccess = (res) => {
+    setUser(null);
+    console.log(`res: ${res}`);
+  }
+  
+  const onFailure = (err) => {console.log(err);}
+  
+  const { signOut, loaded } = useGoogleLogout({
+    onFailure,
+    redirectUri,
+    clientId,
+    onLogoutSuccess
+  })
 
   const isLoggedIn = () =>{
     try{
@@ -85,7 +98,7 @@ const App = () => {
         {(isLoggedIn()) ? (
          <div>
            {console.log(user)}
-        <ButtonAppBar Logout={Logout}/>
+        <ButtonAppBar Logout={Logout} signOut={signOut}/>
         <PortfolioPage />
         </div>
         )
@@ -97,7 +110,7 @@ const App = () => {
         <Route exact path="/algo">
         {(isLoggedIn()) ? (
          <div>
-           <ButtonAppBar Logout={Logout}/>
+           <ButtonAppBar Logout={Logout} signOut={signOut}/>
            <AlgoPage />
          </div>
         ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
@@ -105,7 +118,7 @@ const App = () => {
       <Route exact path="/buysell/:sym">
        {(isLoggedIn()) ? (
       <div>
-           <ButtonAppBar Logout={Logout}/>
+           <ButtonAppBar Logout={Logout} signOut={signOut}/>
            <BuySellPage />
          </div>
         ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
@@ -116,7 +129,7 @@ const App = () => {
       <Route exact path="/about">
        {(isLoggedIn()) ? (
       <div>
-           <ButtonAppBar Logout={Logout}/>
+           <ButtonAppBar Logout={Logout} signOut={signOut}/>
            <AboutPage />
          </div>
        ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
@@ -124,7 +137,7 @@ const App = () => {
       <Route exact path="/teacher">
         {(isLoggedIn()) ? (
           <div>
-            <ButtonAppBar Logout={Logout}/>
+            <ButtonAppBar Logout={Logout} signOut={signOut}/>
             <Teacher />
           </div>
           ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}

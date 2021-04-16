@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ButtonAppBar = ({Logout, history}) => {
+const ButtonAppBar = ({Logout, signOut,history}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -113,7 +113,7 @@ const ButtonAppBar = ({Logout, history}) => {
   const handleLogout = () => {
       handleMenuClose();
       console.log("This is running");
-      Logout();
+      //Logout();
   }
 
   const handleProfileMenuOpen = (event) => {
@@ -166,7 +166,7 @@ const ButtonAppBar = ({Logout, history}) => {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={signOut}>Logout</MenuItem>
     </Menu>
   );
 
