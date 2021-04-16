@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
     card: {
         display: 'flex',
-        background: 'linear-gradient(45deg, #d3d3d3 30%, #Ffffff 70%)',
+        background: 'lightgrey',
         //backgroundColor: "#355C7D",
     },
 
