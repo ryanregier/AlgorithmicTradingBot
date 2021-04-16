@@ -21,6 +21,7 @@ const KeyStats = ({symbol}) => {
         if (this.readyState == 4 && this.status == 200) {
             console.log(JSON.parse(Http.responseText));
             setStats(JSON.parse(Http.responseText)[0]);
+            setLoaded(true)
           }
         }
        }
