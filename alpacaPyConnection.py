@@ -96,13 +96,14 @@ def update_acctinfo_todb():
         "maintenance_margin": myAccount.maintenance_margin,
         "last_maintenance_margin": myAccount.last_maintenance_margin,
         "sma": myAccount.sma,
-        "daytrade_count": myAccount.daytrade_count
+        "daytrade_count": myAccount.daytrade_count,
+        "timestamp": time.time()
     }
     collection.insert_one(doc)
     print("Added to DB")
 
 
-# update_acctinfo_todb()
+update_acctinfo_todb()
 
 
 def update_acct_balance_change():
@@ -143,8 +144,8 @@ def update_acctinfo_positions():
     print("Added trades")
 
 
-update_acctinfo_positions()
-print("Updated positions")
+# update_acctinfo_positions()
+# print("Updated positions")
 
 
 def create_order(sym, qty, side, action, time_in_force):

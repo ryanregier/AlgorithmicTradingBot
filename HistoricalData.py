@@ -1,3 +1,6 @@
+import time
+
+import schedule as schedule
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +9,7 @@ from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpdates
 from matplotlib import style
 from pymongo import MongoClient
-import alpacaPyConnection as alpacaScript
+import alpacaPyConnection as alpaca
 from pandas_datareader import data as web
 import plotly.offline as py
 import os
@@ -213,43 +216,58 @@ def buildCS(sym):
 def buildAnalysis():
     if stockIsEmpty():
         return
-    info = stock.info
-    db = client['tradingbot']
-    collection = db['stockinfo']
-    collection.replace_one({'symbol': info['symbol']}, info, True)
-    print(info)
-    f = open("analysis.txt", "w")
-    f.write("Stock Analysis for: " + info['shortName'] + "\n")
-    f.write("Symbol: " + info['symbol'] + "\n")
-    f.write("Type: " + info['quoteType'] + "\n")
-    f.write("Market: " + info['market'] + "\n")
-    f.write("Info: " + info['longBusinessSummary'] + "\n")
     try:
-        f.write("Sector: " + info['sector'] + "\n")
-    except KeyError:
+        info = stock.info
+        db = client['tradingbot']
+        collection = db['stockinfo']
+        collection.replace_one({'symbol': info['symbol']}, info, True)
+        # print(info)
+        f = open("analysis.txt", "w")
+        f.write("Stock Analysis for: " + info['shortName'] + "\n")
+        f.write("Symbol: " + info['symbol'] + "\n")
+        f.write("Type: " + info['quoteType'] + "\n")
+        f.write("Market: " + info['market'] + "\n")
+        f.write("Info: " + info['longBusinessSummary'] + "\n")
+        try:
+            f.write("Sector: " + info['sector'] + "\n")
+        except KeyError:
+            pass
+        try:
+            f.write("Country: " + info['country'] + "\n")
+        except KeyError:
+            pass
+        f.write("Closing Price: " + str(info['previousClose']) + "\n")
+        f.write("Financials:\n")
+        f.write("\tDividend Rate: " + str(info['dividendRate']) + "\n")
+        f.write("\tBeta: " + str(info['beta']) + "\n")
+        f.write("\tPrice to Book: " + str(info['priceToBook']) + "\n")
+        f.write("\tMarket Cap: " + str(info['marketCap']) + "\n")
+        try:
+            f.write("\tTrailing PE: " + str(info['trailingPE']) + "\n")
+        except KeyError:
+            pass
+        f.write("\tForward PE: " + str(info['forwardPE']) + "\n")
+        f.write("\t52 wk. high: " + str(info['fiftyTwoWeekHigh']) + "\n")
+        f.write("\tPayout Ratio: " + str(info['payoutRatio']) + "\n")
+        f.write("\tTrailingAnnualDividendYield: " + str(info['trailingAnnualDividendYield']) + "\n")
+        f.write("\tAverageDailyVolume10Day: " + str(info['averageDailyVolume10Day']) + "\n")
+        f.write("\tAverage Volume:" + str(info['averageVolume']) + "\n")
+        f.close()
+    except Exception:
         pass
-    try:
-        f.write("Country: " + info['country'] + "\n")
-    except KeyError:
-        pass
-    f.write("Closing Price: " + str(info['previousClose']) + "\n")
-    f.write("Financials:\n")
-    f.write("\tDividend Rate: " + str(info['dividendRate']) + "\n")
-    f.write("\tBeta: " + str(info['beta']) + "\n")
-    f.write("\tPrice to Book: " + str(info['priceToBook']) + "\n")
-    f.write("\tMarket Cap: " + str(info['marketCap']) + "\n")
-    try:
-        f.write("\tTrailing PE: " + str(info['trailingPE']) + "\n")
-    except KeyError:
-        pass
-    f.write("\tForward PE: " + str(info['forwardPE']) + "\n")
-    f.write("\t52 wk. high: " + str(info['fiftyTwoWeekHigh']) + "\n")
-    f.write("\tPayout Ratio: " + str(info['payoutRatio']) + "\n")
-    f.write("\tTrailingAnnualDividendYield: " + str(info['trailingAnnualDividendYield']) + "\n")
-    f.write("\tAverageDailyVolume10Day: " + str(info['averageDailyVolume10Day']) + "\n")
-    f.write("\tAverage Volume:" + str(info['averageVolume']) + "\n")
-    f.close()
 
+
+def job():
+    stocks = alpaca.api.list_assets(status='active')
+    for i in stocks:
+        getTicker(i.symbol)
+        buildAnalysis()
+
+
+schedule.every().day.at("6:00").do(job)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
 '''
 ls = alpacaScript.getPositions()

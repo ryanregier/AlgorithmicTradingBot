@@ -14,9 +14,9 @@ db = client['tradingbot']
 collection = db['users']
 ts = time.time()
 doc = {
-        "username": "ryan",
-        "role": "developer",
-        "accountId": 5,
+        "username": "STMA",
+        "role": "algo",
+        "accountId": 7,
         "dateCreated": ts,
         "email": "ryan.regier@my.wheaton.edu",
         "password": "password",
