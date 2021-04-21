@@ -24,7 +24,7 @@ import {Image} from "@material-ui/icons";
 import {Paper} from "@material-ui/core";
 import manualTrade from "./alpacafunctions";
 import Drawer from '@material-ui/core'
-import { sizing } from '@material-ui/system'
+import {sizing} from '@material-ui/system'
 
 
 const Http = new XMLHttpRequest();
@@ -32,20 +32,33 @@ const Http = new XMLHttpRequest();
 const useStyles = makeStyles((theme) => ({
 
     paper: {
-
         margin: theme.spacing(5),
         marginLeft: theme.spacing(25),
         width: theme.spacing(30),
-        height: theme.spacing(70),
+        height: theme.spacing(45),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: 'white',
     },
 
+
+    paperRight: {
+        margin: theme.spacing(5),
+        marginLeft: theme.spacing(5),
+        paddingTop: theme.spacing(2),
+        width: theme.spacing(45),
+        height: theme.spacing(70),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        overflow: 'auto',
+    },
+
     sticky: {
         background: 'linear-gradient(0deg, #fafafa 2%, #ffffff 6%)',
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
         display: 'flex',
         alignItems: 'center',
         //height: theme.spacing(130),
@@ -80,13 +93,24 @@ const useStyles = makeStyles((theme) => ({
     },
 
     tickerSymbol: {
-      margin: theme.spacing(10),
+        margin: theme.spacing(10),
     },
 
     stockGraph: {
         margin: theme.spacing(3),
         alignItems: 'center',
     },
+
+    stockInfo: {
+        padding: theme.spacing(2),
+        fontSize: 16,
+    },
+
+    stockHeader: {
+        padding: theme.spacing(2),
+        fontSize: 45,
+    },
+
 }));
 
 
@@ -95,7 +119,7 @@ const BuySellPage = () => {
     const {sym} = useParams();
 
     const [stats, setStats] = useState({});
-/*
+
     useEffect(() => {
         console.log('indside useeffect');
         Http.open("GET", `http://localhost:3500/keystats/${sym}`);
@@ -107,7 +131,6 @@ const BuySellPage = () => {
             }
         }
     }, []);
-    */
 
 
     const submitHandler = (e) => {
@@ -136,37 +159,38 @@ const BuySellPage = () => {
 
             <Grid container className={classes.sticky}>
 
-                <Grid item component={Paper} elevation={12} square className={classes.paper}>
+                <Grid item component={Paper} elevation={12}  className={classes.paper}>
 
-                        <form onSubmit={submitHandler} className={classes.form}>
+                    <form onSubmit={submitHandler} className={classes.form}>
 
-                            {(buyorsell) ?
-                                <Typography componenet="h1" variant="h5">Buy Shares</Typography>
-                                :
-                                <Typography componenet="h1" variant="h5">Sell Shares</Typography>}
-                            <FormControlLabel className={classes.formControl} control={<Switch checked={buyorsell} onChange={toggleBuySell}/>}
-                            />
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="amount"
-                                label="Shares"
-                                name="shares"
-                                type="number"
-                                autoFocus
-                                onChange={e => setNumShares(e.target.value)}/>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Execute Trade
-                            </Button>
-                        </form>
+                        {(buyorsell) ?
+                            <Typography componenet="h1" variant="h5">Buy Shares</Typography>
+                            :
+                            <Typography componenet="h1" variant="h5">Sell Shares</Typography>}
+                        <FormControlLabel className={classes.formControl}
+                                          control={<Switch checked={buyorsell} onChange={toggleBuySell}/>}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="amount"
+                            label="Shares"
+                            name="shares"
+                            type="number"
+                            autoFocus
+                            onChange={e => setNumShares(e.target.value)}/>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Execute Trade
+                        </Button>
+                    </form>
                 </Grid>
 
                 <Grid item className={classes.tickerSymbol}>
@@ -175,9 +199,20 @@ const BuySellPage = () => {
                 </Grid>
 
 
+                <Grid item component={Paper} elevation={12} square className={classes.paperRight}>
+
+                    <Typography variant='h1' fontSize={12} align={'center'} className={classes.stockHeader}>
+                        {sym} Info
+                    </Typography>
+
+                    <Typography variant='h10' align={'left'} className={classes.stockInfo}>
+                        <KeyStats symbol={sym}/>
+                    </Typography>
+
+                </Grid>
 
             </Grid>
-            <KeyStats symbol={sym}/>
+
         </divM>
     )
 }
