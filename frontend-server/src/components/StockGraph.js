@@ -1,6 +1,7 @@
 import { Zoom } from '@material-ui/core';
 import React,{useEffect, useState, useRef} from 'react';
 import Plot from 'react-plotly.js';
+import getPrice from './alpacafunctions';
 
 const StockGraph = ({symbol}) => {
     const [loaded, setLoaded] = useState(false); 
@@ -30,6 +31,8 @@ const StockGraph = ({symbol}) => {
         let open = [];
         let high = [];
 
+        const price = getPrice(symbol);
+
 
         fetch(APICALL)
             .then(
@@ -47,6 +50,7 @@ const StockGraph = ({symbol}) => {
                         high.push(data['Time Series (5min)'][key]['2. high']);
                         low.push(data['Time Series (5min)'][key]['3. low']);
                     }
+                    
                     return {xvals: xvals, close: close, open: open, high: high, low: low};
                     
 
@@ -57,9 +61,9 @@ const StockGraph = ({symbol}) => {
                 trace.current = {
                   x: data.xvals, 
                   close: data.close, 
-                  decreasing: {line: {color: '#7F7F7F'}},
+                  decreasing: {line: {color: '#F67280'}},
                   high: data.high,
-                  increasing: {line: {color: '#17BECF'}}, 
+                  increasing: {line: {color: '#355C7D'}}, 
                   line: {color: 'rgba(31,119,180,1)'},
                   low: data.low,
                   open: data.open,
@@ -95,9 +99,9 @@ const StockGraph = ({symbol}) => {
           xaxis: {
             autorange: true, 
             domain: [0, 1], 
-            range: ['2017-01-03 12:00', '2017-02-15 12:00'], 
-            rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']}, 
-            title: 'Date', 
+           // range: ['2017-01-03 12:00', '2017-02-15 12:00'], 
+           // rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']}, 
+            title: 'Time', 
             type: 'date'
           }, 
           yaxis: {

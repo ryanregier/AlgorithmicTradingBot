@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
 import StockGraph from './StockGraph';
 import Plot from 'react-plotly.js';
-//import KeyStats from './KeyStats';
+import KeyStats from './KeyStats';
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container'
 import {GiLockedBox} from "react-icons/all";
@@ -95,7 +95,7 @@ const BuySellPage = () => {
     const {sym} = useParams();
 
     const [stats, setStats] = useState({});
-
+/*
     useEffect(() => {
         console.log('indside useeffect');
         Http.open("GET", `http://localhost:3500/keystats/${sym}`);
@@ -107,6 +107,7 @@ const BuySellPage = () => {
             }
         }
     }, []);
+    */
 
 
     const submitHandler = (e) => {
@@ -176,7 +177,7 @@ const BuySellPage = () => {
 
 
             </Grid>
-            {/*<KeyStats stats={stats}/>*/}
+            <KeyStats symbol={sym}/>
         </divM>
     )
 }

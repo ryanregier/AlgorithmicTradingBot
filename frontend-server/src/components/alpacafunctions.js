@@ -20,14 +20,17 @@ export function getAcctInfo(){
 }
 
 export function manualTrade(sym, qty, side, type, time_in_force){
-
+    try{
     alpaca.createOrder({
         symbol: sym,
         qty: qty,
         side: side,
         type: type,
         time_in_force: time_in_force,
-    }).catch()
+    }).then(()=>{console.log("fulfilled")},()=>{console.log("rejected")})
+    } catch (e){
+        //shut up
+    }
    
 }
 
@@ -41,6 +44,7 @@ function manualTradeLim(sym, qty, side, type, time_in_force, limit_price){
         limit_price: limit_price
     })
 }
+
 
 function getClosedOrders(){
     // Get the last 100 of our closed orders
@@ -59,6 +63,19 @@ export function getPos(){
     return alpaca.getPositions();
 }
 
+export function getPrice(sym){
+    const barset = alpaca.getBars(
+        'day',
+        'AAPL',
+        {
+            limit: 5
+        }
+    ).then((barset) => {
+        console.log(barset['AAPL']);
+    
+        })
+
+}
 
 function getAssetList(){
     // Get a list of all active assets.

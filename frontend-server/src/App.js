@@ -16,7 +16,6 @@ import {useGoogleLogout} from 'react-google-login';
 const Http = new XMLHttpRequest();
 /*Steven Barker*/
 
-
 const App = () => {
 
   const clientId = "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com";

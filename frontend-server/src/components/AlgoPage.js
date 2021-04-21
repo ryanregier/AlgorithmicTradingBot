@@ -1,3 +1,6 @@
+import React from 'react';
+
+const Http = new XMLHttpRequest();
 
 
 
@@ -6,6 +9,7 @@ function AlgoPage({setPage}){
         <div>
             
             Algo page
+            It is currently making money
         </div>
 
     )
