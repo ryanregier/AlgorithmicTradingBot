@@ -1,5 +1,3 @@
-import { getConstructorTypeOfClassLikeDeclaration } from 'tsutils';
-
 const Alpaca = require('@alpacahq/alpaca-trade-api')
 const alpaca = new Alpaca({
     keyId: 'PKTSOANLV7FIXQR8NJSR',
@@ -64,17 +62,7 @@ export function getPos(){
 }
 
 export function getPrice(sym){
-    const barset = alpaca.getBars(
-        'day',
-        'AAPL',
-        {
-            limit: 5
-        }
-    ).then((barset) => {
-        console.log(barset['AAPL']);
-    
-        })
-
+   alpaca.getLastQuote('AAPL').then((response) => { console.log(response)})
 }
 
 function getAssetList(){

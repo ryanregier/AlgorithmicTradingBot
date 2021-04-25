@@ -13,21 +13,50 @@ import getStocks from './components/alpacafunctions';
 import {useGoogleLogout} from 'react-google-login';
 
 
+const clientId = "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com";
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIEN_ID);
+
 const Http = new XMLHttpRequest();
 /*Steven Barker*/
 
 const App = () => {
 
-  const clientId = "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com";
-  const redirectUri="http://localhost:3000/algo"
-
-  
   const [user, setUser] = useState(null);
-  //const [isloaded, setLoaded] = useState(false);
   
   
-  const googleSuccess = (res) => { setUser(res); }
-  
+  const googleSuccess = (res) => {
+/*
+      const verified = client.verifyIdToken({
+          idToken: res.tokenObj.id_token,
+          audience:process.env.GOOGLE_CLIENT_ID
+      }).then((value) => { return value.getPayload().email_verified})
+        .then((verified) =>{
+            if(verified) {
+                Http.open("GET", `http://10.12.240.56:3500/googleId/${res.googleId}`);
+                Http.send();
+                console.log("sending http request");
+                Http.onreadystatechange = function (e) {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(Http.responseText == ""){
+                            setUser(null);
+                            console.log("setting user to null on line 55");
+                        }else{
+                            console.log("setting user to res on line 57");
+                            setUser(res);
+                        }
+                    }
+                }
+            }else {
+                console.log("setting user to null on line 64");
+                setUser(null);
+            }
+        });
+        */
+    setUser(res);
+  }
+
+
   const onLogoutSuccess = (res) => {
     setUser(null);
     console.log(`res: ${res}`);
@@ -37,7 +66,7 @@ const App = () => {
   
   const { signOut, loaded } = useGoogleLogout({
     onFailure,
-    redirectUri,
+    //redirectUri,
     clientId,
     onLogoutSuccess
   })
@@ -46,13 +75,17 @@ const App = () => {
     try{
       return user.isSignedIn();
     }catch (err){
-      return false;
+        try {
+            return user.isLoggedIn;
+        }catch (e) {
+            return false;
+        }
     }
   }
 
   const Login = (details) => {
     console.log("Inside Login function");
-    Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
+    Http.open("GET", `http://10.12.240.56:3500/login/${details.email}/${details.password}`);
     Http.send();
     console.log("sending http request");
     Http.onreadystatechange = function (e) {
@@ -60,7 +93,7 @@ const App = () => {
         console.log(Http.responseText);
         if(Http.responseText != ""){
             console.log("logged in");
-            setUser({name: Http.responseText, email: details.email});
+            setUser({name: Http.responseText, email: details.email, isLoggedIn:true});
           }else{
             console.log("failure"); 
           }

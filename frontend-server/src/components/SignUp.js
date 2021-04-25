@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { withRouter } from 'react-router-dom';
+import  GoogleLogin  from 'react-google-login';
 
+const Http = new XMLHttpRequest();
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,11 +39,42 @@ const useStyles = makeStyles((theme) => ({
 
 
 function SignUp({history}) {
+    const [details, setDetails] = useState({});
     const classes = useStyles();
 
     const submitHandler = (e) => {
         e.preventDefault();
-        history.push('/login')
+        setDetails({...details, googleId:null});
+        Http.open("POST", `http://10.12.240.56:3500/signup/`);
+        //get (first name, last name, email, googleID)
+        //put it all in the route
+        Http.setRequestHeader("Content-Type", "application/json");
+        Http.send(JSON.stringify(details));
+
+        history.push('/')
+    }
+
+    const onSuccess = (res)=>{
+        //update mongoDB
+
+        Http.open("POST", `http://10.12.240.56:3500/signup/`);
+        //get (first name, last name, email, googleID)
+        //put it all in the route
+        Http.setRequestHeader("Content-Type", "application/json");
+
+
+
+        Http.send();
+        console.log("sending http request");
+        Http.onreadystatechange = function (e) {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("Done with sign up");
+            }
+        }
+    }
+
+    const onFailure = (res)=>{
+        console.log("SignUp Google Failure")
     }
 
     return (
@@ -66,6 +99,7 @@ function SignUp({history}) {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={e => setDetails({...details, firstname: e.target.value})}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -77,6 +111,7 @@ function SignUp({history}) {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                onChange={e => setDetails({...details, lastname: e.target.value})}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -88,6 +123,7 @@ function SignUp({history}) {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={e => setDetails({...details, email: e.target.value})} value={details.email}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -100,6 +136,7 @@ function SignUp({history}) {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                onChange={e => setDetails({...details, password: e.target.value})}
                             />
                         </Grid>
                     </Grid>
@@ -112,6 +149,13 @@ function SignUp({history}) {
                     >
                         Sign Up
                     </Button>
+                    <GoogleLogin
+                        clientId= "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com"
+                        buttonText="SignUp with Google"
+                        onSuccess={onSuccess}
+                        onFailure={onFailure}
+                        isSignedIn={false}
+                    />
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Link href="/login" variant="body2">

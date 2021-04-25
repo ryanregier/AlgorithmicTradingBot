@@ -61,7 +61,7 @@ const StockGraph = ({symbol}) => {
                 trace.current = {
                   x: data.xvals, 
                   close: data.close, 
-                  decreasing: {line: {color: '#F67280'}},
+                  decreasing: {line: {color: '#F8B192'}},
                   high: data.high,
                   increasing: {line: {color: '#355C7D'}}, 
                   line: {color: 'rgba(31,119,180,1)'},

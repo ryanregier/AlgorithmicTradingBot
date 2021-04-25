@@ -140,7 +140,7 @@ export default function Album() {
                                         William Carrera
                                     </Typography>
                                     <Typography>
-                                        This is a media card. You can use this section to describe the content.
+                                        President of Audio Department.
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -158,7 +158,7 @@ export default function Album() {
                                         Steven Barker
                                     </Typography>
                                     <Typography>
-                                        This is a media card. You can use this section to describe the content.
+                                        Lead Full stack developer. Hard coded every ticker on the NYSE, committed career high of 5.1 million lines of code.
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -176,7 +176,7 @@ export default function Album() {
                                         Jack Bennett
                                     </Typography>
                                     <Typography>
-                                        This is a media card. You can use this section to describe the content.
+                                        Head UI/UX designer, President of Sales Department, all around baller.
                                     </Typography>
                                 </CardContent>
                             </Card>

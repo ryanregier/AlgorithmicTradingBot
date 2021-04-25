@@ -54,7 +54,7 @@ const PortfolioPage = () => {
                 xvals.push(response[i].symbol);
                 yvals.push(response[i].qty);
             }
-            return({x:xvals, y:yvals, type:'bar', name:'Positions'});
+            return({x:xvals, y:yvals, type:'bar', name:'Positions', color:'#355C7D'});
         }).then(dict=>{setTrace(dict)});
         const acct = getAcctInfo().then((account)=>{
             setEquity(account.equity);   

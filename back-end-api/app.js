@@ -31,7 +31,7 @@ app.get('/positions', (req,res) => {
       client.close();
     }else{
       const collection = client.db("tradingbot").collection("positions");
-      const result = collection.find({},{sort:{created_at:1}}).toArray().then((result) => {
+      const result = collection.find({},{sort:{created_at:-1}}).toArray().then((result) => {
         res.contentType('application/json');
         console.log("accountinfo result");
         console.log(result)
@@ -61,8 +61,22 @@ app.get('/keystats/:sym', (req,res) => {
 
 })
 
+app.get('/googleId/:id', (req,res) => {
 
+  MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+    if(err != null){
+      console.log(err)
+    }else{
+      const collection = client.db("tradingbot").collection("users");
+      const result = collection.findOne({googleId:req.params.id}).then((result=>{
+        console.log(result)
+        res.send(result);
+      }));
 
+    }
+  });
+
+})
 
 app.get('/account', (req,res) => {
     MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
@@ -82,9 +96,8 @@ app.get('/account', (req,res) => {
       }
     });
   });
-  
-  
-  app.get('/trades', (req,res) => {
+
+app.get('/trades', (req,res) => {
     MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
       if(err != null){
         console.log(err);
@@ -92,7 +105,7 @@ app.get('/account', (req,res) => {
       }else{
         const collection = client.db("tradingbot").collection("histrades");
   
-        const options = { sort:{date:1}, projection:{_id:0} };
+        const options = { sort:{timestamp:-1}, projection:{_id:0} };
 
         const result = collection.find({},options).limit(20).toArray().then((result) => {
           res.contentType('application/json');
@@ -103,8 +116,6 @@ app.get('/account', (req,res) => {
       }
     });
   });
-  
-  
 
 app.get('/login/:email/:password', async(req,res) => {
   //check the email and the password with database
@@ -171,5 +182,16 @@ app.set('/login/:email/:password/:firstName/:lastName', async(req,res) => {
   });//end of MongoClient.connect
 });//end of app.get
 
+app.set('/signup', async(req,res) =>{
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      client.close();
+    } else {
+      const collection = client.db("tradingbot").collection("users");
+    }
+  });
+
+});
 
 app.listen(port, ()=> console.log(`listening on ${port}`));
