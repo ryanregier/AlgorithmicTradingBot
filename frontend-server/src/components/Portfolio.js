@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'flex-start',
         paddingTop: theme.spacing(5),
-        paddingLeft: theme.spacing(35),
+        paddingLeft: theme.spacing(0),
         height: theme.spacing(100),
     },
 
@@ -94,14 +94,16 @@ const PortfolioPage = () => {
     return (
         <divM>
             <Paper className={classes.topPaper} sqaure>
+
                 <Typography variant={'h2'} className={classes.portfolioOverview} >
-                    Total Equity, Holdings and Trade History
+                    Portfolio
                 </Typography>
             </Paper>
 
 
             <Grid container className={classes.bigContainer}>
                 <Grid item>
+                    <Typography  variant={'h2'} className={classes.totalEquity}>Total Equity:</Typography>
                     <Typography variant={'h2'} className={classes.totalEquity} >
                         {formatter.format(totalequity)}
                     </Typography>
