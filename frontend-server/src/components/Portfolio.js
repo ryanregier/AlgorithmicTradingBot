@@ -66,7 +66,23 @@ const PortfolioPage = () => {
                 xvals.push(response[i].symbol);
                 yvals.push(response[i].qty);
             }
-            return({x:xvals, y:yvals, type:'bar', name:'Positions', color:'#355C7D'});
+            return({x:xvals,
+                y:yvals,
+                type:'bar',
+                name:'Positions',
+                color:'#355C7D',
+                text: yvals.map(String),
+                textposition: 'auto',
+                hoverinfo: 'none',
+                marker: {
+                    color: '#355C7D',
+                    opacity: 0.6,
+                    line: {
+                        color: 'rgb(8,48,107)',
+                        width: 1.5
+                    }
+                }
+            });
         }).then(dict=>{setTrace(dict)});
         const acct = getAcctInfo().then((account)=>{
             setEquity(account.equity);   
@@ -92,7 +108,7 @@ const PortfolioPage = () => {
                 </Grid>
 
                 <Grid item className={classes.dataGraph}>
-                    <Plot data={[trace]}/>
+                    <Plot data={[trace]} layout={{title:'Positions'}}/>
                 </Grid>
 
                     <Grid container  className={classes.tradesTable}>

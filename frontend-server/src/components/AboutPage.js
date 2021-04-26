@@ -158,7 +158,7 @@ export default function Album() {
                                         Steven Barker
                                     </Typography>
                                     <Typography>
-                                        Lead Full stack developer. Hard coded every ticker on the NYSE, committed career high of 5.1 million lines of code.
+                                        Full stack developer. Hard coded every ticker on the NYSE, committed career high of 5.1 million lines of code.
                                     </Typography>
                                 </CardContent>
                             </Card>
