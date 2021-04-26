@@ -11,6 +11,7 @@ import pandas_ta as ta
 from multiprocessing import Process
 import alpacaPyConnection as alpaca
 import VolumeScraper as vs
+import BetaBalancer as beta
 
 TZ = 'America/Chicago'
 
@@ -81,6 +82,8 @@ def vwap(symbols, qty=10):
     else:
         print("Let the games begin")
     while alpaca.marketIsOpen():
+        if beta.totalBeta != 1:
+            alpaca.execute_trade('SPY', 1, 'buy', 'market', 'fok')
         for sym in symbols:
             buy_list = []
             sell_list = []
