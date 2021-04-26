@@ -15,8 +15,8 @@ def getTopTickers():
         ticker = item.select('[aria-label=Symbol]')[0].get_text()
         name = item.select('[aria-label=Name]')[0].get_text()
         vol = item.select('[aria-label=Volume]')[0].get_text()
-        topTradedStocks.append((ticker, name, vol))
+        topTradedStocks.append(ticker)
     return topTradedStocks
 
 
-# print(getTopTickers())
+print(getTopTickers())

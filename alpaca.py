@@ -25,6 +25,13 @@ api = tradeapi.REST(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.mark
 account = api.get_account()
 
 
+def getPositionBeta(sym):
+    collection = db['stockinfo']
+    query = {"symbol": sym}
+    data = collection.find_one(query)
+    return data
+
+
 def getPositions():
     collection = db['positions']
     trades = api.list_positions()
@@ -148,7 +155,7 @@ def update_acctinfo_positions():
     collection = db['positions']
     collection.delete_many({})
     trades = api.list_positions()
-    print(trades[0])
+    # print(trades[0])
     ts = time.time()
     date = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S.%f')
     for position in trades:
@@ -166,11 +173,8 @@ def update_acctinfo_positions():
         }
         collection.replace_one(query, doc, upsert=True)
 
-    print("Added trades")
-
 
 update_acctinfo_positions()
-print("Updated positions")
 
 
 def create_order(sym, qty, side, action, time_in_force):

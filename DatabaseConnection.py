@@ -24,6 +24,8 @@ doc = {
         "lastName": "Regier"
 }
 collection.insert_one(doc)
+# collection.update_many({}, {"$set": {"googleId": None}})
+
 print(db.list_collection_names())
 results = collection.find({})
 df = pd.DataFrame(results)
