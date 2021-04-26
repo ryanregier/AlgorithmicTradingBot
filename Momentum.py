@@ -150,7 +150,6 @@ if __name__ == '__main__':
         print()
         setItems = set(ls)
         ls = list(setItems)
-        break
         # p1 = Process(target=momentumStrategy(ls))
         # p1.start()
         p2 = Process(target=vwap(ls))
