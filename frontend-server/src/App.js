@@ -26,7 +26,6 @@ const App = () => {
   
   
   const googleSuccess = (res) => {
-/*
       const verified = client.verifyIdToken({
           idToken: res.tokenObj.id_token,
           audience:process.env.GOOGLE_CLIENT_ID
@@ -38,21 +37,21 @@ const App = () => {
                 console.log("sending http request");
                 Http.onreadystatechange = function (e) {
                     if (this.readyState == 4 && this.status == 200) {
-                        if(Http.responseText == ""){
-                            setUser(null);
-                            console.log("setting user to null on line 55");
-                        }else{
-                            console.log("setting user to res on line 57");
+                        const acct = JSON.parse(Http.responseText);
+                        if(res.googleId == acct.googleId){
                             setUser(res);
+                        }else{
+                            console.log("setting user to null on line 44");
+                            setUser(null);
                         }
+
                     }
                 }
             }else {
-                console.log("setting user to null on line 64");
+                console.log("setting user to null on line 51");
                 setUser(null);
             }
         });
-        */
     setUser(res);
   }
 
@@ -87,10 +86,8 @@ const App = () => {
     console.log("Inside Login function");
     Http.open("GET", `http://10.12.240.56:3500/login/${details.email}/${details.password}`);
     Http.send();
-    console.log("sending http request");
     Http.onreadystatechange = function (e) {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(Http.responseText);
         if(Http.responseText != ""){
             console.log("logged in");
             setUser({name: Http.responseText, email: details.email, isLoggedIn:true});

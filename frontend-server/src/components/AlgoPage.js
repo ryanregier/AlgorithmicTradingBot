@@ -103,7 +103,7 @@ function AlgoPage({setPage}){
                 <div className={classes.container}>
                     <Zoom in={checked}>
                         <Typography variant={'h3'} color={"red"} >
-                            *It is currently making money*
+                            *It is making that coin*
                         </Typography>
                     </Zoom>
                 </div>

@@ -13,20 +13,21 @@ app.all('*', function(req, res, next) {
 
 /*
 MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+  console.log("updating mongoDB")
   if(err != null){
     console.log(err)
     client.close();
   }else{
     const collection = client.db("tradingbot").collection("users");
-    const result = collection.updateOne({username:"steven", $set:{googleId}},{sort:{created_at:-1}}).toArray().then((result) => {
-      res.contentType('application/json');
-      console.log("accountinfo result");
-      console.log(result)
-      res.json(result);
+    const result = collection.updateOne({username:"steven"}, {$set:{"googleId":"111237288603505912027"}}).then((result) => {
+      console.log(result);
     }).then(()=>{client.close()});
   }
 });
-*/
+ */
+
+
+
 
 app.get('/', (req,res) => {
   res.send("hello");
@@ -86,10 +87,10 @@ app.get('/googleId/:id', (req,res) => {
     }else{
       const collection = client.db("tradingbot").collection("users");
       const result = collection.findOne({googleId:req.params.id}).then((result=>{
+        res.contentType('application/json');
         console.log(result)
-        res.send(result);
+        res.json(result);
       }));
-
     }
   });
 
