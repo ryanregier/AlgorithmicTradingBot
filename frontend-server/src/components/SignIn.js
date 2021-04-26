@@ -54,8 +54,7 @@ const useStyles = makeStyles((theme) => ({
     image: {
         backgroundImage: 'url(https://source.unsplash.com/B7rqd7NCe_g)',
         backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
         backgroundPosition: 'center',
     },
@@ -140,15 +139,9 @@ export default function SignIn({Login, onSuccess, error}) {
                         >
                             Sign In
                         </Button>
-                        <Typography>or</Typography>
+
                         <div>
-                        <GoogleLogin
-                            clientId= "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com"
-                            buttonText="Login"
-                            onSuccess={onSuccess}
-                            onFailure={googleFailure}
-                            isSignedIn={true}
-                        />
+
                         </div>
                         <Grid container>
                             <nav>
@@ -162,6 +155,13 @@ export default function SignIn({Login, onSuccess, error}) {
                                 exact
                                 />
                         </Grid>
+                        <GoogleLogin
+                            clientId= "438254214584-ttdmqtst6a9npnr8oeigsfnailhijaip.apps.googleusercontent.com"
+                            buttonText="Or use Gogle to Login"
+                            onSuccess={onSuccess}
+                            onFailure={googleFailure}
+                            isSignedIn={true}
+                        />
                     </form>
                 </div>
             </Grid>

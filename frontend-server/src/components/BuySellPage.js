@@ -25,6 +25,8 @@ import {Paper} from "@material-ui/core";
 import manualTrade from "./alpacafunctions";
 import Drawer from '@material-ui/core'
 import {sizing} from '@material-ui/system'
+import {Alert} from "@material-ui/lab";
+
 
 
 const Http = new XMLHttpRequest();
@@ -155,8 +157,6 @@ const BuySellPage = () => {
 
     return (
         <divM>
-
-
             <Grid container className={classes.sticky}>
 
                 <Grid item component={Paper} elevation={12}  className={classes.paper}>
@@ -190,6 +190,7 @@ const BuySellPage = () => {
                         >
                             Execute Trade
                         </Button>
+
                     </form>
                 </Grid>
 

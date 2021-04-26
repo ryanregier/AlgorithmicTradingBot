@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(25),
     },
 
+    topPaper: {
+      width: '100%',
+        height: theme.spacing(20),
+      background: 'linear-gradient(0deg, #ffffff 5%, #f3f3f3 15%)',
+    },
+
     bigContainer: {
         background: 'linear-gradient(0deg, #fafafa 2%, #ffffff 6%)',
         // backgroundColor: 'red',
@@ -22,15 +28,21 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'flex-start',
         paddingTop: theme.spacing(5),
+        paddingLeft: theme.spacing(35),
         height: theme.spacing(100),
     },
 
     tradesTable: {
-        width: theme.spacing(200),
-        alignItems: 'center,'
+        width: theme.spacing(180),
+        paddingTop: theme.spacing(6),
+        paddingLeft: theme.spacing(1),
+        flexDirection: 'column',
+        alignItems: 'flex-start',
     },
 
-    dataGraph: {
+
+    portfolioOverview: {
+        paddingTop: theme.spacing(5),
 
     },
 
@@ -65,8 +77,14 @@ const PortfolioPage = () => {
  
     return (
         <divM>
-            <Grid container className={classes.bigContainer}>
+            <Paper className={classes.topPaper} sqaure>
+                <Typography variant={'h2'} className={classes.portfolioOverview} >
+                    Total Equity, Holdings and Trade History
+                </Typography>
+            </Paper>
 
+
+            <Grid container className={classes.bigContainer}>
                 <Grid item>
                     <Typography variant={'h2'} className={classes.totalEquity} >
                         {formatter.format(totalequity)}
@@ -77,9 +95,20 @@ const PortfolioPage = () => {
                     <Plot data={[trace]}/>
                 </Grid>
 
-                <Container>
-                    <TradesTable />
-                </Container>
+                    <Grid container  className={classes.tradesTable}>
+                        <Grid item>
+                            <Typography align={'center'}>
+                                Trade History
+                            </Typography>
+                        </Grid>
+
+                        <TradesTable/>
+
+
+                    </Grid>
+
+
+
 
             </Grid>
 
