@@ -76,7 +76,7 @@ const PortfolioPage = () => {
                 hoverinfo: 'none',
                 marker: {
                     color: '#355C7D',
-                    opacity: 0.6,
+                    opacity: 1,
                     line: {
                         color: 'rgb(8,48,107)',
                         width: 1.5
@@ -120,11 +120,7 @@ const PortfolioPage = () => {
 
                         <TradesTable/>
 
-
                     </Grid>
-
-
-
 
             </Grid>
 
