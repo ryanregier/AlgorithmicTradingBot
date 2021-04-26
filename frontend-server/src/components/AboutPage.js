@@ -140,7 +140,7 @@ export default function Album() {
                                         William Carrera
                                     </Typography>
                                     <Typography>
-                                        President of Audio Department.
+                                        President of Audio Department, VP of Smash Bros operations.
                                     </Typography>
                                 </CardContent>
                             </Card>
