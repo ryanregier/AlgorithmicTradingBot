@@ -16,7 +16,7 @@ import Hidden from '@material-ui/core/Hidden';
 import milk from "../Images/Steven Barker.jpg"
 import ryan from "../Images/RyanRegier.jpg"
 import jack from "../Images/Headshot.PNG"
-import wsb from "../Images/SB (1).gif"
+//import wsb from "../Images/SB (1).gif"
 import {Image} from "@material-ui/icons";
 
 

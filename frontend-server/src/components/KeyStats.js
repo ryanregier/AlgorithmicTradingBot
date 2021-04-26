@@ -11,7 +11,7 @@ const KeyStats = ({symbol}) => {
     if(sym.localeCompare(symbol) != 0){
         setLoaded(false);
         setSym(symbol);
-      }
+    }
    useEffect(()=>{
        if(!loaded){
         console.log('indside useeffect');
@@ -27,9 +27,12 @@ const KeyStats = ({symbol}) => {
        }
    })
     return(
+
         <div classname="stats">
             {stats.longBusinessSummary}
         </div>
+
+
     )
 
 }

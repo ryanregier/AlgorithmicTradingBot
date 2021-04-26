@@ -21,8 +21,8 @@ import CardMedia from '@material-ui/core';
 import {Link as Linker, NavLink, Redirect} from "react-router-dom"
 
 
-import logo from "../Images/SB.png"
-import animatedLogo from "../Images/SB (1).gif"
+//import logo from "../Images/SB.png"
+//import animatedLogo from "../Images/SB (1).gif"
 import {Image} from "@material-ui/icons";
 import {Paper} from "@material-ui/core";
 import { BrowserRouter, Switch } from 'react-router-dom'
@@ -30,6 +30,7 @@ import ButtonAppBar from "./AppBar";
 import {BrowserRouter as Router} from "react-router-dom";
 import Route from 'react-router-dom/Route'
 import  GoogleLogin  from 'react-google-login';
+
 
 const useStyles = makeStyles((theme) => ({
 

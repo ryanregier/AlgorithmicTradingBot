@@ -11,6 +11,23 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+/*
+MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
+  if(err != null){
+    console.log(err)
+    client.close();
+  }else{
+    const collection = client.db("tradingbot").collection("users");
+    const result = collection.updateOne({username:"steven", $set:{googleId}},{sort:{created_at:-1}}).toArray().then((result) => {
+      res.contentType('application/json');
+      console.log("accountinfo result");
+      console.log(result)
+      res.json(result);
+    }).then(()=>{client.close()});
+  }
+});
+*/
+
 app.get('/', (req,res) => {
   res.send("hello");
 });
