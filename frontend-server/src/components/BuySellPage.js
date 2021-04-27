@@ -12,7 +12,6 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
-import StockGraph from './StockGraph';
 import Plot from 'react-plotly.js';
 import KeyStats from './KeyStats';
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
@@ -113,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         fontSize: 45,
     },
+    price:{
+        paddingRight:theme.spacing(100)
+    }
 
 }));
 
@@ -254,7 +256,8 @@ const BuySellPage = () => {
                 </Grid>
 
                 <Grid item className={classes.tickerSymbol}>
-                    <Typography variant='h2'>{formatter.format(price.current)}{sym}</Typography>
+                        <Typography variant='h2'>{formatter.format(price.current)}{sym}</Typography>
+
                     <Plot
                         data={[trace.current]}
                         layout={{
@@ -279,7 +282,7 @@ const BuySellPage = () => {
                             yaxis: {
                                 autorange: true,
                                 domain: [0, 1],
-                                range: [114.609999778, 137.410004222],
+                               // range: [114.609999778, 137.410004222],
                                 type: 'linear'
                             }
                         }}
