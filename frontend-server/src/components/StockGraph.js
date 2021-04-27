@@ -1,7 +1,8 @@
-import { Zoom } from '@material-ui/core';
+import {Typography, Zoom} from '@material-ui/core';
 import React,{useEffect, useState, useRef} from 'react';
 import Plot from 'react-plotly.js';
 import getPrice from './alpacafunctions';
+import {FaTheRedYeti} from "react-icons/all";
 
 const StockGraph = ({symbol}) => {
     const [loaded, setLoaded] = useState(false); 
@@ -12,13 +13,6 @@ const StockGraph = ({symbol}) => {
       setLoaded(false);
       setSym(symbol);
     }
-   
-    /*
-    let xlow;
-    let xhigh;
-    let ylow;
-    let yhigh;
-    */
     
     const APIKEY = 'S80EJ0D7Q3K4PDY8'
     const APICALL =  `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&outputsize=compact&apikey=${APIKEY}`
@@ -81,37 +75,36 @@ const StockGraph = ({symbol}) => {
 
     useEffect(()=>{getData();});
 
-
     return (
-        <Plot
-        data={[trace.current]}
-        layout={{
-          width: 750, 
-          height: 440,
-          dragmode: 'zoom', 
-          margin: {
-            r: 10, 
-            t: 25, 
-            b: 40, 
-            l: 60
-          }, 
-          showlegend: false, 
-          xaxis: {
-            autorange: true, 
-            domain: [0, 1], 
-           // range: ['2017-01-03 12:00', '2017-02-15 12:00'], 
-           // rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']}, 
-            title: 'Time', 
-            type: 'date'
-          }, 
-          yaxis: {
-            autorange: true, 
-            domain: [0, 1], 
-            range: [114.609999778, 137.410004222], 
-            type: 'linear'
-          }
-        }}
-      />
+            <Plot
+                data={[trace.current]}
+                layout={{
+                  width: 750,
+                  height: 440,
+                  dragmode: 'zoom',
+                  margin: {
+                    r: 10,
+                    t: 25,
+                    b: 40,
+                    l: 60
+                  },
+                  showlegend: false,
+                  xaxis: {
+                    autorange: true,
+                    domain: [0, 1],
+                   // range: ['2017-01-03 12:00', '2017-02-15 12:00'],
+                   // rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']},
+                    title: (!loaded) ? 'NO GRAPH DATA' : `${sym}`,
+                    type: 'date'
+                  },
+                  yaxis: {
+                    autorange: true,
+                    domain: [0, 1],
+                    range: [114.609999778, 137.410004222],
+                    type: 'linear'
+                  }
+                }}
+          />
     )
 };
 
