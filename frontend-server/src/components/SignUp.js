@@ -46,8 +46,7 @@ function SignUp({history}) {
         e.preventDefault();
         setDetails({...details, googleId:null});
         Http.open("POST", `http://10.12.240.56:3500/signup/`);
-        //get (first name, last name, email, googleID)
-        //put it all in the route
+        //get (first name, last name, email, password, googleID)
         Http.setRequestHeader("Content-Type", "application/json");
         Http.send(JSON.stringify(details));
 

@@ -27,11 +27,11 @@ const KeyStats = ({symbol}) => {
        }
    })
     return(
-
-        <div classname="stats">
-            {stats.longBusinessSummary}
-        </div>
-
+            (stats != null) ? (
+                <div>
+                    {stats.longBusinessSummary}
+                </div>
+            ) : (<div>No info available </div>)
 
     )
 

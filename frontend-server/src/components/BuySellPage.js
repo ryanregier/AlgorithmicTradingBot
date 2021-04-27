@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {React, useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import $ from 'jquery';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -26,6 +26,7 @@ import manualTrade from "./alpacafunctions";
 import Drawer from '@material-ui/core'
 import {sizing} from '@material-ui/system'
 import {Alert} from "@material-ui/lab";
+import getPrice from "./alpacafunctions";
 
 
 
@@ -120,19 +121,76 @@ const BuySellPage = () => {
 
     const {sym} = useParams();
 
+    const [symbol, setSymbol] = useState("");
     const [stats, setStats] = useState({});
+    const [loaded, setLoaded] = useState(false);
+    const trace = useRef({});
+    const price = useRef(0);
+
+    if(sym != symbol){
+        setLoaded(false);
+        setSymbol(sym);
+    }
+
+
+    const APIKEY = 'S80EJ0D7Q3K4PDY8'
+    const APICALL =  `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${sym}&interval=5min&outputsize=compact&apikey=${APIKEY}`
+
 
     useEffect(() => {
-        console.log('indside useeffect');
-        Http.open("GET", `http://localhost:3500/keystats/${sym}`);
-        Http.send();
-        Http.onreadystatechange = function (e) {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(JSON.parse(Http.responseText));
-                setStats(JSON.parse(Http.responseText)[0]);
-            }
+        if(!loaded) {
+            //getting graph data and price
+            let xvals = [];
+            let low = [];
+            let close = [];
+            let open = [];
+            let high = [];
+
+            const APIKEY = 'S80EJ0D7Q3K4PDY8'
+            const APICALL =  `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${sym}&interval=5min&outputsize=compact&apikey=${APIKEY}`
+
+            fetch(APICALL)
+                .then(
+                    function (response) {
+                        return response.json();
+                    }
+                ).then(
+                function (data) {
+                    // console.log(data);
+                    for (var key in data['Time Series (5min)']) {
+                        xvals.push(key)
+                        close.push(data['Time Series (5min)'][key]['4. close']);
+                        open.push(data['Time Series (5min)'][key]['1. open']);
+                        high.push(data['Time Series (5min)'][key]['2. high']);
+                        low.push(data['Time Series (5min)'][key]['3. low']);
+                    }
+                    price.current = open[open.length-1];
+
+                    return {xvals: xvals, close: close, open: open, high: high, low: low};
+
+
+                }
+            )
+                .then(
+                    function (data) {
+                        trace.current = {
+                            x: data.xvals,
+                            close: data.close,
+                            decreasing: {line: {color: '#F8B192'}},
+                            high: data.high,
+                            increasing: {line: {color: '#355C7D'}},
+                            line: {color: 'rgba(31,119,180,1)'},
+                            low: data.low,
+                            open: data.open,
+                            type: 'candlestick',
+                            xaxis: 'x',
+                            yaxis: 'y'
+                        };
+                        setLoaded(true);
+                    }
+                )
         }
-    }, []);
+    });
 
 
     const submitHandler = (e) => {
@@ -149,6 +207,7 @@ const BuySellPage = () => {
 
     const [numShares, setNumShares] = useState(0);
     const [buyorsell, setBuySell] = useState(true);
+    const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',});
 
     const classes = useStyles();
     const toggleBuySell = () => {
@@ -195,8 +254,36 @@ const BuySellPage = () => {
                 </Grid>
 
                 <Grid item className={classes.tickerSymbol}>
-                    <Typography variant='h2'>{sym}</Typography>
-                    <StockGraph symbol={sym}/>
+                    <Typography variant='h2'>{formatter.format(price.current)}{sym}</Typography>
+                    <Plot
+                        data={[trace.current]}
+                        layout={{
+                            width: 750,
+                            height: 440,
+                            dragmode: 'zoom',
+                            margin: {
+                                r: 10,
+                                t: 25,
+                                b: 40,
+                                l: 60
+                            },
+                            showlegend: false,
+                            xaxis: {
+                                autorange: true,
+                                domain: [0, 1],
+                                // range: ['2017-01-03 12:00', '2017-02-15 12:00'],
+                                // rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']},
+                                title: (!loaded) ? 'NO GRAPH DATA' : `${sym}`,
+                                type: 'date'
+                            },
+                            yaxis: {
+                                autorange: true,
+                                domain: [0, 1],
+                                range: [114.609999778, 137.410004222],
+                                type: 'linear'
+                            }
+                        }}
+                    />
                 </Grid>
 
 

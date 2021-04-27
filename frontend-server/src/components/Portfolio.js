@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const Http = new XMLHttpRequest();
 
 // Create our number formatter.
-var formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',});
+const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD',});
   
 const PortfolioPage = () => {
     const [trace, setTrace] = useState({});
