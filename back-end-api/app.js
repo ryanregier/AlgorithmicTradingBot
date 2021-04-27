@@ -218,39 +218,6 @@ app.set('/signup', async(req,res) =>{
   });
 });
 
-app.post('/signup', async(req,res) =>{
-  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
-    if (err !== null) {
-      console.log(err);
-      client.close();
-    } else {
-      console.log("This is a test")
-      console.log(req.body);
-      console.log(JSON.parse(req.body));
-      // const bod = req.body;
-
-      // console.log(bod);
-      //   let test2 = JSON.parse(req.body);
-      //   console.log(test2);
-      //   console.log(req.body);
-      //
-      // let test = {
-      //     first_name: req.body.firstname,
-      //     last_name: req.body.lastname,
-      //     email: req.body.email,
-      //     password: req.body.password,
-      //   }
-      //   console.log(test);
-
-
-
-      //console.log(res);
-      const collection = client.db("tradingbot").collection("users");
-
-    }
-  });
-});
-
 app.get("/accountinfo/:email/:password", async(req,res) => {
 
   const email = req.params.email;
@@ -307,6 +274,42 @@ app.get("/accountinfo/:email/:password", async(req,res) => {
   });
 });
 
+app.post('/signup', async(req,res) =>{
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      client.close();
+    } else {
+      console.log("This is a test4")
+      console.log(req.body);
+
+      const collection = client.db("tradingbot").collection("users");
+      const cursor = await collection.find().project({accountId: 1, _id: 0}).toArray();
+      let newCurrentId= 0;
+      for (let cursorKey in cursor) {
+        let num = parseInt(cursorKey);
+        if(num >= newCurrentId){
+          newCurrentId = num+1;
+        }
+      }
+
+      const toInsert = {
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
+        email: req.body.email,
+        username: req.body.firstname,
+        password: req.body.password,
+        googleId: null,
+        role: "user",
+        currentId: newCurrentId,
+      };
+      await collection.insertOne(toInsert);
+
+      client.close();
+    }
+  });
+});
+
 //urlencodedParser
 app.post('/accountchange', async(req,res) =>{
   MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
@@ -317,15 +320,16 @@ app.post('/accountchange', async(req,res) =>{
     const filter =
         {
           googleId: req.body.googleId,
-          accountId: req.body.googleId,
+          accountId: req.body.googleId
         };
     const updated =
         {
-
+          $set: {username: req.body.username, email: req.body.email, firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password }
         }
-      console.log("This is the right test");
+        console.log(req.body);
+      console.log("This is the right test2");
       const collection = client.db("tradingbot").collection("users");
-      collection.findOneAndUpdate(filter,req.body);
+      collection.findOneAndUpdate(filter,updated);
     }
   });
 });
