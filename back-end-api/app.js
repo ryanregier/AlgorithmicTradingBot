@@ -6,8 +6,8 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://steven:admin123@cluster0.b3s46.mongodb.net/tradingbot?retryWrites=true&w=majority";
 const port = 3500;
 
-app.use(bodyParser.urlencoded({extended: true }));
-//app.use(bodyParser.json);
+app.use(bodyParser.urlencoded({extended: false }));
+app.use(bodyParser.json());
 //app.use(urlencodedParser);
 
 app.all('*', function(req, res, next) {
@@ -225,20 +225,22 @@ app.post('/signup', async(req,res) =>{
       client.close();
     } else {
       console.log("This is a test")
-      const bod = req.body;
       console.log(req.body);
-      console.log(bod);
-    //   let test2 = JSON.parse(req.body);
-    //   console.log(test2);
-    //   console.log(req.body);
-    //
-    // let test = {
-    //     first_name: req.body.firstname,
-    //     last_name: req.body.lastname,
-    //     email: req.body.email,
-    //     password: req.body.password,
-    //   }
-    //   console.log(test);
+      console.log(JSON.parse(req.body));
+      // const bod = req.body;
+
+      // console.log(bod);
+      //   let test2 = JSON.parse(req.body);
+      //   console.log(test2);
+      //   console.log(req.body);
+      //
+      // let test = {
+      //     first_name: req.body.firstname,
+      //     last_name: req.body.lastname,
+      //     email: req.body.email,
+      //     password: req.body.password,
+      //   }
+      //   console.log(test);
 
 
 
@@ -300,8 +302,22 @@ app.get("/accountinfo/:email/:password", async(req,res) => {
           client.close();
           });
     }
+  });
+});
 
+//urlencodedParser
+app.post('/accountchange', async(req,res) =>{
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      client.close();
+    } else {
+      console.log("This is the right test");
 
+      console.log(req.body);
+      console.log(req.body.username);
+      const collection = client.db("tradingbot").collection("users");
+    }
   });
 });
 

@@ -46,11 +46,11 @@ function SignUp({history}) {
         e.preventDefault();
         setDetails({...details, googleId:null});
 
-        Http.open("POST", `http://localhost:3500/signup/`);
+        Http.open("POST", `http://localhost:3500/signup`);
         //get (first name, last name, email, googleID)
         //put it all in the route
 
-        Http.setRequestHeader("Content-Type", "application/json");
+        Http.setRequestHeader("Content-Type", "text/plain");
         Http.send(JSON.stringify(details));
         console.log(JSON.stringify(details));
 
