@@ -281,7 +281,9 @@ app.get("/accountinfo/:email/:password", async(req,res) => {
                 email: result.email,
                 password: result.password,
                 firstName: result.firstName,
-                lastName: result.lastName
+                lastName: result.lastName,
+                accountId: result.accountId,
+                googleId: result.googleId
               }
               console.log("User Info:")
               console.log(userInfo)
@@ -312,11 +314,18 @@ app.post('/accountchange', async(req,res) =>{
       console.log(err);
       client.close();
     } else {
-      console.log("This is the right test");
+    const filter =
+        {
+          googleId: req.body.googleId,
+          accountId: req.body.googleId,
+        };
+    const updated =
+        {
 
-      console.log(req.body);
-      console.log(req.body.username);
+        }
+      console.log("This is the right test");
       const collection = client.db("tradingbot").collection("users");
+      collection.findOneAndUpdate(filter,req.body);
     }
   });
 });

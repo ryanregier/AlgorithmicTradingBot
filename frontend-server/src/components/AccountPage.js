@@ -15,7 +15,9 @@ const AccountPage = (props) => {
             dateCreated: "null",
             firstName: "null",
             lastName: "null",
-            password: "null"
+            password: "null",
+            accountId: "null",
+            googleId: "null"
         });
 
     const [tempInfo, setTempInfo] = useState(
