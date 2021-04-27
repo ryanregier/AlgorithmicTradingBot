@@ -3,31 +3,14 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
-
 import SignUp from "./SignUp";
-
 import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
-import Container from '@material-ui/core/Container'
-import {GiLockedBox} from "react-icons/all";
 import React from "react";
-import CardMedia from '@material-ui/core';
 import {Link as Linker, NavLink, Redirect} from "react-router-dom"
-
-
-//import logo from "../Images/SB.png"
-//import animatedLogo from "../Images/SB (1).gif"
-import {Image} from "@material-ui/icons";
 import {Paper} from "@material-ui/core";
-import { BrowserRouter, Switch } from 'react-router-dom'
-import ButtonAppBar from "./AppBar";
-import {BrowserRouter as Router} from "react-router-dom";
 import Route from 'react-router-dom/Route'
 import  GoogleLogin  from 'react-google-login';
 

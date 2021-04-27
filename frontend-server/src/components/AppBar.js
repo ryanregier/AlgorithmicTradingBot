@@ -170,12 +170,11 @@ const ButtonAppBar = ({Logout, signOut,history}) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={()=>{handleToolBarClick('/account')}}>My account</MenuItem>
+      <MenuItem onClick={()=>{handleToolBarClick('/about')}}>About</MenuItem>
       <MenuItem onClick={signOut}>Logout</MenuItem>
     </Menu>
   );
-  //handleMenuAccountClick("/account")
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -259,7 +258,7 @@ const ButtonAppBar = ({Logout, signOut,history}) => {
         <div className={classes.sectionDesktop}>
           <Button onClick={()=>handleToolBarClick('/')} color="inherit">Portfolio</Button>
           <Button onClick={()=>handleToolBarClick('/algo')} color="inherit">Algo</Button>
-          <Button onClick={()=>handleToolBarClick('/about')} color="inherit">About</Button>
+          {/*<Button onClick={() => handleToolBarClick('/about')} color="inherit">About</Button>*/}
           <Button onClick={()=>handleToolBarClick('/teacher')} color="inherit">Teacher</Button>
           <IconButton
             edge="end"
