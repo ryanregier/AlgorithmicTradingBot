@@ -75,9 +75,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Album() {
+export default function Album(user) {
     const classes = useStyles();
-
 
     return (
         <React.Fragment>

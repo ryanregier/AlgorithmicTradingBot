@@ -1,8 +1,14 @@
 const express = require('express');
-const app = express();
+const app = express()
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://steven:admin123@cluster0.b3s46.mongodb.net/tradingbot?retryWrites=true&w=majority";
 const port = 3500;
+
+app.use(bodyParser.urlencoded({extended: true }));
+//app.use(bodyParser.json);
+//app.use(urlencodedParser);
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -51,8 +57,8 @@ app.get('/positions', (req,res) => {
       const collection = client.db("tradingbot").collection("positions");
       const result = collection.find({},{sort:{created_at:-1}}).toArray().then((result) => {
         res.contentType('application/json');
-        console.log("accountinfo result");
-        console.log(result)
+        //console.log("accountinfo result");
+        //console.log(result)
         res.json(result);
       }).then(()=>{client.close()});
     }
@@ -69,8 +75,8 @@ app.get('/keystats/:sym', (req,res) => {
       const collection = client.db("tradingbot").collection("stockinfo");
       const result = collection.find({symbol:req.params.sym}).toArray().then((result=>{
         res.contentType('application/json');
-        console.log("accountinfo result");
-        console.log(result)
+        //console.log("accountinfo result");
+        //console.log(result)
         res.json(result);
       }));
        
@@ -107,8 +113,8 @@ app.get('/account', (req,res) => {
   
         const result = collection.find({},{sort:{created_at:1}}).limit(200).toArray().then((result) => {
           res.contentType('application/json');
-          console.log("accountinfo result");
-          console.log(result)
+          //console.log("accountinfo result");
+          //console.log(result)
           res.json(result);
         }).then(()=>{client.close});
       }
@@ -127,8 +133,8 @@ app.get('/trades', (req,res) => {
 
         const result = collection.find({},options).limit(20).toArray().then((result) => {
           res.contentType('application/json');
-          console.log("trades");
-          console.log(result)
+          //console.log("trades");
+          //console.log(result)
           res.json(result);
         }).then(()=>{client.close();});
       }
@@ -206,10 +212,98 @@ app.set('/signup', async(req,res) =>{
       console.log(err);
       client.close();
     } else {
+      console.log("This is a test");
       const collection = client.db("tradingbot").collection("users");
     }
   });
-
 });
+
+app.post('/signup', async(req,res) =>{
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      client.close();
+    } else {
+      console.log("This is a test")
+      const bod = req.body;
+      console.log(req.body);
+      console.log(bod);
+    //   let test2 = JSON.parse(req.body);
+    //   console.log(test2);
+    //   console.log(req.body);
+    //
+    // let test = {
+    //     first_name: req.body.firstname,
+    //     last_name: req.body.lastname,
+    //     email: req.body.email,
+    //     password: req.body.password,
+    //   }
+    //   console.log(test);
+
+
+
+      //console.log(res);
+      const collection = client.db("tradingbot").collection("users");
+
+    }
+  });
+});
+
+app.get("/accountinfo/:email/:password", async(req,res) => {
+
+  const email = req.params.email;
+  const password = req.params.password;
+  console.log("test1");
+  console.log(email + " " + password)
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      console.log("test2");
+      client.close();
+    } else {
+      console.log("test3");
+      const query = {email: req.params.email, password: req.params.password};
+      const collection = client.db("tradingbot").collection("users");
+
+      console.log("test4");
+      const result = collection.findOne(query)
+          .then( (result) =>{
+            console.log("test6");
+            if(result){
+              console.log("test7");
+              console.log(result);
+              const userInfo = {
+                username: result.username,
+                role: result.role,
+                dateCreated: result.dateCreated,
+                email: result.email,
+                password: result.password,
+                firstName: result.firstName,
+                lastName: result.lastName
+              }
+              console.log("User Info:")
+              console.log(userInfo)
+              res.setHeader("Content-Type", "application/json");
+              res.send(JSON.stringify(userInfo));
+            }else{
+              console.log("test8");
+              if(result === null){
+                console.log("test9");
+                console.log("sending null This is a big bad, how are they logged in with out a user");
+                res.send(null);
+              }
+            }
+            client.close();
+          })
+          .then((error, result) => {
+            console.log("test5");
+          client.close();
+          });
+    }
+
+
+  });
+});
+
 
 app.listen(port, ()=> console.log(`listening on ${port}`));

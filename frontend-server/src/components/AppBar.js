@@ -108,6 +108,7 @@ const ButtonAppBar = ({Logout, signOut,history}) => {
       history.push(newURL);
   }
 
+
   const handleLogout = () => {
       handleMenuClose();
       console.log("This is running");
@@ -122,7 +123,14 @@ const ButtonAppBar = ({Logout, signOut,history}) => {
     setMobileMoreAnchorEl(null);
   };
 
+  const handleMenuAccountClick = (newURL) => {
+    console.log("Ihavebeencalled");
+    handleToolBarClick(newURL)
+    handleMenuClose();
+  }
+
   const handleMenuClose = () => {
+    console.log("Ihavebeencalled");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -167,6 +175,7 @@ const ButtonAppBar = ({Logout, signOut,history}) => {
       <MenuItem onClick={signOut}>Logout</MenuItem>
     </Menu>
   );
+  //handleMenuAccountClick("/account")
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (

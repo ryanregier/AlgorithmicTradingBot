@@ -45,10 +45,14 @@ function SignUp({history}) {
     const submitHandler = (e) => {
         e.preventDefault();
         setDetails({...details, googleId:null});
-        Http.open("POST", `http://10.12.240.56:3500/signup/`);
-        //get (first name, last name, email, password, googleID)
+
+        Http.open("POST", `http://localhost:3500/signup/`);
+        //get (first name, last name, email, googleID)
+        //put it all in the route
+
         Http.setRequestHeader("Content-Type", "application/json");
         Http.send(JSON.stringify(details));
+        console.log(JSON.stringify(details));
 
         history.push('/')
     }
@@ -56,12 +60,10 @@ function SignUp({history}) {
     const onSuccess = (res)=>{
         //update mongoDB
 
-        Http.open("POST", `http://10.12.240.56:3500/signup/`);
+        Http.open("POST", `http://localhost:3500/signup/`);
         //get (first name, last name, email, googleID)
         //put it all in the route
-        Http.setRequestHeader("Content-Type", "application/json");
-
-
+        Http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 
         Http.send();
         console.log("sending http request");

@@ -1,5 +1,6 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
+import AccountPage from "./components/AccountPage";
 import SignIn from "./components/SignIn";
 import Teacher from './components/Teacher';
 import AlgoPage from "./components/AlgoPage";
@@ -170,6 +171,14 @@ const App = () => {
             <Teacher />
           </div>
           ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
+          </Route>
+          <Route exact path="/account">
+              {(isLoggedIn()) ? (
+                  <div>
+                      <ButtonAppBar Logout={Logout} signOut={signOut}/>
+                      <AccountPage user={user} key="test" />
+                  </div>
+              ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
           </Route>
     </Switch>
     </div>
