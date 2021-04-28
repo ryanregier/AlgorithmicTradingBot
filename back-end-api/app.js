@@ -151,15 +151,12 @@ app.get('/login/:email/:password', async(req,res) => {
       client.close();
     }else{
       const query = {email: req.params.email, password: req.params.password};
-      const options  = {
-        projections: { 'firstName': 1, 'lastName': 1}
-      };
       const collection = client.db("tradingbot").collection("users");
-      const result = collection.findOne(query, options)
+      const result = collection.findOne(query)
       .then( (result) =>{
         if(result){
-          console.log(result);
-          res.send(result.firstName.concat(" "+result.lastName));
+          res.contentType('application/json');)
+          res.json(result);
         }else{
           if(result === null){
             console.log("sending null");

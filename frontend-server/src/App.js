@@ -8,7 +8,7 @@ import ButtonAppBar from './components/AppBar';
 import PortfolioPage from './components/Portfolio';
 import AboutPage from './components/AboutPage';
 import BuySellPage from './components/BuySellPage';
-import SignUp from './components/SignUp'
+import SignUp from './components/SignUp';
 import { BrowserRouter as Router, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import getStocks from './components/alpacafunctions';
 import {useGoogleLogout} from 'react-google-login';
@@ -53,7 +53,7 @@ const App = () => {
                 setUser(null);
             }
         });
-    setUser(res);
+   // setUser(res);
   }
 
 
@@ -76,7 +76,7 @@ const App = () => {
       return user.isSignedIn();
     }catch (err){
         try {
-            return user.isLoggedIn;
+            return user != null;
         }catch (e) {
             return false;
         }
@@ -89,28 +89,28 @@ const App = () => {
     Http.send();
     Http.onreadystatechange = function (e) {
       if (this.readyState == 4 && this.status == 200) {
-        if(Http.responseText != ""){
-            console.log("logged in");
-            setUser({name: Http.responseText, email: details.email, isLoggedIn:true});
+          if(Http.responseText != ""){
+            setUser(JSON.parse(Http.responseText));
           }else{
-            console.log("failure"); 
+            console.log("failure");
+            setUser(null);
           }
         }
       }
   }
 
-  const CreateAccount = (details) => {
-      console.log("Inside CreateAccount function");
-      Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
-      Http.send();
-      console.log("sending http request");
-      Http.onreadystatechange = function (e){
-          console.log(localStorage.setItem('firstName', details.firstName));
-          console.log(localStorage.setItem('lastName', details.lastName));
-          console.log(localStorage.setItem('email', details.email));
-          console.log(localStorage.setItem('password', details.password));
-      }
-  }
+  // const CreateAccount = (details) => {
+  //     console.log("Inside CreateAccount function");
+  //     Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
+  //     Http.send();
+  //     console.log("sending http request");
+  //     Http.onreadystatechange = function (e){
+  //         console.log(localStorage.setItem('firstName', details.firstName));
+  //         console.log(localStorage.setItem('lastName', details.lastName));
+  //         console.log(localStorage.setItem('email', details.email));
+  //         console.log(localStorage.setItem('password', details.password));
+  //     }
+  // }
 
 
   const Logout = () => {
@@ -176,7 +176,7 @@ const App = () => {
               {(isLoggedIn()) ? (
                   <div>
                       <ButtonAppBar Logout={Logout} signOut={signOut}/>
-                      <AccountPage user={user} key="test" />
+                      <AccountPage user={user} />
                   </div>
               ):(<SignIn Login={Login} onSuccess={googleSuccess}/>)}
           </Route>
