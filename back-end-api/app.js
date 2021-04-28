@@ -155,7 +155,7 @@ app.get('/login/:email/:password', async(req,res) => {
       const result = collection.findOne(query)
       .then( (result) =>{
         if(result){
-          res.contentType('application/json');)
+          res.contentType('application/json');
           res.json(result);
         }else{
           if(result === null){
