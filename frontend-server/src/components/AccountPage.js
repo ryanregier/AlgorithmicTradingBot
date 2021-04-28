@@ -6,7 +6,7 @@ const Http = new XMLHttpRequest();
 
 
 
-const AccountPage = (props) => {
+const AccountPage = ({user}) => {
     const [info, setInfo] = useState(
         {
             email: "null",
@@ -45,9 +45,9 @@ const AccountPage = (props) => {
         console.log("Asking for account info");
         // e.preventDefault();
         console.log("just cheking");
-        const name = "willima";
-        const last = "carrera"
-        Http.open("GET", `http://localhost:3500/accountinfo/william.carrera@my.wheaton.edu/password`);
+        const email = user.email;
+        const password = user.password;
+        Http.open("GET", `http://localhost:3500/accountinfo/${email}/${password}`);
         //get (first name, last name, email, googleID)
         //put it all in the route
         Http.send();

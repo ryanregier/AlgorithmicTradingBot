@@ -61,6 +61,9 @@ function SignUp({history}) {
     const onSuccess = (res)=>{
         //update mongoDB
 
+        if(details.name)
+
+
         Http.open("POST", `http://localhost:3500/signup`);
         //get (first name, last name, email, googleID)
         //put it all in the route
