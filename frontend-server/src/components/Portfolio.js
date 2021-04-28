@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
     tradesTable: {
         width: theme.spacing(180),
-        paddingTop: theme.spacing(6),
+        paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(1),
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -110,7 +110,7 @@ const PortfolioPage = () => {
                 </Grid>
 
                 <Grid item className={classes.dataGraph}>
-                    <Plot data={[trace]} layout={{title:'Positions'}}/>
+                    <Plot data={[trace]} layout={{title:'Current Positions'}}/>
                 </Grid>
 
                     <Grid container  className={classes.tradesTable}>

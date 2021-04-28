@@ -43,7 +43,6 @@ function SignUp({history}) {
     const classes = useStyles();
 
     const submitHandler = (e) => {
-        console.log("NO let it be I");
         e.preventDefault();
         setDetails({...details, googleId:null});
 
@@ -51,7 +50,7 @@ function SignUp({history}) {
         //get (first name, last name, email, googleID)
         //put it all in the route
 
-        Http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        Http.setRequestHeader("Content-Type", "text/plain");
         Http.send(JSON.stringify(details));
         console.log(JSON.stringify(details));
 
@@ -61,14 +60,11 @@ function SignUp({history}) {
     const onSuccess = (res)=>{
         //update mongoDB
 
-        if(details.name)
-
-
-        Http.open("POST", `http://localhost:3500/signup`);
+        Http.open("POST", `http://localhost:3500/signup/`);
         //get (first name, last name, email, googleID)
         //put it all in the route
-        Http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        console.log("I am the one who is being run");
+        Http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
         Http.send();
         console.log("sending http request");
         Http.onreadystatechange = function (e) {

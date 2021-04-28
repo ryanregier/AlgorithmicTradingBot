@@ -15,6 +15,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Hidden from '@material-ui/core/Hidden';
 import milk from "../Images/Steven Barker.jpg"
 import ryan from "../Images/RyanRegier.jpg"
+import william from "../Images/William.jpg"
 import jack from "../Images/Headshot.PNG"
 //import wsb from "../Images/SB (1).gif"
 import {Image} from "@material-ui/icons";
@@ -83,6 +84,7 @@ export default function Album(user) {
             <CssBaseline />
             <main>
                 {/* Hero unit */}
+
                 <div className={classes.header}>
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -131,7 +133,7 @@ export default function Album(user) {
                             <Card className={classes.card}>
                                 <CardMedia
                                     className={classes.cardMedia}
-                                    image="https://source.unsplash.com/random"
+                                    image={william}
                                     title="Image title"
                                 />
                                 <CardContent className={classes.cardContent}>
@@ -156,7 +158,7 @@ export default function Album(user) {
                                     <Typography gutterBottom align={"left"} variant="h5" component="h2">
                                         Steven Barker
                                     </Typography>
-                                    <Typography>
+                                    <Typography align={'left'}>
                                         Full stack developer. Hard coded every ticker on the NYSE, committed career high of 5.1 million lines of code.
                                     </Typography>
                                 </CardContent>

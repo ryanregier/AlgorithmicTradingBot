@@ -18,25 +18,25 @@ import Hidden from '@material-ui/core/Hidden';
 const useStyles = makeStyles((theme) => ({
 
     heroContent: {
-        background:  'linear-gradient(0deg, #ffffff 1%, #f3f3f3 15%)',
+       // background:  'linear-gradient(0deg, #ffffff 1%, #f3f3f3 15%)',
         padding: theme.spacing(8, 0, 6),
 
     },
 
     stocks: {
         //backgroundColor: "#F8B195",
-        background:  'linear-gradient(90deg, #d3d3d3 1%, #F8B192 80%)',
+        background: '#ffffff',
         padding: theme.spacing(3, 3, 3),
     },
 
     algo: {
         //backgroundColor: "#F67280",
-        background: 'linear-gradient(90deg, #d3d3d3 3%, #F8B192 80%)',
+        background: '#ffffff',
         padding: theme.spacing(3, 3, 3),
     },
 
     onlyUp: {
-        background: 'linear-gradient(90deg, #d3d3d3 5%, #F8B192 80%)',
+        background: '#ffffff',
         padding: theme.spacing(3, 3, 3),
     },
 
@@ -59,8 +59,9 @@ const useStyles = makeStyles((theme) => ({
 
 
     card: {
+        paddingTop: theme.spacing(3),
         display: 'flex',
-        background: 'lightgrey',
+        background: '#F8B192',
         //backgroundColor: "#355C7D",
     },
 
@@ -168,15 +169,15 @@ export default function Album() {
 
             <Grid container direction={'row'} className={classes.cardContainer2}>
                 <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
-                    <CardActionArea component="a" href="https://www.investopedia.com/terms/s/stock.asp" target={"_blank"}>
+                    <CardActionArea component="a" href="https://timothyplan.com/" target={"_blank"}>
                         <Card className={classes.card}>
                             <div className={classes.cardDetails} >
                                 <CardContent>
                                     <Typography component="h2" variant="h5">
-                                        More about Stocks
+                                        Faith and Investing
                                     </Typography>
                                     <Typography variant="subtitle1" paragraph>
-                                        In this post you can read more about what stocks are and how they work!
+                                        On this page you can learn more about faith and investing!
                                     </Typography>
                                 </CardContent>
                             </div>
@@ -185,15 +186,15 @@ export default function Album() {
                 </Grid>
 
                 <Grid item xs={12} md={6} direction='row' className={classes.cardGrid}>
-                    <CardActionArea component="a" href="https://www.investopedia.com/articles/active-trading/101014/basics-algorithmic-trading-concepts-and-examples.asp" target={"_blank"}>
+                    <CardActionArea component="a" href="https://www.investopedia.com/terms/f/financial-market.asp" target={"_blank"}>
                         <Card className={classes.card}>
                             <div className={classes.cardDetails}>
                                 <CardContent>
                                     <Typography component="h2" variant="h5">
-                                        More about Trading Algorithms
+                                        What is a Financial Market?
                                     </Typography>
                                     <Typography variant="subtitle1" paragraph>
-                                        In this post you can read more about how our algorithm works!
+                                        In this post you can read more about financial markets!
                                     </Typography>
                                 </CardContent>
                             </div>
