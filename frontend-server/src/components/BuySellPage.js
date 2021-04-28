@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
     paper: {
         margin: theme.spacing(5),
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(25),
         width: theme.spacing(30),
         height: theme.spacing(45),
         display: 'flex',
@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         backgroundColor: 'white',
     },
-
     topPaper: {
         width: '100%',
         height: theme.spacing(20),
@@ -49,8 +48,7 @@ const useStyles = makeStyles((theme) => ({
     sticky: {
         background: 'linear-gradient(0deg, #fafafa 2%, #ffffff 6%)',
         // backgroundColor: 'red',
-        // display: 'flex',
-        // flexWrap: 'wrap',
+        display: 'flex',
         alignItems: 'center',
         //height: theme.spacing(130),
     },
@@ -88,9 +86,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     stockGraph: {
-        width: theme.spacing(45),
-        height: theme.spacing(70),
-
+        margin: theme.spacing(3),
+        alignItems: 'center',
     },
 
     stockInfo: {
@@ -162,24 +159,24 @@ const BuySellPage = () => {
                     return {xvals: xvals, close: close, open: open, high: high, low: low};
                 }
             )
-            .then(
-                function (data) {
-                    trace.current = {
-                        x: data.xvals,
-                        close: data.close,
-                        decreasing: {line: {color: '#F8B192'}},
-                        high: data.high,
-                        increasing: {line: {color: '#355C7D'}},
-                        line: {color: 'rgba(31,119,180,1)'},
-                        low: data.low,
-                        open: data.open,
-                        type: 'candlestick',
-                        xaxis: 'x',
-                        yaxis: 'y'
-                    };
+                .then(
+                    function (data) {
+                        trace.current = {
+                            x: data.xvals,
+                            close: data.close,
+                            decreasing: {line: {color: '#F8B192'}},
+                            high: data.high,
+                            increasing: {line: {color: '#355C7D'}},
+                            line: {color: 'rgba(31,119,180,1)'},
+                            low: data.low,
+                            open: data.open,
+                            type: 'candlestick',
+                            xaxis: 'x',
+                            yaxis: 'y'
+                        };
 
-                }
-            ).then(()=>{
+                    }
+                ).then(()=>{
 
                 Http.open("GET", `http://localhost:3500/keystats/${sym}`);
                 Http.send();
@@ -218,8 +215,8 @@ const BuySellPage = () => {
             <Paper className={classes.topPaper} sqaure>
                 <Typography variant={'h2'} className={classes.companyOverview}> {stats.shortName}</Typography>
             </Paper>
-
             <Grid container className={classes.sticky}>
+
                 <Grid item component={Paper} elevation={12}  className={classes.paper}>
                     <form onSubmit={submitHandler} className={classes.form}>
                         {(buyorsell) ?
@@ -252,9 +249,8 @@ const BuySellPage = () => {
                     </form>
                 </Grid>
 
-                <Paper className={classes.stockGraph}>
                 <Grid item className={classes.tickerSymbol}>
-                        <Typography variant='h2' className={classes.price}>{formatter.format(price.current)}</Typography>
+                    <Typography variant='h2' className={classes.price}>{formatter.format(price.current)}</Typography>
                     <Plot
                         data={[trace.current]}
                         layout={{
@@ -279,20 +275,19 @@ const BuySellPage = () => {
                             yaxis: {
                                 autorange: true,
                                 domain: [0, 1],
-                               // range: [114.609999778, 137.410004222],
+                                // range: [114.609999778, 137.410004222],
                                 type: 'linear'
                             }
                         }}
                     />
                 </Grid>
-                </Paper>
 
-                <Grid item component={Paper} elevation={12} square className={classes.paperRight} >
+                <Grid item component={Paper} elevation={12} square className={classes.paperRight}>
                     <Typography variant='h1' fontSize={12} align={'center'} className={classes.stockHeader}>
                         {sym} Info
                     </Typography>
                     <Typography variant='h10' align={'left'} className={classes.stockInfo}>
-                            {stats.longBusinessSummary}
+                        {stats.longBusinessSummary}
                     </Typography>
                 </Grid>
             </Grid>
