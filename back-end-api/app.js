@@ -86,17 +86,22 @@ app.get('/keystats/:sym', (req,res) => {
 })
 
 app.get('/googleId/:id', (req,res) => {
-
   MongoClient.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true  }, async(err,client) =>{
     if(err != null){
       console.log(err)
     }else{
       const collection = client.db("tradingbot").collection("users");
-      const result = collection.findOne({googleId:req.params.id}).then((result=>{
-        res.contentType('application/json');
-        console.log(result)
-        res.json(result);
-      }));
+      console.log("test");
+      console.log(req.params.id);
+      const result = await collection.findOne({googleId:req.params.id});
+      res.contentType('application/json');
+         console.log(result);
+         res.json(result);
+      // .then((result=>{
+      //   res.contentType('application/json');
+      //   console.log(result)
+      //   res.json(result);
+      // }));
     }
   });
 
@@ -155,8 +160,10 @@ app.get('/login/:email/:password', async(req,res) => {
       const result = collection.findOne(query)
       .then( (result) =>{
         if(result){
-          res.contentType('application/json');
-          res.json(result);
+          // res.contentType('application/json');
+          // res.json(result);
+          res.setHeader("Content-Type", "application/json");
+          res.send(JSON.stringify(result));
         }else{
           if(result === null){
             console.log("sending null");
@@ -215,6 +222,23 @@ app.set('/signup', async(req,res) =>{
   });
 });
 
+function name() {
+  console.log("called");
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true  }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      client.close();
+    } else {
+      console.log("This is a test4")
+
+      const collection = client.db("tradingbot").collection("users");
+      const cursor = await collection.find().project({accountId: 1, _id: 0}).toArray();
+      await collection.findOneAndUpdate({email: "william.carrera@my.wheaton.edu"}, {$set: {googleId: "104692830181919325230"}});
+      client.close();
+    }
+  });
+};
+
 app.get("/accountinfo/:email/:password", async(req,res) => {
 
   const email = req.params.email;
@@ -266,6 +290,61 @@ app.get("/accountinfo/:email/:password", async(req,res) => {
           .then((error, result) => {
             console.log("test5");
           client.close();
+          });
+    }
+  });
+});
+
+app.get("/accountinfogoogle/:googleId", async(req,res) => {
+
+
+  console.log("test1");
+  console.log(req.params.googleId)
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, async(err, client) => {
+    if (err !== null) {
+      console.log(err);
+      console.log("test2");
+      client.close();
+    } else {
+      console.log("test3");
+      const query = {googleId: req.params.googleId};
+      const collection = client.db("tradingbot").collection("users");
+
+      console.log("test4");
+      const result = collection.findOne(query)
+          .then( (result) =>{
+            console.log("test6");
+            if(result){
+              console.log("test7");
+              console.log(result);
+              const userInfo = {
+                username: result.username,
+                role: result.role,
+                dateCreated: result.dateCreated,
+                email: result.email,
+                password: result.password,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                accountId: result.accountId,
+                googleId: result.googleId
+              }
+              console.log("User Info:")
+              console.log(userInfo)
+              res.setHeader("Content-Type", "application/json");
+              res.send(JSON.stringify(userInfo));
+            }else{
+              console.log("test8");
+              if(result === null){
+                console.log("test9");
+                console.log("sending null This is a big bad, how are they logged in with out a user");
+                res.send(null);
+              }
+            }
+            client.close();
+          })
+          .then((error, result) => {
+            console.log("test5");
+            client.close();
           });
     }
   });

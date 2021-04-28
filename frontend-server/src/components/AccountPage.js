@@ -56,12 +56,22 @@ const AccountPage = ({user}) => {
         console.log("Asking for account info");
         // e.preventDefault();
         console.log("just cheking");
+        console.log(user);
         const email = user.email;
         const password = user.password;
-        Http.open("GET", `http://localhost:3500/accountinfo/${email}/${password}`);
-        //get (first name, last name, email, googleID)
-        //put it all in the route
-        Http.send();
+        if(password===undefined){
+            console.log(user.googleId);
+            Http.open("GET", `http://localhost:3500/accountinfogoogle/${user.googleId}`);
+            //get (first name, last name, email, googleID)
+            //put it all in the route
+            Http.send();
+        }else {
+            console.log(email + " " + password);
+            Http.open("GET", `http://localhost:3500/accountinfo/${email}/${password}`);
+            //get (first name, last name, email, googleID)
+            //put it all in the route
+            Http.send();
+        }
     }
 
     Http.onreadystatechange = function() {
@@ -172,7 +182,7 @@ const AccountPage = ({user}) => {
 
 
 
-        <divM>This is a big test
+        <divM>{getInfo()}
             <Grid container xs={8} className={classes.accountGrid}>
                 <Grid item>
                     <Typography align={'left'}>

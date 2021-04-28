@@ -93,8 +93,26 @@ const App = () => {
       if (this.readyState == 4 && this.status == 200) {
           if(Http.responseText != ""){
               console.log(Http.responseText);
-            setUser(JSON.parse(Http.responseText));
-            setUser({...user,loggedIn:true});
+              // setUser(JSON.parse(Http.responseText));
+              let obj = JSON.parse(Http.responseText);
+              console.log(obj.email);
+              const newUser =   {
+                  email: obj.email,
+                  username: obj.username,
+                  role: obj.role,
+                  accountId: obj.accountId,
+                  dateCreated: obj.dateCreated,
+                  password: obj.password,
+                  firstName: obj.firstName,
+                  lastName: obj.lastName,
+                  googleIdL: obj.googleId,
+                  loggedIn: true,
+              }
+              console.log(newUser);
+            setUser(newUser);
+            console.log(user);
+            // setUser({...user,loggedIn:true});
+            console.log(user);
           }else{
             console.log("failure");
             setUser(null);
