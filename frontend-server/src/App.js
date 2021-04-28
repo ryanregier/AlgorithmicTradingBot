@@ -33,12 +33,13 @@ const App = () => {
       }).then((value) => { return value.getPayload().email_verified})
         .then((verified) =>{
             if(verified) {
-                Http.open("GET", `http://10.12.240.56:3500/googleId/${res.googleId}`);
+                Http.open("GET", `http://localhost:3500/googleId/${res.googleId}`);
                 Http.send();
                 console.log("sending http request");
                 Http.onreadystatechange = function (e) {
                     if (this.readyState == 4 && this.status == 200) {
                         const acct = JSON.parse(Http.responseText);
+                        console.log(acct);
                         if(res.googleId == acct.googleId){
                             setUser(res);
                         }else{
@@ -73,10 +74,11 @@ const App = () => {
 
   const isLoggedIn = () =>{
     try{
+
       return user.isSignedIn();
     }catch (err){
         try {
-            return user != null;
+            return user.loggedIn;
         }catch (e) {
             return false;
         }
@@ -85,12 +87,14 @@ const App = () => {
 
   const Login = (details) => {
     console.log("Inside Login function");
-    Http.open("GET", `http://10.12.240.56:3500/login/${details.email}/${details.password}`);
+    Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
     Http.send();
     Http.onreadystatechange = function (e) {
       if (this.readyState == 4 && this.status == 200) {
           if(Http.responseText != ""){
+              console.log(Http.responseText);
             setUser(JSON.parse(Http.responseText));
+            setUser({...user,loggedIn:true});
           }else{
             console.log("failure");
             setUser(null);
@@ -99,26 +103,10 @@ const App = () => {
       }
   }
 
-  // const CreateAccount = (details) => {
-  //     console.log("Inside CreateAccount function");
-  //     Http.open("GET", `http://localhost:3500/login/${details.email}/${details.password}`);
-  //     Http.send();
-  //     console.log("sending http request");
-  //     Http.onreadystatechange = function (e){
-  //         console.log(localStorage.setItem('firstName', details.firstName));
-  //         console.log(localStorage.setItem('lastName', details.lastName));
-  //         console.log(localStorage.setItem('email', details.email));
-  //         console.log(localStorage.setItem('password', details.password));
-  //     }
-  // }
-
-
   const Logout = () => {
-    
     console.log("Logout");
     setUser(null);
   }
-
 
   return (
       

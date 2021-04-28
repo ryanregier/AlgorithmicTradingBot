@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
     paper: {
         margin: theme.spacing(5),
-        marginLeft: theme.spacing(25),
+        marginLeft: theme.spacing(1),
         width: theme.spacing(30),
         height: theme.spacing(45),
         display: 'flex',
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         backgroundColor: 'white',
     },
+
     topPaper: {
         width: '100%',
         height: theme.spacing(20),
@@ -48,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     sticky: {
         background: 'linear-gradient(0deg, #fafafa 2%, #ffffff 6%)',
         // backgroundColor: 'red',
-        display: 'flex',
+        // display: 'flex',
+        // flexWrap: 'wrap',
         alignItems: 'center',
         //height: theme.spacing(130),
     },
@@ -86,8 +88,9 @@ const useStyles = makeStyles((theme) => ({
     },
 
     stockGraph: {
-        margin: theme.spacing(3),
-        alignItems: 'center',
+        width: theme.spacing(45),
+        height: theme.spacing(70),
+
     },
 
     stockInfo: {
@@ -215,8 +218,8 @@ const BuySellPage = () => {
             <Paper className={classes.topPaper} sqaure>
                 <Typography variant={'h2'} className={classes.companyOverview}> {stats.shortName}</Typography>
             </Paper>
-            <Grid container className={classes.sticky}>
 
+            <Grid container className={classes.sticky}>
                 <Grid item component={Paper} elevation={12}  className={classes.paper}>
                     <form onSubmit={submitHandler} className={classes.form}>
                         {(buyorsell) ?
@@ -249,6 +252,7 @@ const BuySellPage = () => {
                     </form>
                 </Grid>
 
+                <Paper className={classes.stockGraph}>
                 <Grid item className={classes.tickerSymbol}>
                         <Typography variant='h2' className={classes.price}>{formatter.format(price.current)}</Typography>
                     <Plot
@@ -281,8 +285,9 @@ const BuySellPage = () => {
                         }}
                     />
                 </Grid>
+                </Paper>
 
-                <Grid item component={Paper} elevation={12} square className={classes.paperRight}>
+                <Grid item component={Paper} elevation={12} square className={classes.paperRight} >
                     <Typography variant='h1' fontSize={12} align={'center'} className={classes.stockHeader}>
                         {sym} Info
                     </Typography>
